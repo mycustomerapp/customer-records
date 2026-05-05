@@ -52,7 +52,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-        /* --- LAYOUT --- */
         .sidebar { width: 260px; background: var(--secondary); color: white; display: flex; flex-direction: column; transition: width 0.3s; z-index: 10; }
         .sidebar-header { padding: 1.5rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .logo-placeholder { width: 36px; height: 36px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
@@ -74,7 +73,6 @@
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
 
-        /* --- COMPONENTS --- */
         h2.page-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--secondary); }
         
         .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
@@ -101,6 +99,8 @@
         .btn-danger:hover { background: #dc2626; }
         .btn-outline { background: white; color: var(--text-main); border: 1px solid var(--border); }
         .btn-outline:hover { background: var(--bg-main); }
+        .btn-cancel { background: white; color: var(--danger); border: 1px solid var(--danger); }
+        .btn-cancel:hover { background: #fef2f2; }
 
         .table-container { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--border); }
         .table-header { padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: var(--bg-main); }
@@ -118,10 +118,10 @@
         .action-btn { padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: 0.2s; }
         .action-btn:hover { background: var(--bg-main); }
         .action-btn.del:hover { border-color: var(--danger); color: var(--danger); }
+        .action-btn.edit:hover { border-color: var(--primary); color: var(--primary); }
 
         .empty-state { text-align: center; padding: 3rem; color: var(--text-muted); }
 
-        /* --- AUTH SCREEN --- */
         .auth-screen { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
         .auth-card { background: white; padding: 3rem; border-radius: 1rem; box-shadow: var(--shadow-lg); text-align: center; max-width: 400px; width: 100%; }
         .auth-card h1 { margin-bottom: 0.5rem; font-size: 1.8rem; color: var(--secondary); }
@@ -144,7 +144,6 @@
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
 <div id="loginPrompt" class="auth-screen">
     <div class="auth-card">
         <div class="logo-placeholder" style="margin: 0 auto 1rem; width: 50px; height: 50px; font-size: 1.5rem;">F</div>
@@ -154,7 +153,6 @@
     </div>
 </div>
 
-<!-- MAIN APP -->
 <div id="mainApp" class="hidden" style="display:flex; width:100%; height:100vh;">
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -225,10 +223,20 @@
             <section id="tab-tourtravel" class="tab-content">
                 <h2 class="page-title">Tours & Travel Account</h2>
                 <div class="summary-cards">
+                    <div class="card" style="border-left: 4px solid var(--success);">
+                        <h3>Total Amount In (+)</h3>
+                        <div class="value" id="tt-total-in" style="color: var(--success);">0 AED</div>
+                        <small>Total money received</small>
+                    </div>
+                    <div class="card" style="border-left: 4px solid var(--danger);">
+                        <h3>Total Amount Out (-)</h3>
+                        <div class="value" id="tt-total-out" style="color: var(--danger);">0 AED</div>
+                        <small>Total money spent</small>
+                    </div>
                     <div class="card" style="border-left: 4px solid var(--primary);">
                         <h3>Current Tours Balance</h3>
                         <div class="value" id="tt-current-balance">0 AED</div>
-                        <small>Running balance: Income (+) minus Expenses (-)</small>
+                        <small>Running balance: In minus Out</small>
                     </div>
                 </div>
                 <div class="form-card">
@@ -237,7 +245,6 @@
                         <div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="tt-particulars" placeholder="e.g. Amjad Ullah Ticket" required><span class="helper-text">Description of the expense or income</span></div>
                         <div class="form-group" style="flex:1;">
                             <label>Portal / Method</label>
-                            <!-- DATALIST ALLOWS SELECTION AND CUSTOM TYPING -->
                             <input type="text" id="tt-portal" list="tt-portal-list" placeholder="Select or type new" required>
                             <datalist id="tt-portal-list"></datalist>
                             <span class="helper-text">Select existing or type a new one</span>
@@ -246,7 +253,10 @@
                     <div class="form-row">
                         <div class="form-group"><label>Amount In (+)</label><input type="number" id="tt-in" placeholder="0.00" step="0.01" value="0"><span class="helper-text">Money received (Deposits, Cash, Refunds)</span></div>
                         <div class="form-group"><label>Amount Out (-)</label><input type="number" id="tt-out" placeholder="0.00" step="0.01" value="0"><span class="helper-text">Money spent (Tickets, Salaries, Bills)</span></div>
-                        <div class="form-group" style="justify-content: flex-end;"><button class="btn btn-primary" onclick="addTourTravelRecord()">+ Add Transaction</button></div>
+                        <div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;">
+                            <button class="btn btn-cancel hidden" id="tt-cancel-btn" onclick="cancelEditTourTravelRecord()">✕ Cancel</button>
+                            <button class="btn btn-primary" id="tt-submit-btn" onclick="addTourTravelRecord()">+ Add Transaction</button>
+                        </div>
                     </div>
                 </div>
                 <div class="table-container">
@@ -270,7 +280,6 @@
             <section id="tab-banks" class="tab-content"><h2 class="page-title">Bank Transactions</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Banks Excel sheet.</p></div></section>
             <section id="tab-daily" class="tab-content"><h2 class="page-title">Daily Records</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Daily Excel sheet.</p></div></section>
             <section id="tab-paid" class="tab-content"><h2 class="page-title">Paid Out Records</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Paid Excel sheet.</p></div></section>
-
         </main>
     </div>
 </div>
@@ -279,25 +288,10 @@
     // ==========================================
     // 1. CENTRAL STATE MANAGEMENT
     // ==========================================
-    const AppData = {
-        customers: [],
-        tourtravel: [],
-        cash: [],
-        banks: [],
-        daily: [],
-        paid: []
-    };
-
-    const DB_MAP = {
-        customers: 'records', 
-        tourtravel: 'tourtravel',
-        cash: 'cash',
-        banks: 'banks',
-        daily: 'daily',
-        paid: 'paid'
-    };
-
+    const AppData = { customers: [], tourtravel: [], cash: [], banks: [], daily: [], paid: [] };
+    const DB_MAP = { customers: 'records', tourtravel: 'tourtravel', cash: 'cash', banks: 'banks', daily: 'daily', paid: 'paid' };
     let currentUser = null;
+    let editingTTRecordId = null; // Track if we are editing a Tour Travel record
 
     // ==========================================
     // 2. AUTHENTICATION
@@ -329,7 +323,7 @@
         try {
             const querySnapshot = await db.collection(dbCollection)
                 .where('userId', '==', currentUser.uid)
-                .orderBy('date', 'asc') // Load chronologically for running balances
+                .orderBy('date', 'asc')
                 .get();
             
             AppData[collectionName] = [];
@@ -338,7 +332,6 @@
             renderActiveTab();
             recalculateAllFormulas(); 
 
-            // Update dynamic dropdowns
             if(collectionName === 'tourtravel') updatePortalDatalist();
 
         } catch (error) {
@@ -463,33 +456,33 @@
     // ==========================================
     // 7. TOURTRAVEL TAB LOGIC
     // ==========================================
-    
-    // Dynamic Datalist Builder
     function updatePortalDatalist() {
         const datalist = document.getElementById('tt-portal-list');
         if(!datalist) return;
-        
-        // Extract unique portals already used in records
         const usedPortals = [...new Set(AppData.tourtravel.map(r => r.portal).filter(Boolean))];
-        // Add base defaults
         const defaults = ['PIA', 'G9', 'VIA', 'AP', 'CASH', 'ADIB', 'AL IMRAN', 'SALARY', 'REFUND', 'B2B', 'PHONE'];
-        // Combine and remove duplicates
         const allPortals = [...new Set([...defaults, ...usedPortals])].sort();
-        
         datalist.innerHTML = '';
-        allPortals.forEach(p => {
-            const option = document.createElement('option');
-            option.value = p;
-            datalist.appendChild(option);
-        });
+        allPortals.forEach(p => { const option = document.createElement('option'); option.value = p; datalist.appendChild(option); });
     }
 
     function calculateTourTravelBalance() {
         let runningBalance = 0;
+        let totalIn = 0;
+        let totalOut = 0;
         AppData.tourtravel.forEach(r => {
             runningBalance += (r.amountIn || 0) - (r.amountOut || 0);
+            totalIn += (r.amountIn || 0);
+            totalOut += (r.amountOut || 0);
             r.balance = runningBalance;
         });
+        
+        const elIn = document.getElementById('tt-total-in');
+        if(elIn) elIn.innerText = totalIn.toLocaleString() + ' AED';
+        
+        const elOut = document.getElementById('tt-total-out');
+        if(elOut) elOut.innerText = totalOut.toLocaleString() + ' AED';
+
         const el = document.getElementById('tt-current-balance');
         if (el) {
             const finalBalance = AppData.tourtravel.length > 0 ? AppData.tourtravel[AppData.tourtravel.length - 1].balance : 0;
@@ -510,38 +503,103 @@
                 <td style="color:var(--success); font-weight:600;">${r.amountIn ? parseFloat(r.amountIn).toLocaleString() + ' AED' : '-'}</td>
                 <td style="color:var(--danger); font-weight:600;">${r.amountOut ? parseFloat(r.amountOut).toLocaleString() + ' AED' : '-'}</td>
                 <td><strong style="color:${balanceColor}">${r.balance.toLocaleString()} AED</strong></td>
-                <td class="action-btns"><button class="action-btn del" onclick="deleteTourTravelRecord('${r.id}')">✕</button></td>
+                <td class="action-btns">
+                    <button class="action-btn edit" onclick="editTourTravelRecord('${r.id}')">✎</button>
+                    <button class="action-btn del" onclick="deleteTourTravelRecord('${r.id}')">✕</button>
+                </td>
             </tr>`;
         });
+    }
+
+    function editTourTravelRecord(docId) {
+        const record = AppData.tourtravel.find(r => r.id === docId);
+        if (!record) return;
+
+        // Populate form
+        document.getElementById('tt-date').value = record.date;
+        document.getElementById('tt-particulars').value = record.particulars;
+        document.getElementById('tt-portal').value = record.portal;
+        document.getElementById('tt-in').value = record.amountIn || 0;
+        document.getElementById('tt-out').value = record.amountOut || 0;
+
+        // Update UI for editing mode
+        editingTTRecordId = docId;
+        document.getElementById('tt-submit-btn').innerText = '💾 Update Transaction';
+        document.getElementById('tt-cancel-btn').classList.remove('hidden');
+        
+        // Scroll to top to see the form
+        document.getElementById('tab-tourtravel').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cancelEditTourTravelRecord() {
+        editingTTRecordId = null;
+        document.getElementById('tt-date').value = ''; 
+        document.getElementById('tt-particulars').value = ''; 
+        document.getElementById('tt-portal').value = ''; 
+        document.getElementById('tt-in').value = '0'; 
+        document.getElementById('tt-out').value = '0';
+        document.getElementById('tt-submit-btn').innerText = '+ Add Transaction';
+        document.getElementById('tt-cancel-btn').classList.add('hidden');
     }
 
     async function addTourTravelRecord() {
         const date = document.getElementById('tt-date').value;
         const particulars = document.getElementById('tt-particulars').value;
-        const portal = document.getElementById('tt-portal').value.trim().toUpperCase(); // Trim and uppercase custom entries
+        const portal = document.getElementById('tt-portal').value.trim().toUpperCase();
         const amountIn = parseFloat(document.getElementById('tt-in').value) || 0;
         const amountOut = parseFloat(document.getElementById('tt-out').value) || 0;
 
         if(!date || !particulars || !portal) return alert('Please fill Date, Particulars, and Portal.');
         if(amountIn > 0 && amountOut > 0) return alert('A transaction should either be an IN (+) or an OUT (-), not both.');
 
-        const record = { date, particulars, portal, amountIn, amountOut };
-        try {
-            const docId = await saveToCollection('tourtravel', record);
-            record.id = docId; AppData.tourtravel.push(record);
-            
-            calculateTourTravelBalance();
-            renderTourTravelTable();
-            updatePortalDatalist(); // Update dropdown in case a new portal was typed
-            
-            document.getElementById('tt-date').value = ''; document.getElementById('tt-particulars').value = ''; document.getElementById('tt-portal').value = ''; document.getElementById('tt-in').value = '0'; document.getElementById('tt-out').value = '0';
-        } catch (error) { alert('Error adding transaction: ' + error.message); }
+        const recordData = { date, particulars, portal, amountIn, amountOut };
+
+        if (editingTTRecordId) {
+            // UPDATE EXISTING RECORD
+            try {
+                await updateInCollection('tourtravel', editingTTRecordId, recordData);
+                const record = AppData.tourtravel.find(r => r.id === editingTTRecordId);
+                Object.assign(record, recordData); // Update local state
+                
+                calculateTourTravelBalance();
+                renderTourTravelTable();
+                updatePortalDatalist();
+                cancelEditTourTravelRecord(); // Reset form
+            } catch (error) { 
+                alert('Error updating transaction: ' + error.message); 
+            }
+        } else {
+            // ADD NEW RECORD
+            try {
+                const docId = await saveToCollection('tourtravel', recordData);
+                recordData.id = docId; 
+                AppData.tourtravel.push(recordData);
+                
+                calculateTourTravelBalance();
+                renderTourTravelTable();
+                updatePortalDatalist();
+                
+                document.getElementById('tt-date').value = ''; 
+                document.getElementById('tt-particulars').value = ''; 
+                document.getElementById('tt-portal').value = ''; 
+                document.getElementById('tt-in').value = '0'; 
+                document.getElementById('tt-out').value = '0';
+            } catch (error) { 
+                alert('Error adding transaction: ' + error.message); 
+            }
+        }
     }
 
     async function deleteTourTravelRecord(docId) {
         if (!confirm('Delete this transaction? This will recalculate all subsequent balances.')) return;
-        try { await deleteFromCollection('tourtravel', docId); AppData.tourtravel = AppData.tourtravel.filter(r => r.id !== docId); calculateTourTravelBalance(); renderTourTravelTable(); } 
-        catch (error) { alert('Error deleting transaction: ' + error.message); }
+        try { 
+            await deleteFromCollection('tourtravel', docId); 
+            AppData.tourtravel = AppData.tourtravel.filter(r => r.id !== docId); 
+            calculateTourTravelBalance(); 
+            renderTourTravelTable(); 
+            // If deleting the record currently being edited, cancel edit mode
+            if(editingTTRecordId === docId) cancelEditTourTravelRecord();
+        } catch (error) { alert('Error deleting transaction: ' + error.message); }
     }
 
     function filterTourTravelRecords() {
