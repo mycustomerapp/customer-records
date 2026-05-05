@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial & Workflow Tracker</title>
     
-    <!-- Google Fonts: Inter (Professional Corporate Font) -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -89,7 +89,7 @@
         .form-group { flex: 1; min-width: 150px; display: flex; flex-direction: column; }
         .form-group label { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: var(--text-main); }
         .form-group input, .form-group select { padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 0.5rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: border 0.2s; }
-        .form-group input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
         .helper-text { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
 
         .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
@@ -132,7 +132,6 @@
         .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .sidebar { width: 0; overflow: hidden; position: absolute; height: 100%; }
             .sidebar.open { width: 260px; }
@@ -151,63 +150,42 @@
         <div class="logo-placeholder" style="margin: 0 auto 1rem; width: 50px; height: 50px; font-size: 1.5rem;">F</div>
         <h1>FinTracker Pro</h1>
         <p>Sign in to access your secure financial dashboard.</p>
-        <button class="btn-google" onclick="handleLogin()">
-            Sign in with Google
-        </button>
+        <button class="btn-google" onclick="handleLogin()">Sign in with Google</button>
     </div>
 </div>
 
 <!-- MAIN APP -->
 <div id="mainApp" class="hidden" style="display:flex; width:100%; height:100vh;">
-    
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo-placeholder">F</div>
             <h2>FinTracker</h2>
         </div>
         <nav class="nav-menu">
-            <div class="nav-item active" onclick="switchTab('customers')">
-                <span class="nav-icon">👥</span> Customers
-            </div>
-            <div class="nav-item" onclick="switchTab('tourtravel')">
-                <span class="nav-icon">✈️</span> Tour & Travel
-            </div>
-            <div class="nav-item" onclick="switchTab('cash')">
-                <span class="nav-icon">💵</span> Cash
-            </div>
-            <div class="nav-item" onclick="switchTab('banks')">
-                <span class="nav-icon">🏦</span> Banks
-            </div>
-            <div class="nav-item" onclick="switchTab('daily')">
-                <span class="nav-icon">📅</span> Daily
-            </div>
-            <div class="nav-item" onclick="switchTab('paid')">
-                <span class="nav-icon">✅</span> Paid
-            </div>
+            <div class="nav-item active" onclick="switchTab('customers')"><span class="nav-icon">👥</span> Customers</div>
+            <div class="nav-item" onclick="switchTab('tourtravel')"><span class="nav-icon">✈️</span> Tour & Travel</div>
+            <div class="nav-item" onclick="switchTab('cash')"><span class="nav-icon">💵</span> Cash</div>
+            <div class="nav-item" onclick="switchTab('banks')"><span class="nav-icon">🏦</span> Banks</div>
+            <div class="nav-item" onclick="switchTab('daily')"><span class="nav-icon">📅</span> Daily</div>
+            <div class="nav-item" onclick="switchTab('paid')"><span class="nav-icon">✅</span> Paid</div>
         </nav>
     </aside>
 
-    <!-- MAIN CONTENT AREA -->
     <div class="main-wrapper">
-        
-        <!-- TOP BAR -->
         <header class="topbar">
             <button class="btn-outline" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;" id="menuBtn">☰</button>
-            <div></div> <!-- Spacer -->
+            <div></div>
             <div class="user-info">
                 <span id="userName">User</span>
                 <button class="btn-logout" onclick="handleLogout()">Logout</button>
             </div>
         </header>
 
-        <!-- CONTENT PANES -->
         <main class="main-content">
             
             <!-- CUSTOMERS TAB -->
             <section id="tab-customers" class="tab-content active">
                 <h2 class="page-title">Customers Management</h2>
-                
                 <div class="summary-cards">
                     <div class="card card-warning">
                         <h3>Total Dues on Customers</h3>
@@ -215,125 +193,92 @@
                         <small>Outstanding balance from unpaid customers</small>
                     </div>
                 </div>
-
                 <div class="form-card">
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input type="date" id="cust-date" required>
-                            <span class="helper-text">Date of transaction or service</span>
-                        </div>
-                        <div class="form-group" style="flex:2;">
-                            <label>Customer Name</label>
-                            <input type="text" id="cust-name" placeholder="e.g. John Doe" required>
-                            <span class="helper-text">Full name or Company name</span>
-                        </div>
-                        <div class="form-group" style="flex:2;">
-                            <label>Contact / Reference</label>
-                            <input type="text" id="cust-contact" placeholder="e.g. +971...">
-                            <span class="helper-text">Phone number or invoice reference</span>
-                        </div>
+                        <div class="form-group"><label>Date</label><input type="date" id="cust-date" required><span class="helper-text">Date of transaction or service</span></div>
+                        <div class="form-group" style="flex:2;"><label>Customer Name</label><input type="text" id="cust-name" placeholder="e.g. John Doe" required><span class="helper-text">Full name or Company name</span></div>
+                        <div class="form-group" style="flex:2;"><label>Contact / Reference</label><input type="text" id="cust-contact" placeholder="e.g. +971..."><span class="helper-text">Phone number or invoice reference</span></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Total Amount</label>
-                            <input type="number" id="cust-total" placeholder="0.00" step="0.01" required>
-                            <span class="helper-text">Total invoice or service amount</span>
-                        </div>
-                        <div class="form-group">
-                            <label>Paid Amount</label>
-                            <input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0">
-                            <span class="helper-text">Amount paid upfront (defaults to 0)</span>
-                        </div>
-                        <div class="form-group" style="justify-content: flex-end;">
-                            <button class="btn btn-primary" onclick="addCustomerRecord()">+ Add Customer</button>
-                        </div>
+                        <div class="form-group"><label>Total Amount</label><input type="number" id="cust-total" placeholder="0.00" step="0.01" required><span class="helper-text">Total invoice or service amount</span></div>
+                        <div class="form-group"><label>Paid Amount</label><input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0"><span class="helper-text">Amount paid upfront (defaults to 0)</span></div>
+                        <div class="form-group" style="justify-content: flex-end;"><button class="btn btn-primary" onclick="addCustomerRecord()">+ Add Customer</button></div>
                     </div>
                 </div>
-
                 <div class="table-container">
                     <div class="table-header">
                         <input type="text" id="cust-search" class="search-input" placeholder="Search by name or contact..." onkeyup="filterCustomerRecords()">
                         <div style="display:flex; gap:8px;">
                             <button class="btn btn-outline" onclick="exportData('customers')">⬇ Backup</button>
-                            <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">⬆ Restore</button>
-                            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event, 'customers')">
+                            <button class="btn btn-outline" onclick="document.getElementById('importFileCust').click()">⬆ Restore</button>
+                            <input type="file" id="importFileCust" accept=".json" style="display:none" onchange="importData(event, 'customers')">
                         </div>
                     </div>
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Name</th>
-                                <th>Contact</th>
-                                <th>Total</th>
-                                <th>Paid</th>
-                                <th>Balance</th>
-                                <th>Status</th>
-                                <th>Paid Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Date</th><th>Name</th><th>Contact</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead>
                         <tbody id="cust-table-body"></tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- TOURTRAVEL TAB (Placeholder) -->
+            <!-- TOURTRAVEL TAB -->
             <section id="tab-tourtravel" class="tab-content">
-                <h2 class="page-title">Tour & Travel Operations</h2>
-                <div class="empty-state card">
-                    <h3>Module Ready for Configuration</h3>
-                    <p>Please upload your Tour & Travel Excel sheet. The fields and formulas will be automatically mapped here.</p>
+                <h2 class="page-title">Tours & Travel Account</h2>
+                <div class="summary-cards">
+                    <div class="card" style="border-left: 4px solid var(--primary);">
+                        <h3>Current Tours Balance</h3>
+                        <div class="value" id="tt-current-balance">0 AED</div>
+                        <small>Running balance: Income (+) minus Expenses (-)</small>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="form-row">
+                        <div class="form-group"><label>Date</label><input type="date" id="tt-date" required><span class="helper-text">Date of transaction</span></div>
+                        <div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="tt-particulars" placeholder="e.g. Amjad Ullah Ticket" required><span class="helper-text">Description of the expense or income</span></div>
+                        <div class="form-group" style="flex:1;">
+                            <label>Portal / Method</label>
+                            <!-- DATALIST ALLOWS SELECTION AND CUSTOM TYPING -->
+                            <input type="text" id="tt-portal" list="tt-portal-list" placeholder="Select or type new" required>
+                            <datalist id="tt-portal-list"></datalist>
+                            <span class="helper-text">Select existing or type a new one</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Amount In (+)</label><input type="number" id="tt-in" placeholder="0.00" step="0.01" value="0"><span class="helper-text">Money received (Deposits, Cash, Refunds)</span></div>
+                        <div class="form-group"><label>Amount Out (-)</label><input type="number" id="tt-out" placeholder="0.00" step="0.01" value="0"><span class="helper-text">Money spent (Tickets, Salaries, Bills)</span></div>
+                        <div class="form-group" style="justify-content: flex-end;"><button class="btn btn-primary" onclick="addTourTravelRecord()">+ Add Transaction</button></div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <input type="text" id="tt-search" class="search-input" placeholder="Search particulars..." onkeyup="filterTourTravelRecords()">
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn btn-outline" onclick="exportData('tourtravel')">⬇ Backup</button>
+                            <button class="btn btn-outline" onclick="document.getElementById('importFileTT').click()">⬆ Restore</button>
+                            <input type="file" id="importFileTT" accept=".json" style="display:none" onchange="importData(event, 'tourtravel')">
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>Amount In (+)</th><th>Amount Out (-)</th><th>Balance</th><th>Actions</th></tr></thead>
+                        <tbody id="tt-table-body"></tbody>
+                    </table>
                 </div>
             </section>
 
-            <!-- CASH TAB (Placeholder) -->
-            <section id="tab-cash" class="tab-content">
-                <h2 class="page-title">Cash Flow Management</h2>
-                <div class="empty-state card">
-                    <h3>Module Ready for Configuration</h3>
-                    <p>Please upload your Cash Excel sheet. This module will cross-reference with Daily and Paid tabs.</p>
-                </div>
-            </section>
-
-            <!-- BANKS TAB (Placeholder) -->
-            <section id="tab-banks" class="tab-content">
-                <h2 class="page-title">Bank Transactions</h2>
-                <div class="empty-state card">
-                    <h3>Module Ready for Configuration</h3>
-                    <p>Please upload your Banks Excel sheet. Formulas linking to Cash and Paid will be configured here.</p>
-                </div>
-            </section>
-
-            <!-- DAILY TAB (Placeholder) -->
-            <section id="tab-daily" class="tab-content">
-                <h2 class="page-title">Daily Records</h2>
-                <div class="empty-state card">
-                    <h3>Module Ready for Configuration</h3>
-                    <p>Please upload your Daily Excel sheet. Daily inputs will automatically update Cash and Banks tabs.</p>
-                </div>
-            </section>
-
-            <!-- PAID TAB (Placeholder) -->
-            <section id="tab-paid" class="tab-content">
-                <h2 class="page-title">Paid Out Records</h2>
-                <div class="empty-state card">
-                    <h3>Module Ready for Configuration</h3>
-                    <p>Please upload your Paid Excel sheet. Cross-sheet formulas will deduct these from Banks/Cash.</p>
-                </div>
-            </section>
+            <!-- PLACEHOLDER TABS -->
+            <section id="tab-cash" class="tab-content"><h2 class="page-title">Cash Flow Management</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Cash Excel sheet.</p></div></section>
+            <section id="tab-banks" class="tab-content"><h2 class="page-title">Bank Transactions</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Banks Excel sheet.</p></div></section>
+            <section id="tab-daily" class="tab-content"><h2 class="page-title">Daily Records</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Daily Excel sheet.</p></div></section>
+            <section id="tab-paid" class="tab-content"><h2 class="page-title">Paid Out Records</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Paid Excel sheet.</p></div></section>
 
         </main>
     </div>
 </div>
 
-<!-- APPLICATION LOGIC -->
 <script>
     // ==========================================
     // 1. CENTRAL STATE MANAGEMENT
     // ==========================================
-    // This object holds all data for all tabs locally, making cross-tab formulas instant.
     const AppData = {
         customers: [],
         tourtravel: [],
@@ -341,6 +286,15 @@
         banks: [],
         daily: [],
         paid: []
+    };
+
+    const DB_MAP = {
+        customers: 'records', 
+        tourtravel: 'tourtravel',
+        cash: 'cash',
+        banks: 'banks',
+        daily: 'daily',
+        paid: 'paid'
     };
 
     let currentUser = null;
@@ -355,7 +309,7 @@
             document.getElementById('mainApp').style.display = 'flex';
             document.getElementById('loginPrompt').classList.add('hidden');
             document.getElementById('userName').innerText = currentUser.displayName || currentUser.email;
-            loadCollection('customers'); // Load default tab data
+            loadCollection('customers'); 
         } else {
             currentUser = null;
             document.getElementById('mainApp').classList.add('hidden');
@@ -363,100 +317,84 @@
         }
     });
 
-    function handleLogin() {
-        auth.signInWithPopup(provider).catch((error) => alert("Login failed: " + error.message));
-    }
-
-    function handleLogout() {
-        auth.signOut();
-        AppData.customers = []; // Clear local state on logout
-    }
+    function handleLogin() { auth.signInWithPopup(provider).catch((error) => alert("Login failed: " + error.message)); }
+    function handleLogout() { auth.signOut(); AppData.customers = []; AppData.tourtravel = []; }
 
     // ==========================================
     // 3. MODULAR FIRESTORE OPERATIONS
     // ==========================================
     async function loadCollection(collectionName) {
         if (!currentUser) return;
+        const dbCollection = DB_MAP[collectionName];
         try {
-            const querySnapshot = await db.collection(collectionName)
+            const querySnapshot = await db.collection(dbCollection)
                 .where('userId', '==', currentUser.uid)
-                .orderBy('date', 'desc')
+                .orderBy('date', 'asc') // Load chronologically for running balances
                 .get();
             
             AppData[collectionName] = [];
-            querySnapshot.forEach((doc) => {
-                AppData[collectionName].push({ id: doc.id, ...doc.data() });
-            });
+            querySnapshot.forEach((doc) => { AppData[collectionName].push({ id: doc.id, ...doc.data() }); });
             
             renderActiveTab();
-            recalculateAllFormulas(); // Trigger cross-tab logic prep
+            recalculateAllFormulas(); 
+
+            // Update dynamic dropdowns
+            if(collectionName === 'tourtravel') updatePortalDatalist();
+
         } catch (error) {
             console.error(`Error loading ${collectionName}:`, error);
-            alert(`Error loading ${collectionName}: ` + error.message);
+            alert(`Error loading ${collectionName}: \n` + error.message + "\n\n(Have you created the Firestore Index for this collection?)");
         }
     }
 
     async function saveToCollection(collectionName, record) {
         if (!currentUser) return;
+        const dbCollection = DB_MAP[collectionName];
         const recordWithUser = { ...record, userId: currentUser.uid, createdAt: new Date().toISOString() };
-        const docRef = await db.collection(collectionName).add(recordWithUser);
+        const docRef = await db.collection(dbCollection).add(recordWithUser);
         return docRef.id;
     }
 
     async function updateInCollection(collectionName, docId, updateData) {
-        await db.doc(`${collectionName}/${docId}`).update(updateData);
+        const dbCollection = DB_MAP[collectionName];
+        await db.doc(`${dbCollection}/${docId}`).update(updateData);
     }
 
     async function deleteFromCollection(collectionName, docId) {
-        await db.doc(`${collectionName}/${docId}`).delete();
+        const dbCollection = DB_MAP[collectionName];
+        await db.doc(`${dbCollection}/${docId}`).delete();
     }
 
     // ==========================================
     // 4. CROSS-TAB FORMULA LOGIC PREP
     // ==========================================
-    // This function runs whenever data changes in ANY tab. 
-    // We will fill this with your Excel formulas later.
     function recalculateAllFormulas() {
-        // Example Prep: 
-        // let totalCash = AppData.cash.reduce((sum, item) => sum + item.amount, 0);
-        // let totalPaid = AppData.paid.reduce((sum, item) => sum + item.amount, 0);
-        // AppData.banks.calculatedBalance = totalCash - totalPaid;
-        
-        calculateCustomerDues(); // Existing logic
+        calculateCustomerDues();
+        calculateTourTravelBalance(); 
     }
 
     // ==========================================
     // 5. UI TAB SWITCHING
     // ==========================================
     function switchTab(tabName) {
-        // Update active nav item
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         event.currentTarget.classList.add('active');
-
-        // Show active content pane
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.getElementById(`tab-${tabName}`).classList.add('active');
-
-        // Close mobile sidebar if open
         document.getElementById('sidebar').classList.remove('open');
 
-        // Ensure data is loaded (lazy loading approach)
-        if (AppData[tabName].length === 0) {
-            loadCollection(tabName);
-        } else {
-            renderActiveTab();
-        }
+        if (AppData[tabName].length === 0) { loadCollection(tabName); } 
+        else { renderActiveTab(); }
     }
 
     function renderActiveTab() {
-        // Router to trigger specific render functions based on active tab
         const activeTab = document.querySelector('.tab-content.active');
         if (activeTab.id === 'tab-customers') renderCustomerTable();
-        // Add else-ifs for other tabs here later
+        else if (activeTab.id === 'tab-tourtravel') renderTourTravelTable();
     }
 
     // ==========================================
-    // 6. CUSTOMERS TAB LOGIC (Refactored)
+    // 6. CUSTOMERS TAB LOGIC
     // ==========================================
     function calculateCustomerDues() {
         let total = 0;
@@ -468,31 +406,14 @@
     function renderCustomerTable(data = AppData.customers) {
         const tbody = document.getElementById('cust-table-body');
         tbody.innerHTML = '';
-        
-        if (data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No customer records found. Add your first record above!</td></tr>';
-            calculateCustomerDues();
-            return;
-        }
-        
-        data.forEach((r) => {
-            const paidDate = r.paidDate || '-';
-            tbody.innerHTML += `
-                <tr>
-                    <td>${r.date}</td>
-                    <td><strong>${r.name}</strong></td>
-                    <td>${r.contact || '-'}</td>
-                    <td>${parseFloat(r.total).toLocaleString()} AED</td>
-                    <td>${parseFloat(r.paid).toLocaleString()} AED</td>
-                    <td><strong>${parseFloat(r.balance).toLocaleString()} AED</strong></td>
-                    <td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td>
-                    <td>${paidDate}</td>
-                    <td class="action-btns">
-                        ${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}
-                        <button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button>
-                    </td>
-                </tr>
-            `;
+        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No customer records found.</td></tr>'; calculateCustomerDues(); return; }
+        [...data].reverse().forEach((r) => {
+            tbody.innerHTML += `<tr>
+                <td>${r.date}</td><td><strong>${r.name}</strong></td><td>${r.contact || '-'}</td>
+                <td>${parseFloat(r.total).toLocaleString()} AED</td><td>${parseFloat(r.paid).toLocaleString()} AED</td><td><strong>${parseFloat(r.balance).toLocaleString()} AED</strong></td>
+                <td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td><td>${r.paidDate || '-'}</td>
+                <td class="action-btns">${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}<button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button></td>
+            </tr>`;
         });
         calculateCustomerDues();
     }
@@ -508,72 +429,128 @@
         const paidDate = status === 'PAID' ? new Date().toISOString().split('T')[0] : '';
 
         if(!date || !name || !total) return alert('Please fill Date, Name, and Total.');
-
         const record = { date, name, contact, total, paid, balance, status, paidDate };
-        
         try {
             const docId = await saveToCollection('customers', record);
-            record.id = docId;
-            AppData.customers.unshift(record); // Update local state
-            renderCustomerTable();
-            recalculateAllFormulas();
-            
-            // Reset form
-            document.getElementById('cust-date').value = '';
-            document.getElementById('cust-name').value = '';
-            document.getElementById('cust-contact').value = '';
-            document.getElementById('cust-total').value = '';
-            document.getElementById('cust-paid').value = '0';
-        } catch (error) {
-            alert('Error adding record: ' + error.message);
-        }
+            record.id = docId; AppData.customers.push(record); renderCustomerTable(); recalculateAllFormulas();
+            document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0';
+        } catch (error) { alert('Error adding record: ' + error.message); }
     }
 
     async function markCustomerPaid(docId) {
         const record = AppData.customers.find(r => r.id === docId);
         if (!record || !confirm(`Mark ${record.name} as fully paid?`)) return;
-        
         try {
             const updateData = { paid: record.total, balance: 0, status: 'PAID', paidDate: new Date().toISOString().split('T')[0] };
             await updateInCollection('customers', docId, updateData);
-            
-            // Update local state
-            record.paid = record.total;
-            record.balance = 0;
-            record.status = 'PAID';
-            record.paidDate = updateData.paidDate;
-            
-            renderCustomerTable();
-            recalculateAllFormulas();
-        } catch (error) {
-            alert('Error updating record: ' + error.message);
-        }
+            record.paid = record.total; record.balance = 0; record.status = 'PAID'; record.paidDate = updateData.paidDate;
+            renderCustomerTable(); recalculateAllFormulas();
+        } catch (error) { alert('Error updating record: ' + error.message); }
     }
 
     async function deleteCustomerRecord(docId) {
         const record = AppData.customers.find(r => r.id === docId);
         if (!record || !confirm(`Delete record for ${record.name}?`)) return;
-        
-        try {
-            await deleteFromCollection('customers', docId);
-            AppData.customers = AppData.customers.filter(r => r.id !== docId); // Update local state
-            renderCustomerTable();
-            recalculateAllFormulas();
-        } catch (error) {
-            alert('Error deleting record: ' + error.message);
-        }
+        try { await deleteFromCollection('customers', docId); AppData.customers = AppData.customers.filter(r => r.id !== docId); renderCustomerTable(); recalculateAllFormulas(); } 
+        catch (error) { alert('Error deleting record: ' + error.message); }
     }
 
     function filterCustomerRecords() {
         const search = document.getElementById('cust-search').value.toLowerCase();
-        const filtered = AppData.customers.filter(r => 
-            r.name.toLowerCase().includes(search) || (r.contact && r.contact.toLowerCase().includes(search))
-        );
-        renderCustomerTable(filtered);
+        renderCustomerTable(AppData.customers.filter(r => r.name.toLowerCase().includes(search) || (r.contact && r.contact.toLowerCase().includes(search))));
     }
 
     // ==========================================
-    // 7. IMPORT / EXPORT (Modularized)
+    // 7. TOURTRAVEL TAB LOGIC
+    // ==========================================
+    
+    // Dynamic Datalist Builder
+    function updatePortalDatalist() {
+        const datalist = document.getElementById('tt-portal-list');
+        if(!datalist) return;
+        
+        // Extract unique portals already used in records
+        const usedPortals = [...new Set(AppData.tourtravel.map(r => r.portal).filter(Boolean))];
+        // Add base defaults
+        const defaults = ['PIA', 'G9', 'VIA', 'AP', 'CASH', 'ADIB', 'AL IMRAN', 'SALARY', 'REFUND', 'B2B', 'PHONE'];
+        // Combine and remove duplicates
+        const allPortals = [...new Set([...defaults, ...usedPortals])].sort();
+        
+        datalist.innerHTML = '';
+        allPortals.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p;
+            datalist.appendChild(option);
+        });
+    }
+
+    function calculateTourTravelBalance() {
+        let runningBalance = 0;
+        AppData.tourtravel.forEach(r => {
+            runningBalance += (r.amountIn || 0) - (r.amountOut || 0);
+            r.balance = runningBalance;
+        });
+        const el = document.getElementById('tt-current-balance');
+        if (el) {
+            const finalBalance = AppData.tourtravel.length > 0 ? AppData.tourtravel[AppData.tourtravel.length - 1].balance : 0;
+            el.innerText = finalBalance.toLocaleString() + ' AED';
+            el.style.color = finalBalance < 0 ? 'var(--danger)' : 'var(--success)';
+        }
+    }
+
+    function renderTourTravelTable(data = AppData.tourtravel) {
+        const tbody = document.getElementById('tt-table-body');
+        tbody.innerHTML = '';
+        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No transactions found.</td></tr>'; return; }
+        [...data].reverse().forEach((r) => {
+            const balanceColor = r.balance < 0 ? 'var(--danger)' : 'var(--success)';
+            tbody.innerHTML += `<tr>
+                <td>${r.date}</td><td><strong>${r.particulars}</strong></td>
+                <td><span class="status-badge" style="background:rgba(37,99,235,0.1);color:var(--primary);">${r.portal}</span></td>
+                <td style="color:var(--success); font-weight:600;">${r.amountIn ? parseFloat(r.amountIn).toLocaleString() + ' AED' : '-'}</td>
+                <td style="color:var(--danger); font-weight:600;">${r.amountOut ? parseFloat(r.amountOut).toLocaleString() + ' AED' : '-'}</td>
+                <td><strong style="color:${balanceColor}">${r.balance.toLocaleString()} AED</strong></td>
+                <td class="action-btns"><button class="action-btn del" onclick="deleteTourTravelRecord('${r.id}')">✕</button></td>
+            </tr>`;
+        });
+    }
+
+    async function addTourTravelRecord() {
+        const date = document.getElementById('tt-date').value;
+        const particulars = document.getElementById('tt-particulars').value;
+        const portal = document.getElementById('tt-portal').value.trim().toUpperCase(); // Trim and uppercase custom entries
+        const amountIn = parseFloat(document.getElementById('tt-in').value) || 0;
+        const amountOut = parseFloat(document.getElementById('tt-out').value) || 0;
+
+        if(!date || !particulars || !portal) return alert('Please fill Date, Particulars, and Portal.');
+        if(amountIn > 0 && amountOut > 0) return alert('A transaction should either be an IN (+) or an OUT (-), not both.');
+
+        const record = { date, particulars, portal, amountIn, amountOut };
+        try {
+            const docId = await saveToCollection('tourtravel', record);
+            record.id = docId; AppData.tourtravel.push(record);
+            
+            calculateTourTravelBalance();
+            renderTourTravelTable();
+            updatePortalDatalist(); // Update dropdown in case a new portal was typed
+            
+            document.getElementById('tt-date').value = ''; document.getElementById('tt-particulars').value = ''; document.getElementById('tt-portal').value = ''; document.getElementById('tt-in').value = '0'; document.getElementById('tt-out').value = '0';
+        } catch (error) { alert('Error adding transaction: ' + error.message); }
+    }
+
+    async function deleteTourTravelRecord(docId) {
+        if (!confirm('Delete this transaction? This will recalculate all subsequent balances.')) return;
+        try { await deleteFromCollection('tourtravel', docId); AppData.tourtravel = AppData.tourtravel.filter(r => r.id !== docId); calculateTourTravelBalance(); renderTourTravelTable(); } 
+        catch (error) { alert('Error deleting transaction: ' + error.message); }
+    }
+
+    function filterTourTravelRecords() {
+        const search = document.getElementById('tt-search').value.toLowerCase();
+        renderTourTravelTable(AppData.tourtravel.filter(r => r.particulars.toLowerCase().includes(search) || r.portal.toLowerCase().includes(search)));
+    }
+
+    // ==========================================
+    // 8. IMPORT / EXPORT
     // ==========================================
     function exportData(collectionName) {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppData[collectionName], null, 2));
@@ -589,32 +566,22 @@
             if(confirm("This will add imported records to your existing data. Continue?")) {
                 try {
                     const importedRecords = JSON.parse(event.target.result);
-                    for (const record of importedRecords) {
-                        if (record.id) delete record.id; 
-                        await saveToCollection(collectionName, record);
-                    }
+                    for (const record of importedRecords) { if (record.id) delete record.id; await saveToCollection(collectionName, record); }
                     await loadCollection(collectionName);
                     alert('Data imported successfully!');
-                } catch (error) {
-                    alert('Error importing data: ' + error.message);
-                }
+                } catch (error) { alert('Error importing data: ' + error.message); }
             }
         };
         fileReader.readAsText(event.target.files[0]);
     }
 
-    // Mobile menu visibility handler
+    // Mobile menu handler
     window.addEventListener('resize', () => {
         const menuBtn = document.getElementById('menuBtn');
-        if(window.innerWidth <= 768) {
-            menuBtn.style.display = 'block';
-        } else {
-            menuBtn.style.display = 'none';
-            document.getElementById('sidebar').classList.remove('open');
-        }
+        if(window.innerWidth <= 768) menuBtn.style.display = 'block';
+        else { menuBtn.style.display = 'none'; document.getElementById('sidebar').classList.remove('open'); }
     });
     window.dispatchEvent(new Event('resize'));
-
 </script>
 </body>
 </html>
