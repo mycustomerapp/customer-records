@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Records - Cloud Version</title>
+    <title>Financial & Workflow Tracker</title>
     
-    <!-- Firebase Compat SDKs (Bypasses strict network firewalls) -->
+    <!-- Google Fonts: Inter (Professional Corporate Font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // Your web app's Firebase configuration
         const firebaseConfig = {
           apiKey: "AIzaSyANwgmjqkj7Ezk_JD08NLJiNyivfXG_b0g",
           authDomain: "travel-records-app-5c9ba.firebaseapp.com",
@@ -20,8 +24,6 @@
           messagingSenderId: "212450125287",
           appId: "1:212450125287:web:545155c68aeeed8a438942"
         };
-
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -29,242 +31,478 @@
     </script>
     
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; }
-        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1, h2 { color: #333; }
-        .summary { background: #ff9800; color: white; padding: 15px; border-radius: 5px; font-size: 20px; margin-bottom: 20px; text-align: center; }
-        .form-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        input, select, button { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        button { background: #4CAF50; color: white; border: none; cursor: pointer; }
-        button:hover { background: #45a049; }
-        .btn-danger { background: #f44336; }
-        .btn-danger:hover { background: #da190b; }
-        .btn-export { background: #2196F3; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background: #333; color: white; }
-        .status-paid { color: green; font-weight: bold; }
-        .status-notpaid { color: red; font-weight: bold; }
-        .search-box { width: 100%; margin-bottom: 20px; padding: 12px; font-size: 16px; box-sizing: border-box; }
-        .top-bar { display: flex; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
-        .auth-section { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-        .user-info { font-weight: bold; color: #333; }
-        .btn-google { background: #4285F4; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-google:hover { background: #3367D6; }
-        .loading { text-align: center; padding: 20px; font-style: italic; }
-        .hidden { display: none; }
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #0f172a;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --radius: 0.75rem;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* --- LAYOUT --- */
+        .sidebar { width: 260px; background: var(--secondary); color: white; display: flex; flex-direction: column; transition: width 0.3s; z-index: 10; }
+        .sidebar-header { padding: 1.5rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo-placeholder { width: 36px; height: 36px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
+        .sidebar-header h2 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.5px; }
+        
+        .nav-menu { flex: 1; padding: 1rem 0; overflow-y: auto; }
+        .nav-item { display: flex; align-items: center; padding: 0.85rem 1.5rem; color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.2s; font-weight: 500; font-size: 0.9rem; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-item.active { background: rgba(37, 99, 235, 0.2); color: white; border-left-color: var(--primary); }
+        .nav-icon { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
+
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .topbar { background: var(--bg-card); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); z-index: 5; border-bottom: 1px solid var(--border); }
+        .user-info { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; font-weight: 500; color: var(--text-main); }
+        .btn-logout { background: transparent; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 500; color: var(--text-muted); transition: 0.2s; }
+        .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+
+        .main-content { flex: 1; padding: 2rem; overflow-y: auto; background: var(--bg-main); }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+
+        /* --- COMPONENTS --- */
+        h2.page-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--secondary); }
+        
+        .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .card-warning { border-left: 4px solid var(--warning); }
+        .card h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+        .card .value { font-size: 1.8rem; font-weight: 700; color: var(--secondary); }
+        .card small { color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 8px; }
+
+        .form-card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 2rem; border: 1px solid var(--border); }
+        .form-row { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 150px; display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: var(--text-main); }
+        .form-group input, .form-group select { padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 0.5rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: border 0.2s; }
+        .form-group input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .helper-text { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-outline { background: white; color: var(--text-main); border: 1px solid var(--border); }
+        .btn-outline:hover { background: var(--bg-main); }
+
+        .table-container { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--border); }
+        .table-header { padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: var(--bg-main); }
+        .search-input { padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 0.5rem; width: 250px; font-family: 'Inter', sans-serif; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { background: var(--secondary); color: white; padding: 0.85rem 1rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; color: var(--text-main); }
+        tr:hover td { background: rgba(241, 245, 249, 0.5); }
+        .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+        .status-paid { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .status-notpaid { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        .action-btns { display: flex; gap: 6px; }
+        .action-btn { padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: 0.2s; }
+        .action-btn:hover { background: var(--bg-main); }
+        .action-btn.del:hover { border-color: var(--danger); color: var(--danger); }
+
+        .empty-state { text-align: center; padding: 3rem; color: var(--text-muted); }
+
+        /* --- AUTH SCREEN --- */
+        .auth-screen { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+        .auth-card { background: white; padding: 3rem; border-radius: 1rem; box-shadow: var(--shadow-lg); text-align: center; max-width: 400px; width: 100%; }
+        .auth-card h1 { margin-bottom: 0.5rem; font-size: 1.8rem; color: var(--secondary); }
+        .auth-card p { color: var(--text-muted); margin-bottom: 2rem; }
+        .btn-google { background: var(--primary); color: white; padding: 12px 24px; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; font-size: 1rem; width: 100%; transition: 0.2s; }
+        .btn-google:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow); }
+
+        .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { width: 0; overflow: hidden; position: absolute; height: 100%; }
+            .sidebar.open { width: 260px; }
+            .main-content { padding: 1rem; }
+            .form-row { flex-direction: column; }
+            .table-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .search-input { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-<!-- MAIN APP (Hidden until logged in) -->
-<div class="container hidden" id="mainApp">
-    <h1>Customer Records</h1>
-    
-    <div class="auth-section">
-        <div class="user-info">Welcome, <span id="userName">User</span></div>
-        <button class="btn-google" onclick="handleLogout()">Logout</button>
+<!-- AUTH SCREEN -->
+<div id="loginPrompt" class="auth-screen">
+    <div class="auth-card">
+        <div class="logo-placeholder" style="margin: 0 auto 1rem; width: 50px; height: 50px; font-size: 1.5rem;">F</div>
+        <h1>FinTracker Pro</h1>
+        <p>Sign in to access your secure financial dashboard.</p>
+        <button class="btn-google" onclick="handleLogin()">
+            Sign in with Google
+        </button>
     </div>
-    
-    <div class="summary">
-        TOTAL DUES ON CUSTOMERS: <span id="totalDues">0</span> AED
-    </div>
+</div>
 
-    <div class="top-bar">
-        <input type="text" id="searchInput" class="search-box" placeholder="Search by Name or Contact..." onkeyup="filterRecords()">
-        <div>
-            <button class="btn-export" onclick="exportData()">Backup Data</button>
-            <button class="btn-export" onclick="document.getElementById('importFile').click()">Restore Data</button>
-            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+<!-- MAIN APP -->
+<div id="mainApp" class="hidden" style="display:flex; width:100%; height:100vh;">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-placeholder">F</div>
+            <h2>FinTracker</h2>
         </div>
-    </div>
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="switchTab('customers')">
+                <span class="nav-icon">👥</span> Customers
+            </div>
+            <div class="nav-item" onclick="switchTab('tourtravel')">
+                <span class="nav-icon">✈️</span> Tour & Travel
+            </div>
+            <div class="nav-item" onclick="switchTab('cash')">
+                <span class="nav-icon">💵</span> Cash
+            </div>
+            <div class="nav-item" onclick="switchTab('banks')">
+                <span class="nav-icon">🏦</span> Banks
+            </div>
+            <div class="nav-item" onclick="switchTab('daily')">
+                <span class="nav-icon">📅</span> Daily
+            </div>
+            <div class="nav-item" onclick="switchTab('paid')">
+                <span class="nav-icon">✅</span> Paid
+            </div>
+        </nav>
+    </aside>
 
-    <div class="form-group">
-        <input type="date" id="recDate" required>
-        <input type="text" id="recName" placeholder="Customer Name" required>
-        <input type="text" id="recContact" placeholder="Contact / Reference">
-        <input type="number" id="recTotal" placeholder="Total Amount" required>
-        <input type="number" id="recPaid" placeholder="Paid Amount" value="0">
-        <button onclick="addRecord()">Add Record</button>
-    </div>
+    <!-- MAIN CONTENT AREA -->
+    <div class="main-wrapper">
+        
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <button class="btn-outline" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;" id="menuBtn">☰</button>
+            <div></div> <!-- Spacer -->
+            <div class="user-info">
+                <span id="userName">User</span>
+                <button class="btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
 
-    <table id="recordsTable">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Total</th>
-                <th>Paid</th>
-                <th>Balance</th>
-                <th>Status</th>
-                <th>Paid Date</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-    </table>
+        <!-- CONTENT PANES -->
+        <main class="main-content">
+            
+            <!-- CUSTOMERS TAB -->
+            <section id="tab-customers" class="tab-content active">
+                <h2 class="page-title">Customers Management</h2>
+                
+                <div class="summary-cards">
+                    <div class="card card-warning">
+                        <h3>Total Dues on Customers</h3>
+                        <div class="value"><span id="cust-total-dues">0</span> AED</div>
+                        <small>Outstanding balance from unpaid customers</small>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="cust-date" required>
+                            <span class="helper-text">Date of transaction or service</span>
+                        </div>
+                        <div class="form-group" style="flex:2;">
+                            <label>Customer Name</label>
+                            <input type="text" id="cust-name" placeholder="e.g. John Doe" required>
+                            <span class="helper-text">Full name or Company name</span>
+                        </div>
+                        <div class="form-group" style="flex:2;">
+                            <label>Contact / Reference</label>
+                            <input type="text" id="cust-contact" placeholder="e.g. +971...">
+                            <span class="helper-text">Phone number or invoice reference</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Total Amount</label>
+                            <input type="number" id="cust-total" placeholder="0.00" step="0.01" required>
+                            <span class="helper-text">Total invoice or service amount</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Paid Amount</label>
+                            <input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0">
+                            <span class="helper-text">Amount paid upfront (defaults to 0)</span>
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end;">
+                            <button class="btn btn-primary" onclick="addCustomerRecord()">+ Add Customer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <input type="text" id="cust-search" class="search-input" placeholder="Search by name or contact..." onkeyup="filterCustomerRecords()">
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn btn-outline" onclick="exportData('customers')">⬇ Backup</button>
+                            <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">⬆ Restore</button>
+                            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event, 'customers')">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Total</th>
+                                <th>Paid</th>
+                                <th>Balance</th>
+                                <th>Status</th>
+                                <th>Paid Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cust-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TOURTRAVEL TAB (Placeholder) -->
+            <section id="tab-tourtravel" class="tab-content">
+                <h2 class="page-title">Tour & Travel Operations</h2>
+                <div class="empty-state card">
+                    <h3>Module Ready for Configuration</h3>
+                    <p>Please upload your Tour & Travel Excel sheet. The fields and formulas will be automatically mapped here.</p>
+                </div>
+            </section>
+
+            <!-- CASH TAB (Placeholder) -->
+            <section id="tab-cash" class="tab-content">
+                <h2 class="page-title">Cash Flow Management</h2>
+                <div class="empty-state card">
+                    <h3>Module Ready for Configuration</h3>
+                    <p>Please upload your Cash Excel sheet. This module will cross-reference with Daily and Paid tabs.</p>
+                </div>
+            </section>
+
+            <!-- BANKS TAB (Placeholder) -->
+            <section id="tab-banks" class="tab-content">
+                <h2 class="page-title">Bank Transactions</h2>
+                <div class="empty-state card">
+                    <h3>Module Ready for Configuration</h3>
+                    <p>Please upload your Banks Excel sheet. Formulas linking to Cash and Paid will be configured here.</p>
+                </div>
+            </section>
+
+            <!-- DAILY TAB (Placeholder) -->
+            <section id="tab-daily" class="tab-content">
+                <h2 class="page-title">Daily Records</h2>
+                <div class="empty-state card">
+                    <h3>Module Ready for Configuration</h3>
+                    <p>Please upload your Daily Excel sheet. Daily inputs will automatically update Cash and Banks tabs.</p>
+                </div>
+            </section>
+
+            <!-- PAID TAB (Placeholder) -->
+            <section id="tab-paid" class="tab-content">
+                <h2 class="page-title">Paid Out Records</h2>
+                <div class="empty-state card">
+                    <h3>Module Ready for Configuration</h3>
+                    <p>Please upload your Paid Excel sheet. Cross-sheet formulas will deduct these from Banks/Cash.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
 </div>
 
-<!-- LOGIN SCREEN (Shown first) -->
-<div id="loginPrompt" class="container">
-    <h2>Welcome to Customer Records App</h2>
-    <p>Please sign in with your Google account to access your secure data.</p>
-    <button class="btn-google" onclick="handleLogin()" style="padding: 12px 24px; font-size: 16px;">
-        Sign in with Google
-    </button>
-</div>
-
-<!-- APP LOGIC -->
+<!-- APPLICATION LOGIC -->
 <script>
-    let currentUser = null;
-    let records = [];
+    // ==========================================
+    // 1. CENTRAL STATE MANAGEMENT
+    // ==========================================
+    // This object holds all data for all tabs locally, making cross-tab formulas instant.
+    const AppData = {
+        customers: [],
+        tourtravel: [],
+        cash: [],
+        banks: [],
+        daily: [],
+        paid: []
+    };
 
-    // Listen for authentication state
+    let currentUser = null;
+
+    // ==========================================
+    // 2. AUTHENTICATION
+    // ==========================================
     auth.onAuthStateChanged((user) => {
         if (user) {
             currentUser = user;
-            showApp();
-            loadRecordsFromFirestore();
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('mainApp').style.display = 'flex';
+            document.getElementById('loginPrompt').classList.add('hidden');
+            document.getElementById('userName').innerText = currentUser.displayName || currentUser.email;
+            loadCollection('customers'); // Load default tab data
         } else {
             currentUser = null;
-            showLogin();
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginPrompt').classList.remove('hidden');
         }
     });
-    
-    function showApp() {
-        document.getElementById('mainApp').classList.remove('hidden');
-        document.getElementById('loginPrompt').classList.add('hidden');
-        document.getElementById('userName').innerText = currentUser.displayName || currentUser.email;
-    }
-    
-    function showLogin() {
-        document.getElementById('mainApp').classList.add('hidden');
-        document.getElementById('loginPrompt').classList.remove('hidden');
-    }
-    
+
     function handleLogin() {
-        auth.signInWithPopup(provider).catch((error) => {
-            console.error("Login error:", error);
-            alert("Login failed: " + error.message);
-        });
+        auth.signInWithPopup(provider).catch((error) => alert("Login failed: " + error.message));
     }
-    
+
     function handleLogout() {
-        auth.signOut().catch((error) => {
-            console.error("Logout error:", error);
-        });
-        records = [];
+        auth.signOut();
+        AppData.customers = []; // Clear local state on logout
     }
-    
-    // --- FIRESTORE DATABASE OPERATIONS ---
-    
-    async function loadRecordsFromFirestore() {
+
+    // ==========================================
+    // 3. MODULAR FIRESTORE OPERATIONS
+    // ==========================================
+    async function loadCollection(collectionName) {
         if (!currentUser) return;
         try {
-            const querySnapshot = await db.collection('records')
+            const querySnapshot = await db.collection(collectionName)
                 .where('userId', '==', currentUser.uid)
                 .orderBy('date', 'desc')
                 .get();
             
-            records = [];
+            AppData[collectionName] = [];
             querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                records.push({
-                    id: doc.id,
-                    date: data.date,
-                    name: data.name,
-                    contact: data.contact,
-                    total: data.total,
-                    paid: data.paid,
-                    balance: data.balance,
-                    status: data.status,
-                    paidDate: data.paidDate || ''
-                });
+                AppData[collectionName].push({ id: doc.id, ...doc.data() });
             });
-            renderTable();
+            
+            renderActiveTab();
+            recalculateAllFormulas(); // Trigger cross-tab logic prep
         } catch (error) {
-            console.error("Error loading records:", error);
-            alert("Error loading data: " + error.message);
+            console.error(`Error loading ${collectionName}:`, error);
+            alert(`Error loading ${collectionName}: ` + error.message);
         }
     }
-    
-    async function saveRecordToFirestore(record) {
+
+    async function saveToCollection(collectionName, record) {
         if (!currentUser) return;
-        try {
-            const recordWithUser = { ...record, userId: currentUser.uid, createdAt: new Date().toISOString() };
-            const docRef = await db.collection('records').add(recordWithUser);
-            return docRef.id;
-        } catch (error) {
-            console.error("Error saving record:", error);
-            throw error;
-        }
+        const recordWithUser = { ...record, userId: currentUser.uid, createdAt: new Date().toISOString() };
+        const docRef = await db.collection(collectionName).add(recordWithUser);
+        return docRef.id;
     }
-    
-    async function updateRecordInFirestore(docId, updateData) {
-        try {
-            await db.doc('records/' + docId).update(updateData);
-        } catch (error) {
-            console.error("Error updating record:", error);
-            throw error;
-        }
+
+    async function updateInCollection(collectionName, docId, updateData) {
+        await db.doc(`${collectionName}/${docId}`).update(updateData);
     }
-    
-    async function deleteRecordFromFirestore(docId) {
-        try {
-            await db.doc('records/' + docId).delete();
-        } catch (error) {
-            console.error("Error deleting record:", error);
-            throw error;
+
+    async function deleteFromCollection(collectionName, docId) {
+        await db.doc(`${collectionName}/${docId}`).delete();
+    }
+
+    // ==========================================
+    // 4. CROSS-TAB FORMULA LOGIC PREP
+    // ==========================================
+    // This function runs whenever data changes in ANY tab. 
+    // We will fill this with your Excel formulas later.
+    function recalculateAllFormulas() {
+        // Example Prep: 
+        // let totalCash = AppData.cash.reduce((sum, item) => sum + item.amount, 0);
+        // let totalPaid = AppData.paid.reduce((sum, item) => sum + item.amount, 0);
+        // AppData.banks.calculatedBalance = totalCash - totalPaid;
+        
+        calculateCustomerDues(); // Existing logic
+    }
+
+    // ==========================================
+    // 5. UI TAB SWITCHING
+    // ==========================================
+    function switchTab(tabName) {
+        // Update active nav item
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        // Show active content pane
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+
+        // Close mobile sidebar if open
+        document.getElementById('sidebar').classList.remove('open');
+
+        // Ensure data is loaded (lazy loading approach)
+        if (AppData[tabName].length === 0) {
+            loadCollection(tabName);
+        } else {
+            renderActiveTab();
         }
     }
 
-    // --- UI FUNCTIONS ---
-    
-    function calculateTotalDues() {
+    function renderActiveTab() {
+        // Router to trigger specific render functions based on active tab
+        const activeTab = document.querySelector('.tab-content.active');
+        if (activeTab.id === 'tab-customers') renderCustomerTable();
+        // Add else-ifs for other tabs here later
+    }
+
+    // ==========================================
+    // 6. CUSTOMERS TAB LOGIC (Refactored)
+    // ==========================================
+    function calculateCustomerDues() {
         let total = 0;
-        records.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; });
-        document.getElementById('totalDues').innerText = total.toLocaleString();
+        AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; });
+        const el = document.getElementById('cust-total-dues');
+        if (el) el.innerText = total.toLocaleString();
     }
 
-    function renderTable(data = records) {
-        const tbody = document.getElementById('tableBody');
+    function renderCustomerTable(data = AppData.customers) {
+        const tbody = document.getElementById('cust-table-body');
         tbody.innerHTML = '';
         
         if (data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="9" class="loading">No records found. Add your first record above!</td></tr>';
-            calculateTotalDues();
+            tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No customer records found. Add your first record above!</td></tr>';
+            calculateCustomerDues();
             return;
         }
         
         data.forEach((r) => {
-            const paidDate = r.paidDate ? r.paidDate : '';
+            const paidDate = r.paidDate || '-';
             tbody.innerHTML += `
                 <tr>
                     <td>${r.date}</td>
-                    <td>${r.name}</td>
-                    <td>${r.contact}</td>
-                    <td>${r.total}</td>
-                    <td>${r.paid}</td>
-                    <td><strong>${r.balance}</strong></td>
-                    <td class="${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</td>
+                    <td><strong>${r.name}</strong></td>
+                    <td>${r.contact || '-'}</td>
+                    <td>${parseFloat(r.total).toLocaleString()} AED</td>
+                    <td>${parseFloat(r.paid).toLocaleString()} AED</td>
+                    <td><strong>${parseFloat(r.balance).toLocaleString()} AED</strong></td>
+                    <td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td>
                     <td>${paidDate}</td>
-                    <td>
-                        ${r.status !== 'PAID' ? `<button onclick="markPaid('${r.id}')">Mark Paid</button>` : ''}
-                        <button class="btn-danger" onclick="deleteRecord('${r.id}')">Del</button>
+                    <td class="action-btns">
+                        ${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}
+                        <button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button>
                     </td>
                 </tr>
             `;
         });
-        calculateTotalDues();
+        calculateCustomerDues();
     }
 
-    async function addRecord() {
-        const date = document.getElementById('recDate').value;
-        const name = document.getElementById('recName').value;
-        const contact = document.getElementById('recContact').value;
-        const total = parseFloat(document.getElementById('recTotal').value) || 0;
-        const paid = parseFloat(document.getElementById('recPaid').value) || 0;
+    async function addCustomerRecord() {
+        const date = document.getElementById('cust-date').value;
+        const name = document.getElementById('cust-name').value;
+        const contact = document.getElementById('cust-contact').value;
+        const total = parseFloat(document.getElementById('cust-total').value) || 0;
+        const paid = parseFloat(document.getElementById('cust-paid').value) || 0;
         const balance = total - paid;
         const status = balance <= 0 ? 'PAID' : 'NOTPAID';
         const paidDate = status === 'PAID' ? new Date().toISOString().split('T')[0] : '';
@@ -274,76 +512,78 @@
         const record = { date, name, contact, total, paid, balance, status, paidDate };
         
         try {
-            const docId = await saveRecordToFirestore(record);
+            const docId = await saveToCollection('customers', record);
             record.id = docId;
-            records.unshift(record);
-            renderTable();
+            AppData.customers.unshift(record); // Update local state
+            renderCustomerTable();
+            recalculateAllFormulas();
             
-            document.getElementById('recDate').value = '';
-            document.getElementById('recName').value = '';
-            document.getElementById('recContact').value = '';
-            document.getElementById('recTotal').value = '';
-            document.getElementById('recPaid').value = '0';
+            // Reset form
+            document.getElementById('cust-date').value = '';
+            document.getElementById('cust-name').value = '';
+            document.getElementById('cust-contact').value = '';
+            document.getElementById('cust-total').value = '';
+            document.getElementById('cust-paid').value = '0';
         } catch (error) {
             alert('Error adding record: ' + error.message);
         }
     }
 
-    async function markPaid(docId) {
-        const record = records.find(r => r.id === docId);
-        if (!record) return;
+    async function markCustomerPaid(docId) {
+        const record = AppData.customers.find(r => r.id === docId);
+        if (!record || !confirm(`Mark ${record.name} as fully paid?`)) return;
         
-        if(confirm(`Mark ${record.name} as fully paid?`)) {
-            try {
-                const updateData = {
-                    paid: record.total,
-                    balance: 0,
-                    status: 'PAID',
-                    paidDate: new Date().toISOString().split('T')[0]
-                };
-                
-                await updateRecordInFirestore(docId, updateData);
-                record.paid = record.total;
-                record.balance = 0;
-                record.status = 'PAID';
-                record.paidDate = updateData.paidDate;
-                renderTable();
-            } catch (error) {
-                alert('Error updating record: ' + error.message);
-            }
+        try {
+            const updateData = { paid: record.total, balance: 0, status: 'PAID', paidDate: new Date().toISOString().split('T')[0] };
+            await updateInCollection('customers', docId, updateData);
+            
+            // Update local state
+            record.paid = record.total;
+            record.balance = 0;
+            record.status = 'PAID';
+            record.paidDate = updateData.paidDate;
+            
+            renderCustomerTable();
+            recalculateAllFormulas();
+        } catch (error) {
+            alert('Error updating record: ' + error.message);
         }
     }
 
-    async function deleteRecord(docId) {
-        const record = records.find(r => r.id === docId);
-        if (!record) return;
+    async function deleteCustomerRecord(docId) {
+        const record = AppData.customers.find(r => r.id === docId);
+        if (!record || !confirm(`Delete record for ${record.name}?`)) return;
         
-        if(confirm(`Delete record for ${record.name}?`)) {
-            try {
-                await deleteRecordFromFirestore(docId);
-                records = records.filter(r => r.id !== docId);
-                renderTable();
-            } catch (error) {
-                alert('Error deleting record: ' + error.message);
-            }
+        try {
+            await deleteFromCollection('customers', docId);
+            AppData.customers = AppData.customers.filter(r => r.id !== docId); // Update local state
+            renderCustomerTable();
+            recalculateAllFormulas();
+        } catch (error) {
+            alert('Error deleting record: ' + error.message);
         }
     }
 
-    function filterRecords() {
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = records.filter(r => r.name.toLowerCase().includes(search) || r.contact.toLowerCase().includes(search));
-        renderTable(filtered);
+    function filterCustomerRecords() {
+        const search = document.getElementById('cust-search').value.toLowerCase();
+        const filtered = AppData.customers.filter(r => 
+            r.name.toLowerCase().includes(search) || (r.contact && r.contact.toLowerCase().includes(search))
+        );
+        renderCustomerTable(filtered);
     }
 
-    function exportData() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(records));
+    // ==========================================
+    // 7. IMPORT / EXPORT (Modularized)
+    // ==========================================
+    function exportData(collectionName) {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppData[collectionName], null, 2));
         const dlAnchorElem = document.createElement('a');
         dlAnchorElem.setAttribute("href", dataStr);
-        dlAnchorElem.setAttribute("download", `customer_backup_${new Date().toISOString().split('T')[0]}.json`);
+        dlAnchorElem.setAttribute("download", `${collectionName}_backup_${new Date().toISOString().split('T')[0]}.json`);
         dlAnchorElem.click();
     }
 
-    function importData(event) {
+    function importData(event, collectionName) {
         const fileReader = new FileReader();
         fileReader.onload = async function(event) {
             if(confirm("This will add imported records to your existing data. Continue?")) {
@@ -351,9 +591,9 @@
                     const importedRecords = JSON.parse(event.target.result);
                     for (const record of importedRecords) {
                         if (record.id) delete record.id; 
-                        await saveRecordToFirestore(record);
+                        await saveToCollection(collectionName, record);
                     }
-                    await loadRecordsFromFirestore();
+                    await loadCollection(collectionName);
                     alert('Data imported successfully!');
                 } catch (error) {
                     alert('Error importing data: ' + error.message);
@@ -362,7 +602,19 @@
         };
         fileReader.readAsText(event.target.files[0]);
     }
-</script>
 
+    // Mobile menu visibility handler
+    window.addEventListener('resize', () => {
+        const menuBtn = document.getElementById('menuBtn');
+        if(window.innerWidth <= 768) {
+            menuBtn.style.display = 'block';
+        } else {
+            menuBtn.style.display = 'none';
+            document.getElementById('sidebar').classList.remove('open');
+        }
+    });
+    window.dispatchEvent(new Event('resize'));
+
+</script>
 </body>
 </html>
