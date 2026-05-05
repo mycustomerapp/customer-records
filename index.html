@@ -183,8 +183,36 @@
                 <div class="table-container"><div class="table-header"><input type="text" id="cash-search" class="search-input" placeholder="Search particulars..." onkeyup="filterCashRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('cash')">⬇ Backup</button><button class="btn btn-outline" onclick="document.getElementById('importFileCash').click()">⬆ Restore</button><input type="file" id="importFileCash" accept=".json" style="display:none" onchange="importData(event, 'cash')"></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>Amount In (+)</th><th>Amount Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table></div>
             </section>
 
+            <!-- BANKS TAB -->
+            <section id="tab-banks" class="tab-content">
+                <h2 class="page-title">ADIB NBD Banks Account</h2>
+                <div class="summary-cards">
+                    <div class="card" style="border-left: 4px solid var(--success);"><h3>Total Deposits (+)</h3><div class="value" id="banks-total-in" style="color: var(--success);">0 AED</div><small>Total ticket amounts deposited</small></div>
+                    <div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Withdrawals (-)</h3><div class="value" id="banks-total-out" style="color: var(--danger);">0 AED</div><small>Total money withdrawn</small></div>
+                    <div class="card" style="border-left: 4px solid var(--primary);"><h3>Current Bank Balance</h3><div class="value" id="banks-current-balance">0 AED</div><small>Running balance: Deposits minus Withdrawals</small></div>
+                </div>
+                <div class="form-card">
+                    <div class="form-row">
+                        <div class="form-group"><label>Date</label><input type="date" id="banks-date" required></div>
+                        <div class="form-group" style="flex:3;"><label>Name of Depositer / Particulars</label><input type="text" id="banks-particulars" placeholder="e.g. Haji Aslam Ticket" required></div>
+                        <div class="form-group" style="flex:1;"><label>Bank / Method</label><input type="text" id="banks-portal" list="banks-portal-list" placeholder="Select or type" required><datalist id="banks-portal-list"></datalist><span class="helper-text">ADIB, NBD, CASH, SHARAF, etc.</span></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Ticket Amount / Deposit (+)</label><input type="number" id="banks-in" placeholder="0.00" step="0.01" value="0"></div>
+                        <div class="form-group"><label>Withdraw (-)</label><input type="number" id="banks-out" placeholder="0.00" step="0.01" value="0"></div>
+                        <div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;">
+                            <button class="btn btn-cancel hidden" id="banks-cancel-btn" onclick="cancelEditBanksRecord()">✕ Cancel</button>
+                            <button class="btn btn-primary" id="banks-submit-btn" onclick="addBanksRecord()">+ Add Transaction</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <div class="table-header"><input type="text" id="banks-search" class="search-input" placeholder="Search depositors..." onkeyup="filterBanksRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('banks')">⬇ Backup</button><button class="btn btn-outline" onclick="document.getElementById('importFileBanks').click()">⬆ Restore</button><input type="file" id="importFileBanks" accept=".json" style="display:none" onchange="importData(event, 'banks')"></div></div>
+                    <table><thead><tr><th>Date</th><th>Name / Particulars</th><th>Bank</th><th>Ticket Amt (+)</th><th>Withdraw (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="banks-table-body"></tbody></table>
+                </div>
+            </section>
+
             <!-- PLACEHOLDER TABS -->
-            <section id="tab-banks" class="tab-content"><h2 class="page-title">Bank Transactions</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Banks Excel sheet.</p></div></section>
             <section id="tab-daily" class="tab-content"><h2 class="page-title">Daily Records</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Daily Excel sheet.</p></div></section>
             <section id="tab-paid" class="tab-content"><h2 class="page-title">Paid Out Records</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Paid Excel sheet.</p></div></section>
         </main>
@@ -197,6 +225,7 @@
     let currentUser = null;
     let editingTTRecordId = null;
     let editingCashRecordId = null;
+    let editingBanksRecordId = null;
 
     auth.onAuthStateChanged((user) => {
         if (user) {
@@ -208,7 +237,7 @@
     });
 
     function handleLogin() { auth.signInWithPopup(provider).catch((error) => alert("Login failed: " + error.message)); }
-    function handleLogout() { auth.signOut(); AppData.customers = []; AppData.tourtravel = []; AppData.cash = []; }
+    function handleLogout() { auth.signOut(); AppData.customers = []; AppData.tourtravel = []; AppData.cash = []; AppData.banks = []; }
 
     async function loadCollection(collectionName) {
         if (!currentUser) return;
@@ -220,6 +249,7 @@
             renderActiveTab(); recalculateAllFormulas(); 
             if(collectionName === 'tourtravel') updateDatalist('tt-portal-list', ['PIA', 'G9', 'VIA', 'AP', 'CASH', 'ADIB', 'AL IMRAN', 'SALARY', 'REFUND', 'B2B', 'PHONE'], AppData.tourtravel);
             if(collectionName === 'cash') updateDatalist('cash-portal-list', ['CASH', 'G9', 'AP', 'VIA', 'B2B', 'DEPOSIT'], AppData.cash);
+            if(collectionName === 'banks') updateDatalist('banks-portal-list', ['ADIB', 'NBD', 'SHARAF', 'CASH', 'G9', 'AP', 'AL AIN', 'SALARY'], AppData.banks);
         } catch (error) { alert(`Error loading ${collectionName}: \n` + error.message + "\n\n(Have you created the Firestore Index for this collection?)"); }
     }
 
@@ -227,10 +257,10 @@
     async function updateInCollection(collectionName, docId, updateData) { const dbCollection = DB_MAP[collectionName]; await db.doc(`${dbCollection}/${docId}`).update(updateData); }
     async function deleteFromCollection(collectionName, docId) { const dbCollection = DB_MAP[collectionName]; await db.doc(`${dbCollection}/${docId}`).delete(); }
 
-    function recalculateAllFormulas() { calculateCustomerDues(); calculateLedgerBalance('tourtravel', 'tt-total-in', 'tt-total-out', 'tt-current-balance'); calculateLedgerBalance('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); }
+    function recalculateAllFormulas() { calculateCustomerDues(); calculateLedgerBalance('tourtravel', 'tt-total-in', 'tt-total-out', 'tt-current-balance'); calculateLedgerBalance('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); calculateLedgerBalance('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance'); }
 
     function switchTab(tabName) { document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(`tab-${tabName}`).classList.add('active'); document.getElementById('sidebar').classList.remove('open'); if (AppData[tabName].length === 0) { loadCollection(tabName); } else { renderActiveTab(); } }
-    function renderActiveTab() { const activeTab = document.querySelector('.tab-content.active'); if (activeTab.id === 'tab-customers') renderCustomerTable(); else if (activeTab.id === 'tab-tourtravel') renderTourTravelTable(); else if (activeTab.id === 'tab-cash') renderCashTable(); }
+    function renderActiveTab() { const activeTab = document.querySelector('.tab-content.active'); if (activeTab.id === 'tab-customers') renderCustomerTable(); else if (activeTab.id === 'tab-tourtravel') renderTourTravelTable(); else if (activeTab.id === 'tab-cash') renderCashTable(); else if (activeTab.id === 'tab-banks') renderBanksTable(); }
 
     // --- SHARED UTILITY FUNCTIONS ---
     function updateDatalist(elementId, defaults, dataArray) {
@@ -269,10 +299,10 @@
     // ==========================================
     function calculateCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; }); const el = document.getElementById('cust-total-dues'); if (el) el.innerText = total.toLocaleString(); }
     function renderCustomerTable() { renderCustomerTable_custom(); }
-    function renderCustomerTable_custom() {
+    function renderCustomerTable_custom(data = AppData.customers) {
         const tbody = document.getElementById('cust-table-body'); tbody.innerHTML = '';
-        if (AppData.customers.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No customer records found.</td></tr>'; calculateCustomerDues(); return; }
-        [...AppData.customers].reverse().forEach((r) => {
+        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No customer records found.</td></tr>'; calculateCustomerDues(); return; }
+        [...data].reverse().forEach((r) => {
             tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.name}</strong></td><td>${r.contact || '-'}</td><td>${parseFloat(r.total).toLocaleString()} AED</td><td>${parseFloat(r.paid).toLocaleString()} AED</td><td><strong>${parseFloat(r.balance).toLocaleString()} AED</strong></td><td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td><td>${r.paidDate || '-'}</td><td class="action-btns">${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}<button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button></td></tr>`;
         }); calculateCustomerDues();
     }
@@ -289,7 +319,7 @@
     function cancelEditTourTravelRecord() { editingTTRecordId = null; document.getElementById('tt-date').value = ''; document.getElementById('tt-particulars').value = ''; document.getElementById('tt-portal').value = ''; document.getElementById('tt-in').value = '0'; document.getElementById('tt-out').value = '0'; document.getElementById('tt-submit-btn').innerText = '+ Add Transaction'; document.getElementById('tt-cancel-btn').classList.add('hidden'); }
     async function addTourTravelRecord() { const date = document.getElementById('tt-date').value; const particulars = document.getElementById('tt-particulars').value; const portal = document.getElementById('tt-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('tt-in').value) || 0; const amountOut = parseFloat(document.getElementById('tt-out').value) || 0; if(!date || !particulars || !portal) return alert('Please fill Date, Particulars, and Portal.'); if(amountIn > 0 && amountOut > 0) return alert('A transaction should either be an IN (+) or an OUT (-), not both.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingTTRecordId) { try { await updateInCollection('tourtravel', editingTTRecordId, recordData); const record = AppData.tourtravel.find(r => r.id === editingTTRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error updating transaction: ' + error.message); } } else { try { const docId = await saveToCollection('tourtravel', recordData); recordData.id = docId; AppData.tourtravel.push(recordData); recalculateAllFormulas(); renderTourTravelTable(); document.getElementById('tt-date').value = ''; document.getElementById('tt-particulars').value = ''; document.getElementById('tt-portal').value = ''; document.getElementById('tt-in').value = '0'; document.getElementById('tt-out').value = '0'; } catch (error) { alert('Error adding transaction: ' + error.message); } } }
     async function deleteTourTravelRecord(docId) { if (!confirm('Delete this transaction? This will recalculate all subsequent balances.')) return; try { await deleteFromCollection('tourtravel', docId); AppData.tourtravel = AppData.tourtravel.filter(r => r.id !== docId); recalculateAllFormulas(); renderTourTravelTable(); if(editingTTRecordId === docId) cancelEditTourTravelRecord(); } catch (error) { alert('Error deleting transaction: ' + error.message); } }
-    function filterTourTravelRecords() { const search = document.getElementById('tt-search').value.toLowerCase(); const filtered = AppData.tourtravel.filter(r => r.particulars.toLowerCase().includes(search) || r.portal.toLowerCase().includes(search)); renderLedgerTable('tourtravel', 'tt-table-body', 'editTourTravelRecord', 'deleteTourTravelRecord'); }
+    function filterTourTravelRecords() { const search = document.getElementById('tt-search').value.toLowerCase(); renderLedgerTable('tourtravel', 'tt-table-body', 'editTourTravelRecord', 'deleteTourTravelRecord'); }
 
     // ==========================================
     // 8. CASH TAB LOGIC
@@ -299,10 +329,20 @@
     function cancelEditCashRecord() { editingCashRecordId = null; document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; document.getElementById('cash-submit-btn').innerText = '+ Add Transaction'; document.getElementById('cash-cancel-btn').classList.add('hidden'); }
     async function addCashRecord() { const date = document.getElementById('cash-date').value; const particulars = document.getElementById('cash-particulars').value; const portal = document.getElementById('cash-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('cash-in').value) || 0; const amountOut = parseFloat(document.getElementById('cash-out').value) || 0; if(!date || !particulars || !portal) return alert('Please fill Date, Particulars, and Portal.'); if(amountIn > 0 && amountOut > 0) return alert('A transaction should either be an IN (+) or an OUT (-), not both.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingCashRecordId) { try { await updateInCollection('cash', editingCashRecordId, recordData); const record = AppData.cash.find(r => r.id === editingCashRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderCashTable(); cancelEditCashRecord(); } catch (error) { alert('Error updating transaction: ' + error.message); } } else { try { const docId = await saveToCollection('cash', recordData); recordData.id = docId; AppData.cash.push(recordData); recalculateAllFormulas(); renderCashTable(); document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; } catch (error) { alert('Error adding transaction: ' + error.message); } } }
     async function deleteCashRecord(docId) { if (!confirm('Delete this transaction? This will recalculate all subsequent balances.')) return; try { await deleteFromCollection('cash', docId); AppData.cash = AppData.cash.filter(r => r.id !== docId); recalculateAllFormulas(); renderCashTable(); if(editingCashRecordId === docId) cancelEditCashRecord(); } catch (error) { alert('Error deleting transaction: ' + error.message); } }
-    function filterCashRecords() { const search = document.getElementById('cash-search').value.toLowerCase(); const filtered = AppData.cash.filter(r => r.particulars.toLowerCase().includes(search) || r.portal.toLowerCase().includes(search)); renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
+    function filterCashRecords() { const search = document.getElementById('cash-search').value.toLowerCase(); renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
 
     // ==========================================
-    // 9. IMPORT / EXPORT
+    // 9. BANKS TAB LOGIC
+    // ==========================================
+    function renderBanksTable() { renderLedgerTable('banks', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
+    function editBanksRecord(docId) { const record = AppData.banks.find(r => r.id === docId); if (!record) return; document.getElementById('banks-date').value = record.date; document.getElementById('banks-particulars').value = record.particulars; document.getElementById('banks-portal').value = record.portal; document.getElementById('banks-in').value = record.amountIn || 0; document.getElementById('banks-out').value = record.amountOut || 0; editingBanksRecordId = docId; document.getElementById('banks-submit-btn').innerText = '💾 Update Transaction'; document.getElementById('banks-cancel-btn').classList.remove('hidden'); document.getElementById('tab-banks').scrollIntoView({ behavior: 'smooth' }); }
+    function cancelEditBanksRecord() { editingBanksRecordId = null; document.getElementById('banks-date').value = ''; document.getElementById('banks-particulars').value = ''; document.getElementById('banks-portal').value = ''; document.getElementById('banks-in').value = '0'; document.getElementById('banks-out').value = '0'; document.getElementById('banks-submit-btn').innerText = '+ Add Transaction'; document.getElementById('banks-cancel-btn').classList.add('hidden'); }
+    async function addBanksRecord() { const date = document.getElementById('banks-date').value; const particulars = document.getElementById('banks-particulars').value; const portal = document.getElementById('banks-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('banks-in').value) || 0; const amountOut = parseFloat(document.getElementById('banks-out').value) || 0; if(!date || !particulars || !portal) return alert('Please fill Date, Depositer Name, and Bank.'); if(amountIn > 0 && amountOut > 0) return alert('A transaction should either be a Deposit (+) or a Withdrawal (-), not both.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingBanksRecordId) { try { await updateInCollection('banks', editingBanksRecordId, recordData); const record = AppData.banks.find(r => r.id === editingBanksRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderBanksTable(); cancelEditBanksRecord(); } catch (error) { alert('Error updating transaction: ' + error.message); } } else { try { const docId = await saveToCollection('banks', recordData); recordData.id = docId; AppData.banks.push(recordData); recalculateAllFormulas(); renderBanksTable(); document.getElementById('banks-date').value = ''; document.getElementById('banks-particulars').value = ''; document.getElementById('banks-portal').value = ''; document.getElementById('banks-in').value = '0'; document.getElementById('banks-out').value = '0'; } catch (error) { alert('Error adding transaction: ' + error.message); } } }
+    async function deleteBanksRecord(docId) { if (!confirm('Delete this transaction? This will recalculate all subsequent balances.')) return; try { await deleteFromCollection('banks', docId); AppData.banks = AppData.banks.filter(r => r.id !== docId); recalculateAllFormulas(); renderBanksTable(); if(editingBanksRecordId === docId) cancelEditBanksRecord(); } catch (error) { alert('Error deleting transaction: ' + error.message); } }
+    function filterBanksRecords() { const search = document.getElementById('banks-search').value.toLowerCase(); renderLedgerTable('banks', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
+
+    // ==========================================
+    // 10. IMPORT / EXPORT
     // ==========================================
     function exportData(collectionName) { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppData[collectionName], null, 2)); const dlAnchorElem = document.createElement('a'); dlAnchorElem.setAttribute("href", dataStr); dlAnchorElem.setAttribute("download", `${collectionName}_backup_${new Date().toISOString().split('T')[0]}.json`); dlAnchorElem.click(); }
     function importData(event, collectionName) { const fileReader = new FileReader(); fileReader.onload = async function(event) { if(confirm("This will add imported records to your existing data. Continue?")) { try { const importedRecords = JSON.parse(event.target.result); for (const record of importedRecords) { if (record.id) delete record.id; await saveToCollection(collectionName, record); } await loadCollection(collectionName); alert('Data imported successfully!'); } catch (error) { alert('Error importing data: ' + error.message); } } }; fileReader.readAsText(event.target.files[0]); }
