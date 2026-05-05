@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Records - Cloud Version</title>
+    
+    <!-- Firebase Compat SDKs (Bypasses strict network firewalls) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyANwgmjqkj7Ezk_JD08NLJiNyivfXG_b0g",
+          authDomain: "travel-records-app-5c9ba.firebaseapp.com",
+          projectId: "travel-records-app-5c9ba",
+          storageBucket: "travel-records-app-5c9ba.firebasestorage.app",
+          messagingSenderId: "212450125287",
+          appId: "1:212450125287:web:545155c68aeeed8a438942"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const provider = new firebase.auth.GoogleAuthProvider();
+    </script>
+    
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        .summary { background: #ff9800; color: white; padding: 15px; border-radius: 5px; font-size: 20px; margin-bottom: 20px; text-align: center; }
+        .form-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        input, select, button { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .btn-danger { background: #f44336; }
+        .btn-danger:hover { background: #da190b; }
+        .btn-export { background: #2196F3; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #333; color: white; }
+        .status-paid { color: green; font-weight: bold; }
+        .status-notpaid { color: red; font-weight: bold; }
+        .search-box { width: 100%; margin-bottom: 20px; padding: 12px; font-size: 16px; box-sizing: border-box; }
+        .top-bar { display: flex; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .auth-section { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .user-info { font-weight: bold; color: #333; }
+        .btn-google { background: #4285F4; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-google:hover { background: #3367D6; }
+        .loading { text-align: center; padding: 20px; font-style: italic; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- MAIN APP (Hidden until logged in) -->
+<div class="container hidden" id="mainApp">
+    <h1>Customer Records</h1>
+    
+    <div class="auth-section">
+        <div class="user-info">Welcome, <span id="userName">User</span></div>
+        <button class="btn-google" onclick="handleLogout()">Logout</button>
+    </div>
+    
+    <div class="summary">
+        TOTAL DUES ON CUSTOMERS: <span id="totalDues">0</span> AED
+    </div>
+
+    <div class="top-bar">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search by Name or Contact..." onkeyup="filterRecords()">
+        <div>
+            <button class="btn-export" onclick="exportData()">Backup Data</button>
+            <button class="btn-export" onclick="document.getElementById('importFile').click()">Restore Data</button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="date" id="recDate" required>
+        <input type="text" id="recName" placeholder="Customer Name" required>
+        <input type="text" id="recContact" placeholder="Contact / Reference">
+        <input type="number" id="recTotal" placeholder="Total Amount" required>
+        <input type="number" id="recPaid" placeholder="Paid Amount" value="0">
+        <button onclick="addRecord()">Add Record</button>
+    </div>
+
+    <table id="recordsTable">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Total</th>
+                <th>Paid</th>
+                <th>Balance</th>
+                <th>Status</th>
+                <th>Paid Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+<!-- LOGIN SCREEN (Shown first) -->
+<div id="loginPrompt" class="container">
+    <h2>Welcome to Customer Records App</h2>
+    <p>Please sign in with your Google account to access your secure data.</p>
+    <button class="btn-google" onclick="handleLogin()" style="padding: 12px 24px; font-size: 16px;">
+        Sign in with Google
+    </button>
+</div>
+
+<!-- APP LOGIC -->
+<script>
+    let currentUser = null;
+    let records = [];
+
+    // Listen for authentication state
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            currentUser = user;
+            showApp();
+            loadRecordsFromFirestore();
+        } else {
+            currentUser = null;
+            showLogin();
+        }
+    });
+    
+    function showApp() {
+        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('loginPrompt').classList.add('hidden');
+        document.getElementById('userName').innerText = currentUser.displayName || currentUser.email;
+    }
+    
+    function showLogin() {
+        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('loginPrompt').classList.remove('hidden');
+    }
+    
+    function handleLogin() {
+        auth.signInWithPopup(provider).catch((error) => {
+            console.error("Login error:", error);
+            alert("Login failed: " + error.message);
+        });
+    }
+    
+    function handleLogout() {
+        auth.signOut().catch((error) => {
+            console.error("Logout error:", error);
+        });
+        records = [];
+    }
+    
+    // --- FIRESTORE DATABASE OPERATIONS ---
+    
+    async function loadRecordsFromFirestore() {
+        if (!currentUser) return;
+        try {
+            const querySnapshot = await db.collection('records')
+                .where('userId', '==', currentUser.uid)
+                .orderBy('date', 'desc')
+                .get();
+            
+            records = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                records.push({
+                    id: doc.id,
+                    date: data.date,
+                    name: data.name,
+                    contact: data.contact,
+                    total: data.total,
+                    paid: data.paid,
+                    balance: data.balance,
+                    status: data.status,
+                    paidDate: data.paidDate || ''
+                });
+            });
+            renderTable();
+        } catch (error) {
+            console.error("Error loading records:", error);
+            alert("Error loading data: " + error.message);
+        }
+    }
+    
+    async function saveRecordToFirestore(record) {
+        if (!currentUser) return;
+        try {
+            const recordWithUser = { ...record, userId: currentUser.uid, createdAt: new Date().toISOString() };
+            const docRef = await db.collection('records').add(recordWithUser);
+            return docRef.id;
+        } catch (error) {
+            console.error("Error saving record:", error);
+            throw error;
+        }
+    }
+    
+    async function updateRecordInFirestore(docId, updateData) {
+        try {
+            await db.doc('records/' + docId).update(updateData);
+        } catch (error) {
+            console.error("Error updating record:", error);
+            throw error;
+        }
+    }
+    
+    async function deleteRecordFromFirestore(docId) {
+        try {
+            await db.doc('records/' + docId).delete();
+        } catch (error) {
+            console.error("Error deleting record:", error);
+            throw error;
+        }
+    }
+
+    // --- UI FUNCTIONS ---
+    
+    function calculateTotalDues() {
+        let total = 0;
+        records.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; });
+        document.getElementById('totalDues').innerText = total.toLocaleString();
+    }
+
+    function renderTable(data = records) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9" class="loading">No records found. Add your first record above!</td></tr>';
+            calculateTotalDues();
+            return;
+        }
+        
+        data.forEach((r) => {
+            const paidDate = r.paidDate ? r.paidDate : '';
+            tbody.innerHTML += `
+                <tr>
+                    <td>${r.date}</td>
+                    <td>${r.name}</td>
+                    <td>${r.contact}</td>
+                    <td>${r.total}</td>
+                    <td>${r.paid}</td>
+                    <td><strong>${r.balance}</strong></td>
+                    <td class="${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</td>
+                    <td>${paidDate}</td>
+                    <td>
+                        ${r.status !== 'PAID' ? `<button onclick="markPaid('${r.id}')">Mark Paid</button>` : ''}
+                        <button class="btn-danger" onclick="deleteRecord('${r.id}')">Del</button>
+                    </td>
+                </tr>
+            `;
+        });
+        calculateTotalDues();
+    }
+
+    async function addRecord() {
+        const date = document.getElementById('recDate').value;
+        const name = document.getElementById('recName').value;
+        const contact = document.getElementById('recContact').value;
+        const total = parseFloat(document.getElementById('recTotal').value) || 0;
+        const paid = parseFloat(document.getElementById('recPaid').value) || 0;
+        const balance = total - paid;
+        const status = balance <= 0 ? 'PAID' : 'NOTPAID';
+        const paidDate = status === 'PAID' ? new Date().toISOString().split('T')[0] : '';
+
+        if(!date || !name || !total) return alert('Please fill Date, Name, and Total.');
+
+        const record = { date, name, contact, total, paid, balance, status, paidDate };
+        
+        try {
+            const docId = await saveRecordToFirestore(record);
+            record.id = docId;
+            records.unshift(record);
+            renderTable();
+            
+            document.getElementById('recDate').value = '';
+            document.getElementById('recName').value = '';
+            document.getElementById('recContact').value = '';
+            document.getElementById('recTotal').value = '';
+            document.getElementById('recPaid').value = '0';
+        } catch (error) {
+            alert('Error adding record: ' + error.message);
+        }
+    }
+
+    async function markPaid(docId) {
+        const record = records.find(r => r.id === docId);
+        if (!record) return;
+        
+        if(confirm(`Mark ${record.name} as fully paid?`)) {
+            try {
+                const updateData = {
+                    paid: record.total,
+                    balance: 0,
+                    status: 'PAID',
+                    paidDate: new Date().toISOString().split('T')[0]
+                };
+                
+                await updateRecordInFirestore(docId, updateData);
+                record.paid = record.total;
+                record.balance = 0;
+                record.status = 'PAID';
+                record.paidDate = updateData.paidDate;
+                renderTable();
+            } catch (error) {
+                alert('Error updating record: ' + error.message);
+            }
+        }
+    }
+
+    async function deleteRecord(docId) {
+        const record = records.find(r => r.id === docId);
+        if (!record) return;
+        
+        if(confirm(`Delete record for ${record.name}?`)) {
+            try {
+                await deleteRecordFromFirestore(docId);
+                records = records.filter(r => r.id !== docId);
+                renderTable();
+            } catch (error) {
+                alert('Error deleting record: ' + error.message);
+            }
+        }
+    }
+
+    function filterRecords() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = records.filter(r => r.name.toLowerCase().includes(search) || r.contact.toLowerCase().includes(search));
+        renderTable(filtered);
+    }
+
+    function exportData() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(records));
+        const dlAnchorElem = document.createElement('a');
+        dlAnchorElem.setAttribute("href", dataStr);
+        dlAnchorElem.setAttribute("download", `customer_backup_${new Date().toISOString().split('T')[0]}.json`);
+        dlAnchorElem.click();
+    }
+
+    function importData(event) {
+        const fileReader = new FileReader();
+        fileReader.onload = async function(event) {
+            if(confirm("This will add imported records to your existing data. Continue?")) {
+                try {
+                    const importedRecords = JSON.parse(event.target.result);
+                    for (const record of importedRecords) {
+                        if (record.id) delete record.id; 
+                        await saveRecordToFirestore(record);
+                    }
+                    await loadRecordsFromFirestore();
+                    alert('Data imported successfully!');
+                } catch (error) {
+                    alert('Error importing data: ' + error.message);
+                }
+            }
+        };
+        fileReader.readAsText(event.target.files[0]);
+    }
+</script>
+
+</body>
+</html>
