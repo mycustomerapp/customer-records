@@ -32,56 +32,40 @@
     
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --secondary: #0f172a;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --bg-main: #f1f5f9;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
+            --primary: #2563eb; --primary-hover: #1d4ed8; --secondary: #0f172a; --success: #10b981;
+            --danger: #ef4444; --warning: #f59e0b; --bg-main: #f1f5f9; --bg-card: #ffffff;
+            --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0;
             --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
             --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
             --radius: 0.75rem;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-
         .sidebar { width: 260px; background: var(--secondary); color: white; display: flex; flex-direction: column; transition: width 0.3s; z-index: 10; }
         .sidebar-header { padding: 1.5rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .logo-placeholder { width: 36px; height: 36px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
         .sidebar-header h2 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.5px; }
-        
         .nav-menu { flex: 1; padding: 1rem 0; overflow-y: auto; }
         .nav-item { display: flex; align-items: center; padding: 0.85rem 1.5rem; color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.2s; font-weight: 500; font-size: 0.9rem; border-left: 3px solid transparent; }
         .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
         .nav-item.active { background: rgba(37, 99, 235, 0.2); color: white; border-left-color: var(--primary); }
         .nav-icon { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
-
         .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--bg-card); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); z-index: 5; border-bottom: 1px solid var(--border); }
         .user-info { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; font-weight: 500; color: var(--text-main); }
         .btn-logout { background: transparent; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 500; color: var(--text-muted); transition: 0.2s; }
         .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
-
         .main-content { flex: 1; padding: 2rem; overflow-y: auto; background: var(--bg-main); }
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
-
         h2.page-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--secondary); }
-        
         .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
         .card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
         .card-warning { border-left: 4px solid var(--warning); }
         .card h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
         .card .value { font-size: 1.8rem; font-weight: 700; color: var(--secondary); }
         .card small { color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 8px; }
-
         .form-card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 2rem; border: 1px solid var(--border); }
         .form-row { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
         .form-group { flex: 1; min-width: 150px; display: flex; flex-direction: column; }
@@ -89,23 +73,14 @@
         .form-group input, .form-group select { padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 0.5rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: border 0.2s; }
         .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
         .helper-text { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
-
         .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-hover); }
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #059669; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-outline { background: white; color: var(--text-main); border: 1px solid var(--border); }
-        .btn-outline:hover { background: var(--bg-main); }
-        .btn-cancel { background: white; color: var(--danger); border: 1px solid var(--danger); }
-        .btn-cancel:hover { background: #fef2f2; }
-
+        .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: var(--primary-hover); }
+        .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { background: #dc2626; }
+        .btn-outline { background: white; color: var(--text-main); border: 1px solid var(--border); } .btn-outline:hover { background: var(--bg-main); }
+        .btn-cancel { background: white; color: var(--danger); border: 1px solid var(--danger); } .btn-cancel:hover { background: #fef2f2; }
         .table-container { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--border); }
         .table-header { padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: var(--bg-main); }
         .search-input { padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 0.5rem; width: 250px; font-family: 'Inter', sans-serif; }
-        
         table { width: 100%; border-collapse: collapse; }
         th { background: var(--secondary); color: white; padding: 0.85rem 1rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
         td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; color: var(--text-main); }
@@ -113,32 +88,24 @@
         .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
         .status-paid { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .status-notpaid { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-
         .action-btns { display: flex; gap: 6px; }
         .action-btn { padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 0.75rem; font-weight: 600; transition: 0.2s; }
         .action-btn:hover { background: var(--bg-main); }
         .action-btn.del:hover { border-color: var(--danger); color: var(--danger); }
         .action-btn.edit:hover { border-color: var(--primary); color: var(--primary); }
-
         .empty-state { text-align: center; padding: 3rem; color: var(--text-muted); }
-
         .auth-screen { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
         .auth-card { background: white; padding: 3rem; border-radius: 1rem; box-shadow: var(--shadow-lg); text-align: center; max-width: 400px; width: 100%; }
         .auth-card h1 { margin-bottom: 0.5rem; font-size: 1.8rem; color: var(--secondary); }
         .auth-card p { color: var(--text-muted); margin-bottom: 2rem; }
         .btn-google { background: var(--primary); color: white; padding: 12px 24px; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; font-size: 1rem; width: 100%; transition: 0.2s; }
-        .btn-google:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow); }
-
+        .btn-google:hover { background: var(--primary-hover); }
         .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
         @media (max-width: 768px) {
-            .sidebar { width: 0; overflow: hidden; position: absolute; height: 100%; }
-            .sidebar.open { width: 260px; }
-            .main-content { padding: 1rem; }
-            .form-row { flex-direction: column; }
-            .table-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
-            .search-input { width: 100%; }
+            .sidebar { width: 0; overflow: hidden; position: absolute; height: 100%; } .sidebar.open { width: 260px; }
+            .main-content { padding: 1rem; } .form-row { flex-direction: column; }
+            .table-header { flex-direction: column; gap: 1rem; align-items: flex-start; } .search-input { width: 100%; }
         }
     </style>
 </head>
@@ -155,10 +122,7 @@
 
 <div id="mainApp" class="hidden" style="display:flex; width:100%; height:100vh;">
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-placeholder">F</div>
-            <h2>FinTracker</h2>
-        </div>
+        <div class="sidebar-header"><div class="logo-placeholder">F</div><h2>FinTracker</h2></div>
         <nav class="nav-menu">
             <div class="nav-item active" onclick="switchTab('customers')"><span class="nav-icon">👥</span> Customers</div>
             <div class="nav-item" onclick="switchTab('tourtravel')"><span class="nav-icon">✈️</span> Tour & Travel</div>
@@ -173,10 +137,7 @@
         <header class="topbar">
             <button class="btn-outline" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;" id="menuBtn">☰</button>
             <div></div>
-            <div class="user-info">
-                <span id="userName">User</span>
-                <button class="btn-logout" onclick="handleLogout()">Logout</button>
-            </div>
+            <div class="user-info"><span id="userName">User</span><button class="btn-logout" onclick="handleLogout()">Logout</button></div>
         </header>
 
         <main class="main-content">
@@ -184,99 +145,45 @@
             <!-- CUSTOMERS TAB -->
             <section id="tab-customers" class="tab-content active">
                 <h2 class="page-title">Customers Management</h2>
-                <div class="summary-cards">
-                    <div class="card card-warning">
-                        <h3>Total Dues on Customers</h3>
-                        <div class="value"><span id="cust-total-dues">0</span> AED</div>
-                        <small>Outstanding balance from unpaid customers</small>
-                    </div>
-                </div>
+                <div class="summary-cards"><div class="card card-warning"><h3>Total Dues on Customers</h3><div class="value"><span id="cust-total-dues">0</span> AED</div><small>Outstanding balance from unpaid customers</small></div></div>
                 <div class="form-card">
-                    <div class="form-row">
-                        <div class="form-group"><label>Date</label><input type="date" id="cust-date" required><span class="helper-text">Date of transaction or service</span></div>
-                        <div class="form-group" style="flex:2;"><label>Customer Name</label><input type="text" id="cust-name" placeholder="e.g. John Doe" required><span class="helper-text">Full name or Company name</span></div>
-                        <div class="form-group" style="flex:2;"><label>Contact / Reference</label><input type="text" id="cust-contact" placeholder="e.g. +971..."><span class="helper-text">Phone number or invoice reference</span></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Total Amount</label><input type="number" id="cust-total" placeholder="0.00" step="0.01" required><span class="helper-text">Total invoice or service amount</span></div>
-                        <div class="form-group"><label>Paid Amount</label><input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0"><span class="helper-text">Amount paid upfront (defaults to 0)</span></div>
-                        <div class="form-group" style="justify-content: flex-end;"><button class="btn btn-primary" onclick="addCustomerRecord()">+ Add Customer</button></div>
-                    </div>
+                    <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cust-date" required></div><div class="form-group" style="flex:2;"><label>Customer Name</label><input type="text" id="cust-name" placeholder="e.g. John Doe" required></div><div class="form-group" style="flex:2;"><label>Contact / Reference</label><input type="text" id="cust-contact" placeholder="e.g. +971..."></div></div>
+                    <div class="form-row"><div class="form-group"><label>Total Amount</label><input type="number" id="cust-total" placeholder="0.00" step="0.01" required></div><div class="form-group"><label>Paid Amount</label><input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end;"><button class="btn btn-primary" onclick="addCustomerRecord()">+ Add Customer</button></div></div>
                 </div>
-                <div class="table-container">
-                    <div class="table-header">
-                        <input type="text" id="cust-search" class="search-input" placeholder="Search by name or contact..." onkeyup="filterCustomerRecords()">
-                        <div style="display:flex; gap:8px;">
-                            <button class="btn btn-outline" onclick="exportData('customers')">⬇ Backup</button>
-                            <button class="btn btn-outline" onclick="document.getElementById('importFileCust').click()">⬆ Restore</button>
-                            <input type="file" id="importFileCust" accept=".json" style="display:none" onchange="importData(event, 'customers')">
-                        </div>
-                    </div>
-                    <table>
-                        <thead><tr><th>Date</th><th>Name</th><th>Contact</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead>
-                        <tbody id="cust-table-body"></tbody>
-                    </table>
-                </div>
+                <div class="table-container"><div class="table-header"><input type="text" id="cust-search" class="search-input" placeholder="Search by name or contact..." onkeyup="filterCustomerRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('customers')">⬇ Backup</button><button class="btn btn-outline" onclick="document.getElementById('importFileCust').click()">⬆ Restore</button><input type="file" id="importFileCust" accept=".json" style="display:none" onchange="importData(event, 'customers')"></div></div><table><thead><tr><th>Date</th><th>Name</th><th>Contact</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th>Paid Date</th><th>Actions</th></tr></thead><tbody id="cust-table-body"></tbody></table></div>
             </section>
 
             <!-- TOURTRAVEL TAB -->
             <section id="tab-tourtravel" class="tab-content">
                 <h2 class="page-title">Tours & Travel Account</h2>
                 <div class="summary-cards">
-                    <div class="card" style="border-left: 4px solid var(--success);">
-                        <h3>Total Amount In (+)</h3>
-                        <div class="value" id="tt-total-in" style="color: var(--success);">0 AED</div>
-                        <small>Total money received</small>
-                    </div>
-                    <div class="card" style="border-left: 4px solid var(--danger);">
-                        <h3>Total Amount Out (-)</h3>
-                        <div class="value" id="tt-total-out" style="color: var(--danger);">0 AED</div>
-                        <small>Total money spent</small>
-                    </div>
-                    <div class="card" style="border-left: 4px solid var(--primary);">
-                        <h3>Current Tours Balance</h3>
-                        <div class="value" id="tt-current-balance">0 AED</div>
-                        <small>Running balance: In minus Out</small>
-                    </div>
+                    <div class="card" style="border-left: 4px solid var(--success);"><h3>Total Amount In (+)</h3><div class="value" id="tt-total-in" style="color: var(--success);">0 AED</div><small>Total money received</small></div>
+                    <div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Amount Out (-)</h3><div class="value" id="tt-total-out" style="color: var(--danger);">0 AED</div><small>Total money spent</small></div>
+                    <div class="card" style="border-left: 4px solid var(--primary);"><h3>Current Tours Balance</h3><div class="value" id="tt-current-balance">0 AED</div><small>Running balance: In minus Out</small></div>
                 </div>
                 <div class="form-card">
-                    <div class="form-row">
-                        <div class="form-group"><label>Date</label><input type="date" id="tt-date" required><span class="helper-text">Date of transaction</span></div>
-                        <div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="tt-particulars" placeholder="e.g. Amjad Ullah Ticket" required><span class="helper-text">Description of the expense or income</span></div>
-                        <div class="form-group" style="flex:1;">
-                            <label>Portal / Method</label>
-                            <input type="text" id="tt-portal" list="tt-portal-list" placeholder="Select or type new" required>
-                            <datalist id="tt-portal-list"></datalist>
-                            <span class="helper-text">Select existing or type a new one</span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Amount In (+)</label><input type="number" id="tt-in" placeholder="0.00" step="0.01" value="0"><span class="helper-text">Money received (Deposits, Cash, Refunds)</span></div>
-                        <div class="form-group"><label>Amount Out (-)</label><input type="number" id="tt-out" placeholder="0.00" step="0.01" value="0"><span class="helper-text">Money spent (Tickets, Salaries, Bills)</span></div>
-                        <div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;">
-                            <button class="btn btn-cancel hidden" id="tt-cancel-btn" onclick="cancelEditTourTravelRecord()">✕ Cancel</button>
-                            <button class="btn btn-primary" id="tt-submit-btn" onclick="addTourTravelRecord()">+ Add Transaction</button>
-                        </div>
-                    </div>
+                    <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="tt-date" required></div><div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="tt-particulars" placeholder="e.g. Amjad Ullah Ticket" required></div><div class="form-group" style="flex:1;"><label>Portal / Method</label><input type="text" id="tt-portal" list="tt-portal-list" placeholder="Select or type new" required><datalist id="tt-portal-list"></datalist><span class="helper-text">Select existing or type a new one</span></div></div>
+                    <div class="form-row"><div class="form-group"><label>Amount In (+)</label><input type="number" id="tt-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Amount Out (-)</label><input type="number" id="tt-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;"><button class="btn btn-cancel hidden" id="tt-cancel-btn" onclick="cancelEditTourTravelRecord()">✕ Cancel</button><button class="btn btn-primary" id="tt-submit-btn" onclick="addTourTravelRecord()">+ Add Transaction</button></div></div>
                 </div>
-                <div class="table-container">
-                    <div class="table-header">
-                        <input type="text" id="tt-search" class="search-input" placeholder="Search particulars..." onkeyup="filterTourTravelRecords()">
-                        <div style="display:flex; gap:8px;">
-                            <button class="btn btn-outline" onclick="exportData('tourtravel')">⬇ Backup</button>
-                            <button class="btn btn-outline" onclick="document.getElementById('importFileTT').click()">⬆ Restore</button>
-                            <input type="file" id="importFileTT" accept=".json" style="display:none" onchange="importData(event, 'tourtravel')">
-                        </div>
-                    </div>
-                    <table>
-                        <thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>Amount In (+)</th><th>Amount Out (-)</th><th>Balance</th><th>Actions</th></tr></thead>
-                        <tbody id="tt-table-body"></tbody>
-                    </table>
+                <div class="table-container"><div class="table-header"><input type="text" id="tt-search" class="search-input" placeholder="Search particulars..." onkeyup="filterTourTravelRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('tourtravel')">⬇ Backup</button><button class="btn btn-outline" onclick="document.getElementById('importFileTT').click()">⬆ Restore</button><input type="file" id="importFileTT" accept=".json" style="display:none" onchange="importData(event, 'tourtravel')"></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>Amount In (+)</th><th>Amount Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="tt-table-body"></tbody></table></div>
+            </section>
+
+            <!-- CASH TAB -->
+            <section id="tab-cash" class="tab-content">
+                <h2 class="page-title">Cash On Hand</h2>
+                <div class="summary-cards">
+                    <div class="card" style="border-left: 4px solid var(--success);"><h3>Total Cash In (+)</h3><div class="value" id="cash-total-in" style="color: var(--success);">0 AED</div><small>Total cash received</small></div>
+                    <div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Cash Out (-)</h3><div class="value" id="cash-total-out" style="color: var(--danger);">0 AED</div><small>Total cash spent or deposited</small></div>
+                    <div class="card" style="border-left: 4px solid var(--warning);"><h3>Current Cash Balance</h3><div class="value" id="cash-current-balance">0 AED</div><small>Running balance: In minus Out</small></div>
                 </div>
+                <div class="form-card">
+                    <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cash-date" required></div><div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="cash-particulars" placeholder="e.g. Cash on hand, Deposit G9" required></div><div class="form-group" style="flex:1;"><label>Portal / Method</label><input type="text" id="cash-portal" list="cash-portal-list" placeholder="Select or type" required><datalist id="cash-portal-list"></datalist><span class="helper-text">Select existing or type a new one</span></div></div>
+                    <div class="form-row"><div class="form-group"><label>Amount In (+)</label><input type="number" id="cash-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Amount Out (-)</label><input type="number" id="cash-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;"><button class="btn btn-cancel hidden" id="cash-cancel-btn" onclick="cancelEditCashRecord()">✕ Cancel</button><button class="btn btn-primary" id="cash-submit-btn" onclick="addCashRecord()">+ Add Transaction</button></div></div>
+                </div>
+                <div class="table-container"><div class="table-header"><input type="text" id="cash-search" class="search-input" placeholder="Search particulars..." onkeyup="filterCashRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('cash')">⬇ Backup</button><button class="btn btn-outline" onclick="document.getElementById('importFileCash').click()">⬆ Restore</button><input type="file" id="importFileCash" accept=".json" style="display:none" onchange="importData(event, 'cash')"></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>Amount In (+)</th><th>Amount Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table></div>
             </section>
 
             <!-- PLACEHOLDER TABS -->
-            <section id="tab-cash" class="tab-content"><h2 class="page-title">Cash Flow Management</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Cash Excel sheet.</p></div></section>
             <section id="tab-banks" class="tab-content"><h2 class="page-title">Bank Transactions</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Banks Excel sheet.</p></div></section>
             <section id="tab-daily" class="tab-content"><h2 class="page-title">Daily Records</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Daily Excel sheet.</p></div></section>
             <section id="tab-paid" class="tab-content"><h2 class="page-title">Paid Out Records</h2><div class="empty-state card"><h3>Module Ready for Configuration</h3><p>Please upload your Paid Excel sheet.</p></div></section>
@@ -285,217 +192,66 @@
 </div>
 
 <script>
-    // ==========================================
-    // 1. CENTRAL STATE MANAGEMENT
-    // ==========================================
     const AppData = { customers: [], tourtravel: [], cash: [], banks: [], daily: [], paid: [] };
     const DB_MAP = { customers: 'records', tourtravel: 'tourtravel', cash: 'cash', banks: 'banks', daily: 'daily', paid: 'paid' };
     let currentUser = null;
-    let editingTTRecordId = null; // Track if we are editing a Tour Travel record
+    let editingTTRecordId = null;
+    let editingCashRecordId = null;
 
-    // ==========================================
-    // 2. AUTHENTICATION
-    // ==========================================
     auth.onAuthStateChanged((user) => {
         if (user) {
             currentUser = user;
-            document.getElementById('mainApp').classList.remove('hidden');
-            document.getElementById('mainApp').style.display = 'flex';
-            document.getElementById('loginPrompt').classList.add('hidden');
-            document.getElementById('userName').innerText = currentUser.displayName || currentUser.email;
+            document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('mainApp').style.display = 'flex';
+            document.getElementById('loginPrompt').classList.add('hidden'); document.getElementById('userName').innerText = currentUser.displayName || currentUser.email;
             loadCollection('customers'); 
-        } else {
-            currentUser = null;
-            document.getElementById('mainApp').classList.add('hidden');
-            document.getElementById('loginPrompt').classList.remove('hidden');
-        }
+        } else { currentUser = null; document.getElementById('mainApp').classList.add('hidden'); document.getElementById('loginPrompt').classList.remove('hidden'); }
     });
 
     function handleLogin() { auth.signInWithPopup(provider).catch((error) => alert("Login failed: " + error.message)); }
-    function handleLogout() { auth.signOut(); AppData.customers = []; AppData.tourtravel = []; }
+    function handleLogout() { auth.signOut(); AppData.customers = []; AppData.tourtravel = []; AppData.cash = []; }
 
-    // ==========================================
-    // 3. MODULAR FIRESTORE OPERATIONS
-    // ==========================================
     async function loadCollection(collectionName) {
         if (!currentUser) return;
         const dbCollection = DB_MAP[collectionName];
         try {
-            const querySnapshot = await db.collection(dbCollection)
-                .where('userId', '==', currentUser.uid)
-                .orderBy('date', 'asc')
-                .get();
-            
+            const querySnapshot = await db.collection(dbCollection).where('userId', '==', currentUser.uid).orderBy('date', 'asc').get();
             AppData[collectionName] = [];
             querySnapshot.forEach((doc) => { AppData[collectionName].push({ id: doc.id, ...doc.data() }); });
-            
-            renderActiveTab();
-            recalculateAllFormulas(); 
-
-            if(collectionName === 'tourtravel') updatePortalDatalist();
-
-        } catch (error) {
-            console.error(`Error loading ${collectionName}:`, error);
-            alert(`Error loading ${collectionName}: \n` + error.message + "\n\n(Have you created the Firestore Index for this collection?)");
-        }
+            renderActiveTab(); recalculateAllFormulas(); 
+            if(collectionName === 'tourtravel') updateDatalist('tt-portal-list', ['PIA', 'G9', 'VIA', 'AP', 'CASH', 'ADIB', 'AL IMRAN', 'SALARY', 'REFUND', 'B2B', 'PHONE'], AppData.tourtravel);
+            if(collectionName === 'cash') updateDatalist('cash-portal-list', ['CASH', 'G9', 'AP', 'VIA', 'B2B', 'DEPOSIT'], AppData.cash);
+        } catch (error) { alert(`Error loading ${collectionName}: \n` + error.message + "\n\n(Have you created the Firestore Index for this collection?)"); }
     }
 
-    async function saveToCollection(collectionName, record) {
-        if (!currentUser) return;
-        const dbCollection = DB_MAP[collectionName];
-        const recordWithUser = { ...record, userId: currentUser.uid, createdAt: new Date().toISOString() };
-        const docRef = await db.collection(dbCollection).add(recordWithUser);
-        return docRef.id;
-    }
+    async function saveToCollection(collectionName, record) { if (!currentUser) return; const dbCollection = DB_MAP[collectionName]; const recordWithUser = { ...record, userId: currentUser.uid, createdAt: new Date().toISOString() }; const docRef = await db.collection(dbCollection).add(recordWithUser); return docRef.id; }
+    async function updateInCollection(collectionName, docId, updateData) { const dbCollection = DB_MAP[collectionName]; await db.doc(`${dbCollection}/${docId}`).update(updateData); }
+    async function deleteFromCollection(collectionName, docId) { const dbCollection = DB_MAP[collectionName]; await db.doc(`${dbCollection}/${docId}`).delete(); }
 
-    async function updateInCollection(collectionName, docId, updateData) {
-        const dbCollection = DB_MAP[collectionName];
-        await db.doc(`${dbCollection}/${docId}`).update(updateData);
-    }
+    function recalculateAllFormulas() { calculateCustomerDues(); calculateLedgerBalance('tourtravel', 'tt-total-in', 'tt-total-out', 'tt-current-balance'); calculateLedgerBalance('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); }
 
-    async function deleteFromCollection(collectionName, docId) {
-        const dbCollection = DB_MAP[collectionName];
-        await db.doc(`${dbCollection}/${docId}`).delete();
-    }
+    function switchTab(tabName) { document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(`tab-${tabName}`).classList.add('active'); document.getElementById('sidebar').classList.remove('open'); if (AppData[tabName].length === 0) { loadCollection(tabName); } else { renderActiveTab(); } }
+    function renderActiveTab() { const activeTab = document.querySelector('.tab-content.active'); if (activeTab.id === 'tab-customers') renderCustomerTable(); else if (activeTab.id === 'tab-tourtravel') renderTourTravelTable(); else if (activeTab.id === 'tab-cash') renderCashTable(); }
 
-    // ==========================================
-    // 4. CROSS-TAB FORMULA LOGIC PREP
-    // ==========================================
-    function recalculateAllFormulas() {
-        calculateCustomerDues();
-        calculateTourTravelBalance(); 
-    }
-
-    // ==========================================
-    // 5. UI TAB SWITCHING
-    // ==========================================
-    function switchTab(tabName) {
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        event.currentTarget.classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.getElementById(`tab-${tabName}`).classList.add('active');
-        document.getElementById('sidebar').classList.remove('open');
-
-        if (AppData[tabName].length === 0) { loadCollection(tabName); } 
-        else { renderActiveTab(); }
-    }
-
-    function renderActiveTab() {
-        const activeTab = document.querySelector('.tab-content.active');
-        if (activeTab.id === 'tab-customers') renderCustomerTable();
-        else if (activeTab.id === 'tab-tourtravel') renderTourTravelTable();
-    }
-
-    // ==========================================
-    // 6. CUSTOMERS TAB LOGIC
-    // ==========================================
-    function calculateCustomerDues() {
-        let total = 0;
-        AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; });
-        const el = document.getElementById('cust-total-dues');
-        if (el) el.innerText = total.toLocaleString();
-    }
-
-    function renderCustomerTable(data = AppData.customers) {
-        const tbody = document.getElementById('cust-table-body');
-        tbody.innerHTML = '';
-        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No customer records found.</td></tr>'; calculateCustomerDues(); return; }
-        [...data].reverse().forEach((r) => {
-            tbody.innerHTML += `<tr>
-                <td>${r.date}</td><td><strong>${r.name}</strong></td><td>${r.contact || '-'}</td>
-                <td>${parseFloat(r.total).toLocaleString()} AED</td><td>${parseFloat(r.paid).toLocaleString()} AED</td><td><strong>${parseFloat(r.balance).toLocaleString()} AED</strong></td>
-                <td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td><td>${r.paidDate || '-'}</td>
-                <td class="action-btns">${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}<button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button></td>
-            </tr>`;
-        });
-        calculateCustomerDues();
-    }
-
-    async function addCustomerRecord() {
-        const date = document.getElementById('cust-date').value;
-        const name = document.getElementById('cust-name').value;
-        const contact = document.getElementById('cust-contact').value;
-        const total = parseFloat(document.getElementById('cust-total').value) || 0;
-        const paid = parseFloat(document.getElementById('cust-paid').value) || 0;
-        const balance = total - paid;
-        const status = balance <= 0 ? 'PAID' : 'NOTPAID';
-        const paidDate = status === 'PAID' ? new Date().toISOString().split('T')[0] : '';
-
-        if(!date || !name || !total) return alert('Please fill Date, Name, and Total.');
-        const record = { date, name, contact, total, paid, balance, status, paidDate };
-        try {
-            const docId = await saveToCollection('customers', record);
-            record.id = docId; AppData.customers.push(record); renderCustomerTable(); recalculateAllFormulas();
-            document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0';
-        } catch (error) { alert('Error adding record: ' + error.message); }
-    }
-
-    async function markCustomerPaid(docId) {
-        const record = AppData.customers.find(r => r.id === docId);
-        if (!record || !confirm(`Mark ${record.name} as fully paid?`)) return;
-        try {
-            const updateData = { paid: record.total, balance: 0, status: 'PAID', paidDate: new Date().toISOString().split('T')[0] };
-            await updateInCollection('customers', docId, updateData);
-            record.paid = record.total; record.balance = 0; record.status = 'PAID'; record.paidDate = updateData.paidDate;
-            renderCustomerTable(); recalculateAllFormulas();
-        } catch (error) { alert('Error updating record: ' + error.message); }
-    }
-
-    async function deleteCustomerRecord(docId) {
-        const record = AppData.customers.find(r => r.id === docId);
-        if (!record || !confirm(`Delete record for ${record.name}?`)) return;
-        try { await deleteFromCollection('customers', docId); AppData.customers = AppData.customers.filter(r => r.id !== docId); renderCustomerTable(); recalculateAllFormulas(); } 
-        catch (error) { alert('Error deleting record: ' + error.message); }
-    }
-
-    function filterCustomerRecords() {
-        const search = document.getElementById('cust-search').value.toLowerCase();
-        renderCustomerTable(AppData.customers.filter(r => r.name.toLowerCase().includes(search) || (r.contact && r.contact.toLowerCase().includes(search))));
-    }
-
-    // ==========================================
-    // 7. TOURTRAVEL TAB LOGIC
-    // ==========================================
-    function updatePortalDatalist() {
-        const datalist = document.getElementById('tt-portal-list');
-        if(!datalist) return;
-        const usedPortals = [...new Set(AppData.tourtravel.map(r => r.portal).filter(Boolean))];
-        const defaults = ['PIA', 'G9', 'VIA', 'AP', 'CASH', 'ADIB', 'AL IMRAN', 'SALARY', 'REFUND', 'B2B', 'PHONE'];
+    // --- SHARED UTILITY FUNCTIONS ---
+    function updateDatalist(elementId, defaults, dataArray) {
+        const datalist = document.getElementById(elementId); if(!datalist) return;
+        const usedPortals = [...new Set(dataArray.map(r => r.portal).filter(Boolean))];
         const allPortals = [...new Set([...defaults, ...usedPortals])].sort();
-        datalist.innerHTML = '';
-        allPortals.forEach(p => { const option = document.createElement('option'); option.value = p; datalist.appendChild(option); });
+        datalist.innerHTML = ''; allPortals.forEach(p => { const option = document.createElement('option'); option.value = p; datalist.appendChild(option); });
     }
 
-    function calculateTourTravelBalance() {
-        let runningBalance = 0;
-        let totalIn = 0;
-        let totalOut = 0;
-        AppData.tourtravel.forEach(r => {
-            runningBalance += (r.amountIn || 0) - (r.amountOut || 0);
-            totalIn += (r.amountIn || 0);
-            totalOut += (r.amountOut || 0);
-            r.balance = runningBalance;
-        });
-        
-        const elIn = document.getElementById('tt-total-in');
-        if(elIn) elIn.innerText = totalIn.toLocaleString() + ' AED';
-        
-        const elOut = document.getElementById('tt-total-out');
-        if(elOut) elOut.innerText = totalOut.toLocaleString() + ' AED';
-
-        const el = document.getElementById('tt-current-balance');
-        if (el) {
-            const finalBalance = AppData.tourtravel.length > 0 ? AppData.tourtravel[AppData.tourtravel.length - 1].balance : 0;
-            el.innerText = finalBalance.toLocaleString() + ' AED';
-            el.style.color = finalBalance < 0 ? 'var(--danger)' : 'var(--success)';
-        }
+    function calculateLedgerBalance(tabName, inId, outId, balanceId) {
+        let runningBalance = 0, totalIn = 0, totalOut = 0;
+        AppData[tabName].forEach(r => { runningBalance += (r.amountIn || 0) - (r.amountOut || 0); totalIn += (r.amountIn || 0); totalOut += (r.amountOut || 0); r.balance = runningBalance; });
+        const elIn = document.getElementById(inId); if(elIn) elIn.innerText = totalIn.toLocaleString() + ' AED';
+        const elOut = document.getElementById(outId); if(elOut) elOut.innerText = totalOut.toLocaleString() + ' AED';
+        const el = document.getElementById(balanceId); if (el) { const finalBalance = AppData[tabName].length > 0 ? AppData[tabName][AppData[tabName].length - 1].balance : 0; el.innerText = finalBalance.toLocaleString() + ' AED'; el.style.color = finalBalance < 0 ? 'var(--danger)' : 'var(--success)'; }
     }
 
-    function renderTourTravelTable(data = AppData.tourtravel) {
-        const tbody = document.getElementById('tt-table-body');
-        tbody.innerHTML = '';
-        if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No transactions found.</td></tr>'; return; }
-        [...data].reverse().forEach((r) => {
+    function renderLedgerTable(tabName, tbodyId, editFnName, deleteFnName) {
+        const tbody = document.getElementById(tbodyId); tbody.innerHTML = '';
+        if (AppData[tabName].length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No transactions found.</td></tr>'; return; }
+        [...AppData[tabName]].reverse().forEach((r) => {
             const balanceColor = r.balance < 0 ? 'var(--danger)' : 'var(--success)';
             tbody.innerHTML += `<tr>
                 <td>${r.date}</td><td><strong>${r.particulars}</strong></td>
@@ -503,142 +259,55 @@
                 <td style="color:var(--success); font-weight:600;">${r.amountIn ? parseFloat(r.amountIn).toLocaleString() + ' AED' : '-'}</td>
                 <td style="color:var(--danger); font-weight:600;">${r.amountOut ? parseFloat(r.amountOut).toLocaleString() + ' AED' : '-'}</td>
                 <td><strong style="color:${balanceColor}">${r.balance.toLocaleString()} AED</strong></td>
-                <td class="action-btns">
-                    <button class="action-btn edit" onclick="editTourTravelRecord('${r.id}')">✎</button>
-                    <button class="action-btn del" onclick="deleteTourTravelRecord('${r.id}')">✕</button>
-                </td>
+                <td class="action-btns"><button class="action-btn edit" onclick="${editFnName}('${r.id}')">✎</button><button class="action-btn del" onclick="${deleteFnName}('${r.id}')">✕</button></td>
             </tr>`;
         });
     }
 
-    function editTourTravelRecord(docId) {
-        const record = AppData.tourtravel.find(r => r.id === docId);
-        if (!record) return;
-
-        // Populate form
-        document.getElementById('tt-date').value = record.date;
-        document.getElementById('tt-particulars').value = record.particulars;
-        document.getElementById('tt-portal').value = record.portal;
-        document.getElementById('tt-in').value = record.amountIn || 0;
-        document.getElementById('tt-out').value = record.amountOut || 0;
-
-        // Update UI for editing mode
-        editingTTRecordId = docId;
-        document.getElementById('tt-submit-btn').innerText = '💾 Update Transaction';
-        document.getElementById('tt-cancel-btn').classList.remove('hidden');
-        
-        // Scroll to top to see the form
-        document.getElementById('tab-tourtravel').scrollIntoView({ behavior: 'smooth' });
+    // ==========================================
+    // 6. CUSTOMERS TAB LOGIC
+    // ==========================================
+    function calculateCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; }); const el = document.getElementById('cust-total-dues'); if (el) el.innerText = total.toLocaleString(); }
+    function renderCustomerTable() { renderCustomerTable_custom(); }
+    function renderCustomerTable_custom() {
+        const tbody = document.getElementById('cust-table-body'); tbody.innerHTML = '';
+        if (AppData.customers.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No customer records found.</td></tr>'; calculateCustomerDues(); return; }
+        [...AppData.customers].reverse().forEach((r) => {
+            tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.name}</strong></td><td>${r.contact || '-'}</td><td>${parseFloat(r.total).toLocaleString()} AED</td><td>${parseFloat(r.paid).toLocaleString()} AED</td><td><strong>${parseFloat(r.balance).toLocaleString()} AED</strong></td><td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td><td>${r.paidDate || '-'}</td><td class="action-btns">${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}<button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button></td></tr>`;
+        }); calculateCustomerDues();
     }
-
-    function cancelEditTourTravelRecord() {
-        editingTTRecordId = null;
-        document.getElementById('tt-date').value = ''; 
-        document.getElementById('tt-particulars').value = ''; 
-        document.getElementById('tt-portal').value = ''; 
-        document.getElementById('tt-in').value = '0'; 
-        document.getElementById('tt-out').value = '0';
-        document.getElementById('tt-submit-btn').innerText = '+ Add Transaction';
-        document.getElementById('tt-cancel-btn').classList.add('hidden');
-    }
-
-    async function addTourTravelRecord() {
-        const date = document.getElementById('tt-date').value;
-        const particulars = document.getElementById('tt-particulars').value;
-        const portal = document.getElementById('tt-portal').value.trim().toUpperCase();
-        const amountIn = parseFloat(document.getElementById('tt-in').value) || 0;
-        const amountOut = parseFloat(document.getElementById('tt-out').value) || 0;
-
-        if(!date || !particulars || !portal) return alert('Please fill Date, Particulars, and Portal.');
-        if(amountIn > 0 && amountOut > 0) return alert('A transaction should either be an IN (+) or an OUT (-), not both.');
-
-        const recordData = { date, particulars, portal, amountIn, amountOut };
-
-        if (editingTTRecordId) {
-            // UPDATE EXISTING RECORD
-            try {
-                await updateInCollection('tourtravel', editingTTRecordId, recordData);
-                const record = AppData.tourtravel.find(r => r.id === editingTTRecordId);
-                Object.assign(record, recordData); // Update local state
-                
-                calculateTourTravelBalance();
-                renderTourTravelTable();
-                updatePortalDatalist();
-                cancelEditTourTravelRecord(); // Reset form
-            } catch (error) { 
-                alert('Error updating transaction: ' + error.message); 
-            }
-        } else {
-            // ADD NEW RECORD
-            try {
-                const docId = await saveToCollection('tourtravel', recordData);
-                recordData.id = docId; 
-                AppData.tourtravel.push(recordData);
-                
-                calculateTourTravelBalance();
-                renderTourTravelTable();
-                updatePortalDatalist();
-                
-                document.getElementById('tt-date').value = ''; 
-                document.getElementById('tt-particulars').value = ''; 
-                document.getElementById('tt-portal').value = ''; 
-                document.getElementById('tt-in').value = '0'; 
-                document.getElementById('tt-out').value = '0';
-            } catch (error) { 
-                alert('Error adding transaction: ' + error.message); 
-            }
-        }
-    }
-
-    async function deleteTourTravelRecord(docId) {
-        if (!confirm('Delete this transaction? This will recalculate all subsequent balances.')) return;
-        try { 
-            await deleteFromCollection('tourtravel', docId); 
-            AppData.tourtravel = AppData.tourtravel.filter(r => r.id !== docId); 
-            calculateTourTravelBalance(); 
-            renderTourTravelTable(); 
-            // If deleting the record currently being edited, cancel edit mode
-            if(editingTTRecordId === docId) cancelEditTourTravelRecord();
-        } catch (error) { alert('Error deleting transaction: ' + error.message); }
-    }
-
-    function filterTourTravelRecords() {
-        const search = document.getElementById('tt-search').value.toLowerCase();
-        renderTourTravelTable(AppData.tourtravel.filter(r => r.particulars.toLowerCase().includes(search) || r.portal.toLowerCase().includes(search)));
-    }
+    async function addCustomerRecord() { const date = document.getElementById('cust-date').value; const name = document.getElementById('cust-name').value; const contact = document.getElementById('cust-contact').value; const total = parseFloat(document.getElementById('cust-total').value) || 0; const paid = parseFloat(document.getElementById('cust-paid').value) || 0; const balance = total - paid; const status = balance <= 0 ? 'PAID' : 'NOTPAID'; const paidDate = status === 'PAID' ? new Date().toISOString().split('T')[0] : ''; if(!date || !name || !total) return alert('Please fill Date, Name, and Total.'); try { const docId = await saveToCollection('customers', { date, name, contact, total, paid, balance, status, paidDate }); AppData.customers.push({ id: docId, date, name, contact, total, paid, balance, status, paidDate }); renderCustomerTable_custom(); recalculateAllFormulas(); document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0'; } catch (error) { alert('Error adding record: ' + error.message); } }
+    async function markCustomerPaid(docId) { const record = AppData.customers.find(r => r.id === docId); if (!record || !confirm(`Mark ${record.name} as fully paid?`)) return; try { const updateData = { paid: record.total, balance: 0, status: 'PAID', paidDate: new Date().toISOString().split('T')[0] }; await updateInCollection('customers', docId, updateData); record.paid = record.total; record.balance = 0; record.status = 'PAID'; record.paidDate = updateData.paidDate; renderCustomerTable_custom(); recalculateAllFormulas(); } catch (error) { alert('Error updating record: ' + error.message); } }
+    async function deleteCustomerRecord(docId) { const record = AppData.customers.find(r => r.id === docId); if (!record || !confirm(`Delete record for ${record.name}?`)) return; try { await deleteFromCollection('customers', docId); AppData.customers = AppData.customers.filter(r => r.id !== docId); renderCustomerTable_custom(); recalculateAllFormulas(); } catch (error) { alert('Error deleting record: ' + error.message); } }
+    function filterCustomerRecords() { const search = document.getElementById('cust-search').value.toLowerCase(); renderCustomerTable_custom(AppData.customers.filter(r => r.name.toLowerCase().includes(search) || (r.contact && r.contact.toLowerCase().includes(search)))); }
 
     // ==========================================
-    // 8. IMPORT / EXPORT
+    // 7. TOURTRAVEL TAB LOGIC
     // ==========================================
-    function exportData(collectionName) {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppData[collectionName], null, 2));
-        const dlAnchorElem = document.createElement('a');
-        dlAnchorElem.setAttribute("href", dataStr);
-        dlAnchorElem.setAttribute("download", `${collectionName}_backup_${new Date().toISOString().split('T')[0]}.json`);
-        dlAnchorElem.click();
-    }
+    function renderTourTravelTable() { renderLedgerTable('tourtravel', 'tt-table-body', 'editTourTravelRecord', 'deleteTourTravelRecord'); }
+    function editTourTravelRecord(docId) { const record = AppData.tourtravel.find(r => r.id === docId); if (!record) return; document.getElementById('tt-date').value = record.date; document.getElementById('tt-particulars').value = record.particulars; document.getElementById('tt-portal').value = record.portal; document.getElementById('tt-in').value = record.amountIn || 0; document.getElementById('tt-out').value = record.amountOut || 0; editingTTRecordId = docId; document.getElementById('tt-submit-btn').innerText = '💾 Update Transaction'; document.getElementById('tt-cancel-btn').classList.remove('hidden'); document.getElementById('tab-tourtravel').scrollIntoView({ behavior: 'smooth' }); }
+    function cancelEditTourTravelRecord() { editingTTRecordId = null; document.getElementById('tt-date').value = ''; document.getElementById('tt-particulars').value = ''; document.getElementById('tt-portal').value = ''; document.getElementById('tt-in').value = '0'; document.getElementById('tt-out').value = '0'; document.getElementById('tt-submit-btn').innerText = '+ Add Transaction'; document.getElementById('tt-cancel-btn').classList.add('hidden'); }
+    async function addTourTravelRecord() { const date = document.getElementById('tt-date').value; const particulars = document.getElementById('tt-particulars').value; const portal = document.getElementById('tt-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('tt-in').value) || 0; const amountOut = parseFloat(document.getElementById('tt-out').value) || 0; if(!date || !particulars || !portal) return alert('Please fill Date, Particulars, and Portal.'); if(amountIn > 0 && amountOut > 0) return alert('A transaction should either be an IN (+) or an OUT (-), not both.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingTTRecordId) { try { await updateInCollection('tourtravel', editingTTRecordId, recordData); const record = AppData.tourtravel.find(r => r.id === editingTTRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error updating transaction: ' + error.message); } } else { try { const docId = await saveToCollection('tourtravel', recordData); recordData.id = docId; AppData.tourtravel.push(recordData); recalculateAllFormulas(); renderTourTravelTable(); document.getElementById('tt-date').value = ''; document.getElementById('tt-particulars').value = ''; document.getElementById('tt-portal').value = ''; document.getElementById('tt-in').value = '0'; document.getElementById('tt-out').value = '0'; } catch (error) { alert('Error adding transaction: ' + error.message); } } }
+    async function deleteTourTravelRecord(docId) { if (!confirm('Delete this transaction? This will recalculate all subsequent balances.')) return; try { await deleteFromCollection('tourtravel', docId); AppData.tourtravel = AppData.tourtravel.filter(r => r.id !== docId); recalculateAllFormulas(); renderTourTravelTable(); if(editingTTRecordId === docId) cancelEditTourTravelRecord(); } catch (error) { alert('Error deleting transaction: ' + error.message); } }
+    function filterTourTravelRecords() { const search = document.getElementById('tt-search').value.toLowerCase(); const filtered = AppData.tourtravel.filter(r => r.particulars.toLowerCase().includes(search) || r.portal.toLowerCase().includes(search)); renderLedgerTable('tourtravel', 'tt-table-body', 'editTourTravelRecord', 'deleteTourTravelRecord'); }
 
-    function importData(event, collectionName) {
-        const fileReader = new FileReader();
-        fileReader.onload = async function(event) {
-            if(confirm("This will add imported records to your existing data. Continue?")) {
-                try {
-                    const importedRecords = JSON.parse(event.target.result);
-                    for (const record of importedRecords) { if (record.id) delete record.id; await saveToCollection(collectionName, record); }
-                    await loadCollection(collectionName);
-                    alert('Data imported successfully!');
-                } catch (error) { alert('Error importing data: ' + error.message); }
-            }
-        };
-        fileReader.readAsText(event.target.files[0]);
-    }
+    // ==========================================
+    // 8. CASH TAB LOGIC
+    // ==========================================
+    function renderCashTable() { renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
+    function editCashRecord(docId) { const record = AppData.cash.find(r => r.id === docId); if (!record) return; document.getElementById('cash-date').value = record.date; document.getElementById('cash-particulars').value = record.particulars; document.getElementById('cash-portal').value = record.portal; document.getElementById('cash-in').value = record.amountIn || 0; document.getElementById('cash-out').value = record.amountOut || 0; editingCashRecordId = docId; document.getElementById('cash-submit-btn').innerText = '💾 Update Transaction'; document.getElementById('cash-cancel-btn').classList.remove('hidden'); document.getElementById('tab-cash').scrollIntoView({ behavior: 'smooth' }); }
+    function cancelEditCashRecord() { editingCashRecordId = null; document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; document.getElementById('cash-submit-btn').innerText = '+ Add Transaction'; document.getElementById('cash-cancel-btn').classList.add('hidden'); }
+    async function addCashRecord() { const date = document.getElementById('cash-date').value; const particulars = document.getElementById('cash-particulars').value; const portal = document.getElementById('cash-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('cash-in').value) || 0; const amountOut = parseFloat(document.getElementById('cash-out').value) || 0; if(!date || !particulars || !portal) return alert('Please fill Date, Particulars, and Portal.'); if(amountIn > 0 && amountOut > 0) return alert('A transaction should either be an IN (+) or an OUT (-), not both.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingCashRecordId) { try { await updateInCollection('cash', editingCashRecordId, recordData); const record = AppData.cash.find(r => r.id === editingCashRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderCashTable(); cancelEditCashRecord(); } catch (error) { alert('Error updating transaction: ' + error.message); } } else { try { const docId = await saveToCollection('cash', recordData); recordData.id = docId; AppData.cash.push(recordData); recalculateAllFormulas(); renderCashTable(); document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; } catch (error) { alert('Error adding transaction: ' + error.message); } } }
+    async function deleteCashRecord(docId) { if (!confirm('Delete this transaction? This will recalculate all subsequent balances.')) return; try { await deleteFromCollection('cash', docId); AppData.cash = AppData.cash.filter(r => r.id !== docId); recalculateAllFormulas(); renderCashTable(); if(editingCashRecordId === docId) cancelEditCashRecord(); } catch (error) { alert('Error deleting transaction: ' + error.message); } }
+    function filterCashRecords() { const search = document.getElementById('cash-search').value.toLowerCase(); const filtered = AppData.cash.filter(r => r.particulars.toLowerCase().includes(search) || r.portal.toLowerCase().includes(search)); renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
 
-    // Mobile menu handler
-    window.addEventListener('resize', () => {
-        const menuBtn = document.getElementById('menuBtn');
-        if(window.innerWidth <= 768) menuBtn.style.display = 'block';
-        else { menuBtn.style.display = 'none'; document.getElementById('sidebar').classList.remove('open'); }
-    });
+    // ==========================================
+    // 9. IMPORT / EXPORT
+    // ==========================================
+    function exportData(collectionName) { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppData[collectionName], null, 2)); const dlAnchorElem = document.createElement('a'); dlAnchorElem.setAttribute("href", dataStr); dlAnchorElem.setAttribute("download", `${collectionName}_backup_${new Date().toISOString().split('T')[0]}.json`); dlAnchorElem.click(); }
+    function importData(event, collectionName) { const fileReader = new FileReader(); fileReader.onload = async function(event) { if(confirm("This will add imported records to your existing data. Continue?")) { try { const importedRecords = JSON.parse(event.target.result); for (const record of importedRecords) { if (record.id) delete record.id; await saveToCollection(collectionName, record); } await loadCollection(collectionName); alert('Data imported successfully!'); } catch (error) { alert('Error importing data: ' + error.message); } } }; fileReader.readAsText(event.target.files[0]); }
+
+    window.addEventListener('resize', () => { const menuBtn = document.getElementById('menuBtn'); if(window.innerWidth <= 768) menuBtn.style.display = 'block'; else { menuBtn.style.display = 'none'; document.getElementById('sidebar').classList.remove('open'); } });
     window.dispatchEvent(new Event('resize'));
 </script>
 </body>
