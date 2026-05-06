@@ -111,7 +111,6 @@
         .btn-google:hover { background: var(--primary-hover); }
         .hidden { display: none !important; }
         
-        /* --- PREMIUM FINTECH TABLES (DAILY & PAID) --- */
         .fintech-table { border-collapse: separate; border-spacing: 0; width: 100%; }
         .fintech-table th { background: #1e293b; color: #e2e8f0; font-size: 0.8rem; padding: 16px 24px; text-align: right; }
         .fintech-table th:first-child { text-align: left; }
@@ -120,22 +119,15 @@
         .fintech-table tr:hover td { background: #eef2ff; }
         .fintech-table td:last-child { text-align: right; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.5px; }
         .fintech-table td:first-child { font-weight: 600; }
-        
         .fintech-table tr.row-auto-calc td { background: var(--success-bg); border-bottom: 1px solid var(--success-border); }
         .fintech-table tr.row-auto-calc:hover td { background: #d1fae5; }
         .fintech-table tr.row-auto-calc td:last-child { color: var(--success-text); }
-        
         .auto-badge { background: #d1fae5; color: var(--success-text); padding: 4px 10px; border-radius: 999px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; margin-left: 12px; letter-spacing: 0.05em; vertical-align: middle; border: 1px solid var(--success-border); }
-        
         .fintech-table tfoot td { background: #0f172a; color: white; font-size: 1.5rem; font-weight: 800; padding: 24px; border-top: 3px solid var(--primary); letter-spacing: -0.5px; }
         .fintech-table tfoot td:last-child { text-align: right; }
-
-        /* Paid Tab Specifics */
         .fintech-table.paid-table th { background: #064e3b; border-bottom: 3px solid var(--success); }
         .fintech-table.paid-table tfoot td { background: #064e3b; border-top: 3px solid var(--success); }
         .badge-cleared { background: #d1fae5; color: #065f46; padding: 6px 14px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid #a7f3d0; }
-
-        /* Daily Sheet Form */
         .daily-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
         .input-currency-group { position: relative; }
         .input-currency-group .currency-prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; font-weight: 700; pointer-events: none; }
@@ -187,7 +179,7 @@
             <!-- CUSTOMERS TAB -->
             <section id="tab-customers" class="tab-content active">
                 <h2 class="page-title">Customers Management</h2>
-                <div class="summary-cards"><div class="card card-warning"><h3>Total Dues on Customers</h3><div class="value"><span id="cust-total-dues">0</span> AED</div><small>Outstanding balance from unpaid customers</small></div></div>
+                <div class="summary-cards"><div class="card card-warning"><h3>Total Dues on Customers</h3><div class="value"><span id="cust-total-dues">0.00</span> AED</div><small>Outstanding balance from unpaid customers</small></div></div>
                 <div class="form-card">
                     <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cust-date" required></div><div class="form-group" style="flex:2;"><label>Customer Name</label><input type="text" id="cust-name" placeholder="e.g. John Doe" required></div><div class="form-group" style="flex:2;"><label>Contact / Reference</label><input type="text" id="cust-contact" placeholder="e.g. +971..."></div></div>
                     <div class="form-row"><div class="form-group"><label>Total Amount</label><input type="number" id="cust-total" placeholder="0.00" step="0.01" required></div><div class="form-group"><label>Paid Amount</label><input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end;"><button class="btn btn-primary" onclick="addCustomerRecord()">+ Add Customer</button></div></div>
@@ -198,7 +190,7 @@
             <!-- TOURTRAVEL TAB -->
             <section id="tab-tourtravel" class="tab-content">
                 <h2 class="page-title">Tours & Travel Account</h2>
-                <div class="summary-cards"><div class="card" style="border-left: 4px solid var(--success);"><h3>Total Amount In (+)</h3><div class="value" id="tt-total-in" style="color: var(--success);">0 AED</div></div><div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Amount Out (-)</h3><div class="value" id="tt-total-out" style="color: var(--danger);">0 AED</div></div><div class="card" style="border-left: 4px solid var(--primary);"><h3>Current Tours Balance</h3><div class="value" id="tt-current-balance">0 AED</div></div></div>
+                <div class="summary-cards"><div class="card" style="border-left: 4px solid var(--success);"><h3>Total Amount In (+)</h3><div class="value" id="tt-total-in" style="color: var(--success);">0.00 AED</div></div><div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Amount Out (-)</h3><div class="value" id="tt-total-out" style="color: var(--danger);">0.00 AED</div></div><div class="card" style="border-left: 4px solid var(--primary);"><h3>Current Tours Balance</h3><div class="value" id="tt-current-balance">0.00 AED</div></div></div>
                 <div class="form-card"><div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="tt-date" required></div><div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="tt-particulars" placeholder="e.g. Amjad Ullah Ticket" required></div><div class="form-group" style="flex:1;"><label>Portal / Method</label><input type="text" id="tt-portal" list="tt-portal-list" placeholder="Select or type" required><datalist id="tt-portal-list"></datalist></div></div><div class="form-row"><div class="form-group"><label>Amount In (+)</label><input type="number" id="tt-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Amount Out (-)</label><input type="number" id="tt-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;"><button class="btn btn-cancel hidden" id="tt-cancel-btn" onclick="cancelEditTourTravelRecord()">✕ Cancel</button><button class="btn btn-primary" id="tt-submit-btn" onclick="addTourTravelRecord()">+ Add Transaction</button></div></div></div>
                 <div class="table-container"><div class="table-header"><input type="text" id="tt-search" class="search-input" placeholder="Search..." onkeyup="filterTourTravelRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('tourtravel')">⬇ Backup</button></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="tt-table-body"></tbody></table></div>
             </section>
@@ -206,7 +198,7 @@
             <!-- CASH TAB -->
             <section id="tab-cash" class="tab-content">
                 <h2 class="page-title">Cash On Hand</h2>
-                <div class="summary-cards"><div class="card" style="border-left: 4px solid var(--success);"><h3>Total Cash In (+)</h3><div class="value" id="cash-total-in" style="color: var(--success);">0 AED</div></div><div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Cash Out (-)</h3><div class="value" id="cash-total-out" style="color: var(--danger);">0 AED</div></div><div class="card" style="border-left: 4px solid var(--warning);"><h3>Current Cash Balance</h3><div class="value" id="cash-current-balance">0 AED</div></div></div>
+                <div class="summary-cards"><div class="card" style="border-left: 4px solid var(--success);"><h3>Total Cash In (+)</h3><div class="value" id="cash-total-in" style="color: var(--success);">0.00 AED</div></div><div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Cash Out (-)</h3><div class="value" id="cash-total-out" style="color: var(--danger);">0.00 AED</div></div><div class="card" style="border-left: 4px solid var(--warning);"><h3>Current Cash Balance</h3><div class="value" id="cash-current-balance">0.00 AED</div></div></div>
                 <div class="form-card"><div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cash-date" required></div><div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="cash-particulars" placeholder="e.g. Cash on hand" required></div><div class="form-group" style="flex:1;"><label>Portal</label><input type="text" id="cash-portal" list="cash-portal-list" placeholder="Select or type" required><datalist id="cash-portal-list"></datalist></div></div><div class="form-row"><div class="form-group"><label>Amount In (+)</label><input type="number" id="cash-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Amount Out (-)</label><input type="number" id="cash-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;"><button class="btn btn-cancel hidden" id="cash-cancel-btn" onclick="cancelEditCashRecord()">✕ Cancel</button><button class="btn btn-primary" id="cash-submit-btn" onclick="addCashRecord()">+ Add Transaction</button></div></div></div>
                 <div class="table-container"><div class="table-header"><input type="text" id="cash-search" class="search-input" placeholder="Search..." onkeyup="filterCashRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('cash')">⬇ Backup</button></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table></div>
             </section>
@@ -214,7 +206,7 @@
             <!-- BANKS TAB -->
             <section id="tab-banks" class="tab-content">
                 <h2 class="page-title">ADIB NBD Banks Account</h2>
-                <div class="summary-cards"><div class="card" style="border-left: 4px solid var(--success);"><h3>Total Deposits (+)</h3><div class="value" id="banks-total-in" style="color: var(--success);">0 AED</div></div><div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Withdrawals (-)</h3><div class="value" id="banks-total-out" style="color: var(--danger);">0 AED</div></div><div class="card" style="border-left: 4px solid var(--primary);"><h3>Current Bank Balance</h3><div class="value" id="banks-current-balance">0 AED</div></div></div>
+                <div class="summary-cards"><div class="card" style="border-left: 4px solid var(--success);"><h3>Total Deposits (+)</h3><div class="value" id="banks-total-in" style="color: var(--success);">0.00 AED</div></div><div class="card" style="border-left: 4px solid var(--danger);"><h3>Total Withdrawals (-)</h3><div class="value" id="banks-total-out" style="color: var(--danger);">0.00 AED</div></div><div class="card" style="border-left: 4px solid var(--primary);"><h3>Current Bank Balance</h3><div class="value" id="banks-current-balance">0.00 AED</div></div></div>
                 <div class="form-card"><div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="banks-date" required></div><div class="form-group" style="flex:3;"><label>Name of Depositer</label><input type="text" id="banks-particulars" placeholder="e.g. Haji Aslam Ticket" required></div><div class="form-group" style="flex:1;"><label>Bank</label><input type="text" id="banks-portal" list="banks-portal-list" placeholder="Select or type" required><datalist id="banks-portal-list"></datalist></div></div><div class="form-row"><div class="form-group"><label>Ticket Amt / Deposit (+)</label><input type="number" id="banks-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Withdraw (-)</label><input type="number" id="banks-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;"><button class="btn btn-cancel hidden" id="banks-cancel-btn" onclick="cancelEditBanksRecord()">✕ Cancel</button><button class="btn btn-primary" id="banks-submit-btn" onclick="addBanksRecord()">+ Add Transaction</button></div></div></div>
                 <div class="table-container"><div class="table-header"><input type="text" id="banks-search" class="search-input" placeholder="Search..." onkeyup="filterBanksRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('banks')">⬇ Backup</button></div></div><table><thead><tr><th>Date</th><th>Depositer</th><th>Bank</th><th>Ticket Amt (+)</th><th>Withdraw (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="banks-table-body"></tbody></table></div>
             </section>
@@ -242,37 +234,21 @@
                 </div>
             </section>
 
-            <!-- PAID TAB (LIVE FILTER FROM CUSTOMERS) -->
+            <!-- PAID TAB -->
             <section id="tab-paid" class="tab-content">
                 <h2 class="page-title">Paid Customers Ledger</h2>
                 <div class="summary-cards">
                     <div class="card" style="border-left: 4px solid var(--success); border-radius: var(--radius);">
                         <h3>Total Collected Revenue</h3>
-                        <div class="value" id="paid-total-collected" style="color: var(--success);">0 AED</div>
+                        <div class="value" id="paid-total-collected" style="color: var(--success);">0.00 AED</div>
                         <small>Auto-synced from Customers tab (Status = PAID)</small>
                     </div>
                 </div>
-                
                 <div class="table-container" style="overflow: hidden;">
                     <table class="fintech-table paid-table">
-                        <thead>
-                            <tr>
-                                <th>Paid Date</th>
-                                <th>Customer Name</th>
-                                <th>Contact / Ref</th>
-                                <th style="text-align: right;">Original Total</th>
-                                <th style="text-align: right;">Amount Paid</th>
-                                <th style="text-align: right; width: 120px;">Status</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Paid Date</th><th>Customer Name</th><th>Contact / Ref</th><th style="text-align: right;">Original Total</th><th style="text-align: right;">Amount Paid</th><th style="text-align: right; width: 120px;">Status</th></tr></thead>
                         <tbody id="paid-table-body"></tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4" style="text-align: right; font-size: 1rem;">TOTAL PAID AMOUNT</td>
-                                <td id="paid-grand-total" style="text-align: right;">0.00 AED</td>
-                                <td></td>
-                            </tr>
-                        </tfoot>
+                        <tfoot><tr><td colspan="4" style="text-align: right; font-size: 1rem;">TOTAL PAID AMOUNT</td><td id="paid-grand-total" style="text-align: right;">0.00 AED</td><td></td></tr></tfoot>
                     </table>
                 </div>
             </section>
@@ -282,11 +258,16 @@
 </div>
 
 <script>
-    // Removed 'paid: []' and 'paid: paid' from AppData and DB_MAP to prevent database querying
     const AppData = { customers: [], tourtravel: [], cash: [], banks: [], daily: [] };
     const DB_MAP = { customers: 'records', tourtravel: 'tourtravel', cash: 'cash', banks: 'banks', daily: 'daily' };
     let currentUser = null;
     let editingTTRecordId = null; let editingCashRecordId = null; let editingBanksRecordId = null; let editingDailyRecordId = null;
+
+    // ==========================================
+    // SAFE NUMBER FORMATTER (PREVENTS CRASHES)
+    // ==========================================
+    const safeNum = (val) => parseFloat(val) || 0;
+    const fmt = (val) => safeNum(val).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
     auth.onAuthStateChanged((user) => {
         if (user) {
@@ -311,7 +292,10 @@
             if(collectionName === 'tourtravel') updateDatalist('tt-portal-list', ['PIA', 'G9', 'VIA', 'AP', 'CASH', 'ADIB', 'AL IMRAN', 'SALARY', 'REFUND', 'B2B'], AppData.tourtravel);
             if(collectionName === 'cash') updateDatalist('cash-portal-list', ['CASH', 'G9', 'AP', 'VIA', 'B2B', 'DEPOSIT'], AppData.cash);
             if(collectionName === 'banks') updateDatalist('banks-portal-list', ['ADIB', 'NBD', 'SHARAF', 'CASH', 'G9', 'AP', 'AL AIN', 'SALARY'], AppData.banks);
-        } catch (error) { alert(`Error loading ${collectionName}: \n` + error.message + "\n\n(Have you created the Firestore Index for this collection?)"); }
+        } catch (error) { 
+            console.error(`Error loading ${collectionName}:`, error); 
+            alert(`Error loading ${collectionName}: \n` + error.message + "\n\n(Have you created the Firestore Index for this collection?)"); 
+        }
     }
 
     async function saveToCollection(collectionName, record) { if (!currentUser) return; const dbCollection = DB_MAP[collectionName]; const recordWithUser = { ...record, userId: currentUser.uid, createdAt: new Date().toISOString() }; const docRef = await db.collection(dbCollection).add(recordWithUser); return docRef.id; }
@@ -326,54 +310,63 @@
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); 
         document.getElementById(`tab-${tabName}`).classList.add('active'); 
         document.getElementById('sidebar').classList.remove('open'); 
-        
-        // FIX: Paid tab is a virtual filter of Customers, not a DB collection
-        if (tabName === 'paid') {
-            renderActiveTab();
-        } else if (AppData[tabName].length === 0) { 
-            loadCollection(tabName); 
-        } else { 
-            renderActiveTab(); 
-        } 
+        if (tabName === 'paid') { renderActiveTab(); }
+        else if (AppData[tabName].length === 0) { loadCollection(tabName); } 
+        else { renderActiveTab(); } 
     }
     
     function renderActiveTab() { const activeTab = document.querySelector('.tab-content.active'); if (activeTab.id === 'tab-customers') renderCustomerTable(); else if (activeTab.id === 'tab-tourtravel') renderTourTravelTable(); else if (activeTab.id === 'tab-cash') renderCashTable(); else if (activeTab.id === 'tab-banks') renderBanksTable(); else if (activeTab.id === 'tab-daily') renderDailyTable(); else if (activeTab.id === 'tab-paid') renderPaidTable(); }
 
     function updateDatalist(elementId, defaults, dataArray) { const datalist = document.getElementById(elementId); if(!datalist) return; const usedPortals = [...new Set(dataArray.map(r => r.portal).filter(Boolean))]; const allPortals = [...new Set([...defaults, ...usedPortals])].sort(); datalist.innerHTML = ''; allPortals.forEach(p => { const option = document.createElement('option'); option.value = p; datalist.appendChild(option); }); }
-    function calculateLedgerBalance(tabName, inId, outId, balanceId) { let runningBalance = 0, totalIn = 0, totalOut = 0; AppData[tabName].forEach(r => { runningBalance += (r.amountIn || 0) - (r.amountOut || 0); totalIn += (r.amountIn || 0); totalOut += (r.amountOut || 0); r.balance = runningBalance; }); const elIn = document.getElementById(inId); if(elIn) elIn.innerText = totalIn.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' AED'; const elOut = document.getElementById(outId); if(elOut) elOut.innerText = totalOut.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' AED'; const el = document.getElementById(balanceId); if (el) { const finalBalance = AppData[tabName].length > 0 ? AppData[tabName][AppData[tabName].length - 1].balance : 0; el.innerText = finalBalance.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' AED'; el.style.color = finalBalance < 0 ? 'var(--danger)' : 'var(--success)'; } }
-    function renderLedgerTable(tabName, tbodyId, editFnName, deleteFnName) { const tbody = document.getElementById(tbodyId); tbody.innerHTML = ''; if (AppData[tabName].length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No transactions found.</td></tr>'; return; } [...AppData[tabName]].reverse().forEach((r) => { const balanceColor = r.balance < 0 ? 'var(--danger)' : 'var(--success)'; tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.particulars}</strong></td><td><span class="status-badge" style="background:rgba(37,99,235,0.1);color:var(--primary);">${r.portal}</span></td><td style="color:var(--success); font-weight:600; text-align:right;">${r.amountIn ? r.amountIn.toLocaleString('en-US', {minimumFractionDigits: 2}) : '-'}</td><td style="color:var(--danger); font-weight:600; text-align:right;">${r.amountOut ? r.amountOut.toLocaleString('en-US', {minimumFractionDigits: 2}) : '-'}</td><td style="text-align:right; font-weight:700; color:${balanceColor}">${r.balance.toLocaleString('en-US', {minimumFractionDigits: 2})}</td><td class="action-btns"><button class="action-btn edit" onclick="${editFnName}('${r.id}')">✎</button><button class="action-btn del" onclick="${deleteFnName}('${r.id}')">✕</button></td></tr>`; }); }
+    
+    function calculateLedgerBalance(tabName, inId, outId, balanceId) { 
+        let runningBalance = 0, totalIn = 0, totalOut = 0; 
+        AppData[tabName].forEach(r => { runningBalance += safeNum(r.amountIn) - safeNum(r.amountOut); totalIn += safeNum(r.amountIn); totalOut += safeNum(r.amountOut); r.balance = runningBalance; }); 
+        const elIn = document.getElementById(inId); if(elIn) elIn.innerText = fmt(totalIn) + ' AED'; 
+        const elOut = document.getElementById(outId); if(elOut) elOut.innerText = fmt(totalOut) + ' AED'; 
+        const el = document.getElementById(balanceId); if (el) { const finalBalance = AppData[tabName].length > 0 ? safeNum(AppData[tabName][AppData[tabName].length - 1].balance) : 0; el.innerText = fmt(finalBalance) + ' AED'; el.style.color = finalBalance < 0 ? 'var(--danger)' : 'var(--success)'; } 
+    }
+
+    function renderLedgerTable(tabName, tbodyId, editFnName, deleteFnName) { 
+        const tbody = document.getElementById(tbodyId); tbody.innerHTML = ''; 
+        if (AppData[tabName].length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No transactions found.</td></tr>'; return; } 
+        [...AppData[tabName]].reverse().forEach((r) => { 
+            const balanceColor = safeNum(r.balance) < 0 ? 'var(--danger)' : 'var(--success)'; 
+            tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.particulars}</strong></td><td><span class="status-badge" style="background:rgba(37,99,235,0.1);color:var(--primary);">${r.portal}</span></td><td style="color:var(--success); font-weight:600; text-align:right;">${r.amountIn ? fmt(r.amountIn) : '-'}</td><td style="color:var(--danger); font-weight:600; text-align:right;">${r.amountOut ? fmt(r.amountOut) : '-'}</td><td style="text-align:right; font-weight:700; color:${balanceColor}">${fmt(r.balance)}</td><td class="action-btns"><button class="action-btn edit" onclick="${editFnName}('${r.id}')">✎</button><button class="action-btn del" onclick="${deleteFnName}('${r.id}')">✕</button></td></tr>`; 
+        }); 
+    }
 
     // ==========================================
     // CUSTOMERS TAB LOGIC
     // ==========================================
-    function calculateCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; }); const el = document.getElementById('cust-total-dues'); if (el) el.innerText = total.toLocaleString('en-US', {minimumFractionDigits: 2}); }
-    function renderCustomerTable() { const tbody = document.getElementById('cust-table-body'); tbody.innerHTML = ''; if (AppData.customers.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No records found.</td></tr>'; calculateCustomerDues(); return; } [...AppData.customers].reverse().forEach((r) => { tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.name}</strong></td><td>${r.contact || '-'}</td><td style="text-align:right">${parseFloat(r.total).toLocaleString('en-US', {minimumFractionDigits: 2})}</td><td style="text-align:right">${parseFloat(r.paid).toLocaleString('en-US', {minimumFractionDigits: 2})}</td><td style="text-align:right; font-weight:700">${parseFloat(r.balance).toLocaleString('en-US', {minimumFractionDigits: 2})}</td><td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td><td>${r.paidDate || '-'}</td><td class="action-btns">${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}<button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button></td></tr>`; }); calculateCustomerDues(); }
-    async function addCustomerRecord() { const date = document.getElementById('cust-date').value; const name = document.getElementById('cust-name').value; const contact = document.getElementById('cust-contact').value; const total = parseFloat(document.getElementById('cust-total').value) || 0; const paid = parseFloat(document.getElementById('cust-paid').value) || 0; const balance = total - paid; const status = balance <= 0 ? 'PAID' : 'NOTPAID'; const paidDate = status === 'PAID' ? new Date().toISOString().split('T')[0] : ''; if(!date || !name || !total) return alert('Please fill Date, Name, and Total.'); try { const docId = await saveToCollection('customers', { date, name, contact, total, paid, balance, status, paidDate }); AppData.customers.push({ id: docId, date, name, contact, total, paid, balance, status, paidDate }); renderCustomerTable(); recalculateAllFormulas(); document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0'; } catch (error) { alert('Error: ' + error.message); } }
+    function calculateCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += safeNum(r.balance); }); const el = document.getElementById('cust-total-dues'); if (el) el.innerText = fmt(total); }
+    function renderCustomerTable() { const tbody = document.getElementById('cust-table-body'); tbody.innerHTML = ''; if (AppData.customers.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No records found.</td></tr>'; calculateCustomerDues(); return; } [...AppData.customers].reverse().forEach((r) => { tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.name}</strong></td><td>${r.contact || '-'}</td><td style="text-align:right">${fmt(r.total)}</td><td style="text-align:right">${fmt(r.paid)}</td><td style="text-align:right; font-weight:700">${fmt(r.balance)}</td><td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td><td>${r.paidDate || '-'}</td><td class="action-btns">${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}<button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button></td></tr>`; }); calculateCustomerDues(); }
+    async function addCustomerRecord() { const date = document.getElementById('cust-date').value; const name = document.getElementById('cust-name').value; const contact = document.getElementById('cust-contact').value; const total = safeNum(document.getElementById('cust-total').value); const paid = safeNum(document.getElementById('cust-paid').value); const balance = total - paid; const status = balance <= 0 ? 'PAID' : 'NOTPAID'; const paidDate = status === 'PAID' ? new Date().toISOString().split('T')[0] : ''; if(!date || !name || !total) return alert('Please fill Date, Name, and Total.'); try { const docId = await saveToCollection('customers', { date, name, contact, total, paid, balance, status, paidDate }); AppData.customers.push({ id: docId, date, name, contact, total, paid, balance, status, paidDate }); renderCustomerTable(); recalculateAllFormulas(); document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0'; } catch (error) { alert('Error: ' + error.message); } }
     async function markCustomerPaid(docId) { const record = AppData.customers.find(r => r.id === docId); if (!record || !confirm(`Mark ${record.name} as fully paid?`)) return; try { const updateData = { paid: record.total, balance: 0, status: 'PAID', paidDate: new Date().toISOString().split('T')[0] }; await updateInCollection('customers', docId, updateData); record.paid = record.total; record.balance = 0; record.status = 'PAID'; record.paidDate = updateData.paidDate; renderCustomerTable(); recalculateAllFormulas(); } catch (error) { alert('Error: ' + error.message); } }
     async function deleteCustomerRecord(docId) { if (!confirm('Delete?')) return; try { await deleteFromCollection('customers', docId); AppData.customers = AppData.customers.filter(r => r.id !== docId); renderCustomerTable(); recalculateAllFormulas(); } catch (error) { alert('Error: ' + error.message); } }
     function filterCustomerRecords() { renderCustomerTable(); }
 
     // ==========================================
-    // TOURTRAVEL, CASH, BANKS LOGIC (CONDENSED)
+    // TOURTRAVEL, CASH, BANKS LOGIC
     // ==========================================
     function renderTourTravelTable() { renderLedgerTable('tourtravel', 'tt-table-body', 'editTourTravelRecord', 'deleteTourTravelRecord'); }
     function editTourTravelRecord(docId) { const record = AppData.tourtravel.find(r => r.id === docId); if (!record) return; document.getElementById('tt-date').value = record.date; document.getElementById('tt-particulars').value = record.particulars; document.getElementById('tt-portal').value = record.portal; document.getElementById('tt-in').value = record.amountIn || 0; document.getElementById('tt-out').value = record.amountOut || 0; editingTTRecordId = docId; document.getElementById('tt-submit-btn').innerText = '💾 Update'; document.getElementById('tt-cancel-btn').classList.remove('hidden'); }
     function cancelEditTourTravelRecord() { editingTTRecordId = null; document.getElementById('tt-date').value = ''; document.getElementById('tt-particulars').value = ''; document.getElementById('tt-portal').value = ''; document.getElementById('tt-in').value = '0'; document.getElementById('tt-out').value = '0'; document.getElementById('tt-submit-btn').innerText = '+ Add Transaction'; document.getElementById('tt-cancel-btn').classList.add('hidden'); }
-    async function addTourTravelRecord() { const date = document.getElementById('tt-date').value; const particulars = document.getElementById('tt-particulars').value; const portal = document.getElementById('tt-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('tt-in').value) || 0; const amountOut = parseFloat(document.getElementById('tt-out').value) || 0; if(!date || !particulars || !portal) return alert('Fill all fields.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingTTRecordId) { try { await updateInCollection('tourtravel', editingTTRecordId, recordData); const record = AppData.tourtravel.find(r => r.id === editingTTRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error: ' + error.message); } } else { try { const docId = await saveToCollection('tourtravel', recordData); recordData.id = docId; AppData.tourtravel.push(recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error: ' + error.message); } } }
+    async function addTourTravelRecord() { const date = document.getElementById('tt-date').value; const particulars = document.getElementById('tt-particulars').value; const portal = document.getElementById('tt-portal').value.trim().toUpperCase(); const amountIn = safeNum(document.getElementById('tt-in').value); const amountOut = safeNum(document.getElementById('tt-out').value); if(!date || !particulars || !portal) return alert('Fill all fields.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingTTRecordId) { try { await updateInCollection('tourtravel', editingTTRecordId, recordData); const record = AppData.tourtravel.find(r => r.id === editingTTRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error: ' + error.message); } } else { try { const docId = await saveToCollection('tourtravel', recordData); recordData.id = docId; AppData.tourtravel.push(recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error: ' + error.message); } } }
     async function deleteTourTravelRecord(docId) { if (!confirm('Delete?')) return; try { await deleteFromCollection('tourtravel', docId); AppData.tourtravel = AppData.tourtravel.filter(r => r.id !== docId); recalculateAllFormulas(); renderTourTravelTable(); } catch (error) { alert('Error: ' + error.message); } }
     function filterTourTravelRecords() { renderLedgerTable('tourtravel', 'tt-table-body', 'editTourTravelRecord', 'deleteTourTravelRecord'); }
 
     function renderCashTable() { renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
     function editCashRecord(docId) { const record = AppData.cash.find(r => r.id === docId); if (!record) return; document.getElementById('cash-date').value = record.date; document.getElementById('cash-particulars').value = record.particulars; document.getElementById('cash-portal').value = record.portal; document.getElementById('cash-in').value = record.amountIn || 0; document.getElementById('cash-out').value = record.amountOut || 0; editingCashRecordId = docId; document.getElementById('cash-submit-btn').innerText = '💾 Update'; document.getElementById('cash-cancel-btn').classList.remove('hidden'); }
     function cancelEditCashRecord() { editingCashRecordId = null; document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; document.getElementById('cash-submit-btn').innerText = '+ Add Transaction'; document.getElementById('cash-cancel-btn').classList.add('hidden'); }
-    async function addCashRecord() { const date = document.getElementById('cash-date').value; const particulars = document.getElementById('cash-particulars').value; const portal = document.getElementById('cash-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('cash-in').value) || 0; const amountOut = parseFloat(document.getElementById('cash-out').value) || 0; if(!date || !particulars || !portal) return alert('Fill all fields.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingCashRecordId) { try { await updateInCollection('cash', editingCashRecordId, recordData); const record = AppData.cash.find(r => r.id === editingCashRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderCashTable(); cancelEditCashRecord(); } catch (error) { alert('Error: ' + error.message); } } else { try { const docId = await saveToCollection('cash', recordData); recordData.id = docId; AppData.cash.push(recordData); recalculateAllFormulas(); renderCashTable(); cancelEditCashRecord(); } catch (error) { alert('Error: ' + error.message); } } }
+    async function addCashRecord() { const date = document.getElementById('cash-date').value; const particulars = document.getElementById('cash-particulars').value; const portal = document.getElementById('cash-portal').value.trim().toUpperCase(); const amountIn = safeNum(document.getElementById('cash-in').value); const amountOut = safeNum(document.getElementById('cash-out').value); if(!date || !particulars || !portal) return alert('Fill all fields.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingCashRecordId) { try { await updateInCollection('cash', editingCashRecordId, recordData); const record = AppData.cash.find(r => r.id === editingCashRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderCashTable(); cancelEditCashRecord(); } catch (error) { alert('Error: ' + error.message); } } else { try { const docId = await saveToCollection('cash', recordData); recordData.id = docId; AppData.cash.push(recordData); recalculateAllFormulas(); renderCashTable(); cancelEditCashRecord(); } catch (error) { alert('Error: ' + error.message); } } }
     async function deleteCashRecord(docId) { if (!confirm('Delete?')) return; try { await deleteFromCollection('cash', docId); AppData.cash = AppData.cash.filter(r => r.id !== docId); recalculateAllFormulas(); renderCashTable(); } catch (error) { alert('Error: ' + error.message); } }
     function filterCashRecords() { renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
 
     function renderBanksTable() { renderLedgerTable('banks', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
     function editBanksRecord(docId) { const record = AppData.banks.find(r => r.id === docId); if (!record) return; document.getElementById('banks-date').value = record.date; document.getElementById('banks-particulars').value = record.particulars; document.getElementById('banks-portal').value = record.portal; document.getElementById('banks-in').value = record.amountIn || 0; document.getElementById('banks-out').value = record.amountOut || 0; editingBanksRecordId = docId; document.getElementById('banks-submit-btn').innerText = '💾 Update'; document.getElementById('banks-cancel-btn').classList.remove('hidden'); }
     function cancelEditBanksRecord() { editingBanksRecordId = null; document.getElementById('banks-date').value = ''; document.getElementById('banks-particulars').value = ''; document.getElementById('banks-portal').value = ''; document.getElementById('banks-in').value = '0'; document.getElementById('banks-out').value = '0'; document.getElementById('banks-submit-btn').innerText = '+ Add Transaction'; document.getElementById('banks-cancel-btn').classList.add('hidden'); }
-    async function addBanksRecord() { const date = document.getElementById('banks-date').value; const particulars = document.getElementById('banks-particulars').value; const portal = document.getElementById('banks-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('banks-in').value) || 0; const amountOut = parseFloat(document.getElementById('banks-out').value) || 0; if(!date || !particulars || !portal) return alert('Fill all fields.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingBanksRecordId) { try { await updateInCollection('banks', editingBanksRecordId, recordData); const record = AppData.banks.find(r => r.id === editingBanksRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderBanksTable(); cancelEditBanksRecord(); } catch (error) { alert('Error: ' + error.message); } } else { try { const docId = await saveToCollection('banks', recordData); recordData.id = docId; AppData.banks.push(recordData); recalculateAllFormulas(); renderBanksTable(); cancelEditBanksRecord(); } catch (error) { alert('Error: ' + error.message); } } }
+    async function addBanksRecord() { const date = document.getElementById('banks-date').value; const particulars = document.getElementById('banks-particulars').value; const portal = document.getElementById('banks-portal').value.trim().toUpperCase(); const amountIn = safeNum(document.getElementById('banks-in').value); const amountOut = safeNum(document.getElementById('banks-out').value); if(!date || !particulars || !portal) return alert('Fill all fields.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingBanksRecordId) { try { await updateInCollection('banks', editingBanksRecordId, recordData); const record = AppData.banks.find(r => r.id === editingBanksRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderBanksTable(); cancelEditBanksRecord(); } catch (error) { alert('Error: ' + error.message); } } else { try { const docId = await saveToCollection('banks', recordData); recordData.id = docId; AppData.banks.push(recordData); recalculateAllFormulas(); renderBanksTable(); cancelEditBanksRecord(); } catch (error) { alert('Error: ' + error.message); } } }
     async function deleteBanksRecord(docId) { if (!confirm('Delete?')) return; try { await deleteFromCollection('banks', docId); AppData.banks = AppData.banks.filter(r => r.id !== docId); recalculateAllFormulas(); renderBanksTable(); } catch (error) { alert('Error: ' + error.message); } }
     function filterBanksRecords() { renderLedgerTable('banks', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
 
@@ -381,8 +374,8 @@
     // ==========================================
     // DAILY TAB LOGIC
     // ==========================================
-    function getLiveBalance(tabName) { return AppData[tabName].length > 0 ? AppData[tabName][AppData[tabName].length - 1].balance : 0; }
-    function getLiveCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; }); return total; }
+    function getLiveBalance(tabName) { return AppData[tabName].length > 0 ? safeNum(AppData[tabName][AppData[tabName].length - 1].balance) : 0; }
+    function getLiveCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += safeNum(r.balance); }); return total; }
 
     function loadDailySnapshot() {
         const selectedDate = document.getElementById('daily-date').value;
@@ -400,31 +393,25 @@
         renderDailyTable();
     }
     function cancelEditDailyRecord() { editingDailyRecordId = null; document.getElementById('daily-date').value = ''; document.getElementById('daily-g9').value = 0; document.getElementById('daily-akbar').value = 0; document.getElementById('daily-via').value = 0; document.getElementById('daily-serene').value = 0; document.getElementById('daily-alghazi').value = 0; document.getElementById('daily-b2b').value = 0; document.getElementById('daily-submit-btn').innerText = '💾 Save Daily Sheet'; document.getElementById('daily-cancel-btn').classList.add('hidden'); renderDailyTable(); }
-    async function saveDailySnapshot() { const date = document.getElementById('daily-date').value; if(!date) return alert("Please select a date."); const g9 = parseFloat(document.getElementById('daily-g9').value) || 0; const akbar = parseFloat(document.getElementById('daily-akbar').value) || 0; const via = parseFloat(document.getElementById('daily-via').value) || 0; const serene = parseFloat(document.getElementById('daily-serene').value) || 0; const alghazi = parseFloat(document.getElementById('daily-alghazi').value) || 0; const b2b = parseFloat(document.getElementById('daily-b2b').value) || 0; const recordData = { date, g9, akbar, via, serene, alghazi, b2b }; if (editingDailyRecordId) { try { await updateInCollection('daily', editingDailyRecordId, recordData); const record = AppData.daily.find(r => r.id === editingDailyRecordId); Object.assign(record, recordData); recalculateAllFormulas(); } catch (error) { alert('Error updating: ' + error.message); } } else { try { const docId = await saveToCollection('daily', recordData); recordData.id = docId; AppData.daily.push(recordData); recalculateAllFormulas(); } catch (error) { alert('Error saving: ' + error.message); } } }
-    function renderDailyTable() { const tbody = document.getElementById('daily-table-body'); tbody.innerHTML = ''; const g9 = parseFloat(document.getElementById('daily-g9').value) || 0; const akbar = parseFloat(document.getElementById('daily-akbar').value) || 0; const via = parseFloat(document.getElementById('daily-via').value) || 0; const serene = parseFloat(document.getElementById('daily-serene').value) || 0; const alghazi = parseFloat(document.getElementById('daily-alghazi').value) || 0; const b2b = parseFloat(document.getElementById('daily-b2b').value) || 0; const custDues = getLiveCustomerDues(); const toursBalance = getLiveBalance('tourtravel'); const banksBalance = getLiveBalance('banks'); const cashBalance = getLiveBalance('cash'); const manualRows = [ { name: 'AIR ARABIA G9', amount: g9 }, { name: 'AKBAR PORTAL', amount: akbar }, { name: 'VIA', amount: via }, { name: 'SERENE AIR LINE', amount: serene }, { name: 'AL GHAZI TRAVEL', amount: alghazi }, { name: 'B2B', amount: b2b } ]; const autoRows = [ { name: 'TOURS TRAVEL ON WAHAT', amount: toursBalance, source: 'Auto from TourTravel' }, { name: 'ADIB NBD BANKS', amount: banksBalance, source: 'Auto from Banks' }, { name: 'CUSTOMERS DUES', amount: custDues, source: 'Auto from Customers' }, { name: 'CASH ON HAND', amount: cashBalance, source: 'Auto from Cash' } ]; let grandTotal = 0; const fmt = (num) => num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}); manualRows.forEach(row => { grandTotal += row.amount; tbody.innerHTML += `<tr><td>${row.name}</td><td>${fmt(row.amount)}</td></tr>`; }); autoRows.forEach(row => { grandTotal += row.amount; const colorStyle = row.amount < 0 ? 'color: var(--danger);' : 'color: var(--success-text);'; tbody.innerHTML += `<tr class="row-auto-calc"><td><strong>${row.name}</strong> <span class="auto-badge">${row.source}</span></td><td style="${colorStyle}">${fmt(row.amount)}</td></tr>`; }); const totalEl = document.getElementById('daily-grand-total'); totalEl.innerText = fmt(grandTotal) + ' AED'; totalEl.style.color = grandTotal < 0 ? '#f87171' : '#4ade80'; }
+    async function saveDailySnapshot() { const date = document.getElementById('daily-date').value; if(!date) return alert("Please select a date."); const g9 = safeNum(document.getElementById('daily-g9').value); const akbar = safeNum(document.getElementById('daily-akbar').value); const via = safeNum(document.getElementById('daily-via').value); const serene = safeNum(document.getElementById('daily-serene').value); const alghazi = safeNum(document.getElementById('daily-alghazi').value); const b2b = safeNum(document.getElementById('daily-b2b').value); const recordData = { date, g9, akbar, via, serene, alghazi, b2b }; if (editingDailyRecordId) { try { await updateInCollection('daily', editingDailyRecordId, recordData); const record = AppData.daily.find(r => r.id === editingDailyRecordId); Object.assign(record, recordData); recalculateAllFormulas(); } catch (error) { alert('Error updating: ' + error.message); } } else { try { const docId = await saveToCollection('daily', recordData); recordData.id = docId; AppData.daily.push(recordData); recalculateAllFormulas(); } catch (error) { alert('Error saving: ' + error.message); } } }
+    function renderDailyTable() { const tbody = document.getElementById('daily-table-body'); tbody.innerHTML = ''; const g9 = safeNum(document.getElementById('daily-g9').value); const akbar = safeNum(document.getElementById('daily-akbar').value); const via = safeNum(document.getElementById('daily-via').value); const serene = safeNum(document.getElementById('daily-serene').value); const alghazi = safeNum(document.getElementById('daily-alghazi').value); const b2b = safeNum(document.getElementById('daily-b2b').value); const custDues = getLiveCustomerDues(); const toursBalance = getLiveBalance('tourtravel'); const banksBalance = getLiveBalance('banks'); const cashBalance = getLiveBalance('cash'); const manualRows = [ { name: 'AIR ARABIA G9', amount: g9 }, { name: 'AKBAR PORTAL', amount: akbar }, { name: 'VIA', amount: via }, { name: 'SERENE AIR LINE', amount: serene }, { name: 'AL GHAZI TRAVEL', amount: alghazi }, { name: 'B2B', amount: b2b } ]; const autoRows = [ { name: 'TOURS TRAVEL ON WAHAT', amount: toursBalance, source: 'Auto from TourTravel' }, { name: 'ADIB NBD BANKS', amount: banksBalance, source: 'Auto from Banks' }, { name: 'CUSTOMERS DUES', amount: custDues, source: 'Auto from Customers' }, { name: 'CASH ON HAND', amount: cashBalance, source: 'Auto from Cash' } ]; let grandTotal = 0; manualRows.forEach(row => { grandTotal += row.amount; tbody.innerHTML += `<tr><td>${row.name}</td><td>${fmt(row.amount)}</td></tr>`; }); autoRows.forEach(row => { grandTotal += row.amount; const colorStyle = row.amount < 0 ? 'color: var(--danger);' : 'color: var(--success-text);'; tbody.innerHTML += `<tr class="row-auto-calc"><td><strong>${row.name}</strong> <span class="auto-badge">${row.source}</span></td><td style="${colorStyle}">${fmt(row.amount)}</td></tr>`; }); const totalEl = document.getElementById('daily-grand-total'); totalEl.innerText = fmt(grandTotal) + ' AED'; totalEl.style.color = grandTotal < 0 ? '#f87171' : '#4ade80'; }
 
 
     // ==========================================
-    // PAID TAB LOGIC (FILTER FROM CUSTOMERS)
+    // PAID TAB LOGIC
     // ==========================================
     function renderPaidTable() {
         const tbody = document.getElementById('paid-table-body');
         tbody.innerHTML = '';
-        
-        // EXCEL FORMULA: =FILTER(CUSTOMERS!A:Z, CUSTOMERS!G:G="PAID")
         const paidRecords = AppData.customers.filter(r => r.status === 'PAID');
-        
         let totalCollected = 0;
-        const fmt = (num) => (num || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
         
         if (paidRecords.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="empty-state" style="padding: 40px;">No paid customers yet. Mark customers as paid in the Customers tab to see them here.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state" style="padding: 40px;">No paid customers yet.</td></tr>';
         } else {
-            // Sort by paidDate descending so newest paid show first
             paidRecords.sort((a, b) => (b.paidDate || '').localeCompare(a.paidDate || ''));
-            
             paidRecords.forEach(r => {
-                totalCollected += (r.paid || 0);
+                totalCollected += safeNum(r.paid);
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>${r.paidDate || 'N/A'}</strong></td>
@@ -439,8 +426,7 @@
         }
         
         document.getElementById('paid-total-collected').innerText = fmt(totalCollected) + ' AED';
-        const totalEl = document.getElementById('paid-grand-total');
-        totalEl.innerText = fmt(totalCollected) + ' AED';
+        document.getElementById('paid-grand-total').innerText = fmt(totalCollected) + ' AED';
     }
 
 
