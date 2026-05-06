@@ -158,12 +158,12 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header"><div class="logo-placeholder">F</div><h2>FinTracker</h2></div>
         <nav class="nav-menu">
-            <div class="nav-item active" onclick="switchTab('customers')"><span class="nav-icon">👥</span> Customers</div>
-            <div class="nav-item" onclick="switchTab('tourtravel')"><span class="nav-icon">✈️</span> Tour & Travel</div>
-            <div class="nav-item" onclick="switchTab('cash')"><span class="nav-icon">💵</span> Cash</div>
-            <div class="nav-item" onclick="switchTab('banks')"><span class="nav-icon">🏦</span> Banks</div>
-            <div class="nav-item" onclick="switchTab('daily')"><span class="nav-icon">📅</span> Daily Sheet</div>
-            <div class="nav-item" onclick="switchTab('paid')"><span class="nav-icon">✅</span> Paid Ledger</div>
+            <div class="nav-item active" onclick="switchTab('customers', this)"><span class="nav-icon">👥</span> Customers</div>
+            <div class="nav-item" onclick="switchTab('tourtravel', this)"><span class="nav-icon">✈️</span> Tour & Travel</div>
+            <div class="nav-item" onclick="switchTab('cash', this)"><span class="nav-icon">💵</span> Cash</div>
+            <div class="nav-item" onclick="switchTab('banks', this)"><span class="nav-icon">🏦</span> Banks</div>
+            <div class="nav-item" onclick="switchTab('daily', this)"><span class="nav-icon">📅</span> Daily Sheet</div>
+            <div class="nav-item" onclick="switchTab('paid', this)"><span class="nav-icon">✅</span> Paid Ledger</div>
         </nav>
     </aside>
 
@@ -285,7 +285,7 @@
         if (!currentUser) return;
         const dbCollection = DB_MAP[collectionName];
         try {
-            const querySnapshot = await db.collection(dbCollection).where('userId', '==', currentUser.uid).orderBy('date', 'asc').get();
+            const querySnapshot = await db.collection(dbCollection).where('userid', '==', currentUser.uid).orderBy('date', 'asc').get();
             AppData[collectionName] = [];
             querySnapshot.forEach((doc) => { AppData[collectionName].push({ id: doc.id, ...doc.data() }); });
             renderActiveTab(); recalculateAllFormulas(); 
@@ -298,16 +298,16 @@
         }
     }
 
-    async function saveToCollection(collectionName, record) { if (!currentUser) return; const dbCollection = DB_MAP[collectionName]; const recordWithUser = { ...record, userId: currentUser.uid, createdAt: new Date().toISOString() }; const docRef = await db.collection(dbCollection).add(recordWithUser); return docRef.id; }
+    async function saveToCollection(collectionName, record) { if (!currentUser) return; const dbCollection = DB_MAP[collectionName]; const recordWithUser = { ...record, userid: currentUser.uid, createdAt: new Date().toISOString() }; const docRef = await db.collection(dbCollection).add(recordWithUser); return docRef.id; }
     async function updateInCollection(collectionName, docId, updateData) { const dbCollection = DB_MAP[collectionName]; await db.doc(`${dbCollection}/${docId}`).update(updateData); }
     async function deleteFromCollection(collectionName, docId) { const dbCollection = DB_MAP[collectionName]; await db.doc(`${dbCollection}/${docId}`).delete(); }
 
     function recalculateAllFormulas() { calculateCustomerDues(); calculateLedgerBalance('tourtravel', 'tt-total-in', 'tt-total-out', 'tt-current-balance'); calculateLedgerBalance('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); calculateLedgerBalance('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance'); renderDailyTable(); renderPaidTable(); }
 
-    function switchTab(tabName) { 
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); 
-        event.currentTarget.classList.add('active'); 
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); 
+    function switchTab(tabName, el) { 
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active')); 
+        el.classList.add('active'); 
+        document.querySelectorAll('.tab-content').forEach(item => item.classList.remove('active')); 
         document.getElementById(`tab-${tabName}`).classList.add('active'); 
         document.getElementById('sidebar').classList.remove('open'); 
         if (tabName === 'paid') { renderActiveTab(); }
@@ -370,7 +370,6 @@
     async function deleteBanksRecord(docId) { if (!confirm('Delete?')) return; try { await deleteFromCollection('banks', docId); AppData.banks = AppData.banks.filter(r => r.id !== docId); recalculateAllFormulas(); renderBanksTable(); } catch (error) { alert('Error: ' + error.message); } }
     function filterBanksRecords() { renderLedgerTable('banks', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
 
-
     // ==========================================
     // DAILY TAB LOGIC
     // ==========================================
@@ -395,7 +394,6 @@
     function cancelEditDailyRecord() { editingDailyRecordId = null; document.getElementById('daily-date').value = ''; document.getElementById('daily-g9').value = 0; document.getElementById('daily-akbar').value = 0; document.getElementById('daily-via').value = 0; document.getElementById('daily-serene').value = 0; document.getElementById('daily-alghazi').value = 0; document.getElementById('daily-b2b').value = 0; document.getElementById('daily-submit-btn').innerText = '💾 Save Daily Sheet'; document.getElementById('daily-cancel-btn').classList.add('hidden'); renderDailyTable(); }
     async function saveDailySnapshot() { const date = document.getElementById('daily-date').value; if(!date) return alert("Please select a date."); const g9 = safeNum(document.getElementById('daily-g9').value); const akbar = safeNum(document.getElementById('daily-akbar').value); const via = safeNum(document.getElementById('daily-via').value); const serene = safeNum(document.getElementById('daily-serene').value); const alghazi = safeNum(document.getElementById('daily-alghazi').value); const b2b = safeNum(document.getElementById('daily-b2b').value); const recordData = { date, g9, akbar, via, serene, alghazi, b2b }; if (editingDailyRecordId) { try { await updateInCollection('daily', editingDailyRecordId, recordData); const record = AppData.daily.find(r => r.id === editingDailyRecordId); Object.assign(record, recordData); recalculateAllFormulas(); } catch (error) { alert('Error updating: ' + error.message); } } else { try { const docId = await saveToCollection('daily', recordData); recordData.id = docId; AppData.daily.push(recordData); recalculateAllFormulas(); } catch (error) { alert('Error saving: ' + error.message); } } }
     function renderDailyTable() { const tbody = document.getElementById('daily-table-body'); tbody.innerHTML = ''; const g9 = safeNum(document.getElementById('daily-g9').value); const akbar = safeNum(document.getElementById('daily-akbar').value); const via = safeNum(document.getElementById('daily-via').value); const serene = safeNum(document.getElementById('daily-serene').value); const alghazi = safeNum(document.getElementById('daily-alghazi').value); const b2b = safeNum(document.getElementById('daily-b2b').value); const custDues = getLiveCustomerDues(); const toursBalance = getLiveBalance('tourtravel'); const banksBalance = getLiveBalance('banks'); const cashBalance = getLiveBalance('cash'); const manualRows = [ { name: 'AIR ARABIA G9', amount: g9 }, { name: 'AKBAR PORTAL', amount: akbar }, { name: 'VIA', amount: via }, { name: 'SERENE AIR LINE', amount: serene }, { name: 'AL GHAZI TRAVEL', amount: alghazi }, { name: 'B2B', amount: b2b } ]; const autoRows = [ { name: 'TOURS TRAVEL ON WAHAT', amount: toursBalance, source: 'Auto from TourTravel' }, { name: 'ADIB NBD BANKS', amount: banksBalance, source: 'Auto from Banks' }, { name: 'CUSTOMERS DUES', amount: custDues, source: 'Auto from Customers' }, { name: 'CASH ON HAND', amount: cashBalance, source: 'Auto from Cash' } ]; let grandTotal = 0; manualRows.forEach(row => { grandTotal += row.amount; tbody.innerHTML += `<tr><td>${row.name}</td><td>${fmt(row.amount)}</td></tr>`; }); autoRows.forEach(row => { grandTotal += row.amount; const colorStyle = row.amount < 0 ? 'color: var(--danger);' : 'color: var(--success-text);'; tbody.innerHTML += `<tr class="row-auto-calc"><td><strong>${row.name}</strong> <span class="auto-badge">${row.source}</span></td><td style="${colorStyle}">${fmt(row.amount)}</td></tr>`; }); const totalEl = document.getElementById('daily-grand-total'); totalEl.innerText = fmt(grandTotal) + ' AED'; totalEl.style.color = grandTotal < 0 ? '#f87171' : '#4ade80'; }
-
 
     // ==========================================
     // PAID TAB LOGIC
@@ -428,7 +426,6 @@
         document.getElementById('paid-total-collected').innerText = fmt(totalCollected) + ' AED';
         document.getElementById('paid-grand-total').innerText = fmt(totalCollected) + ' AED';
     }
-
 
     // ==========================================
     // IMPORT / EXPORT
