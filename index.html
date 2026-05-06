@@ -131,7 +131,7 @@
         .fintech-table tfoot td:last-child { text-align: right; }
 
         /* Paid Tab Specifics */
-        .fintech-table.paid-table th { background: #064e3b; border-bottom: 3px solid var(--success); } /* Rich Green Header */
+        .fintech-table.paid-table th { background: #064e3b; border-bottom: 3px solid var(--success); }
         .fintech-table.paid-table tfoot td { background: #064e3b; border-top: 3px solid var(--success); }
         .badge-cleared { background: #d1fae5; color: #065f46; padding: 6px 14px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid #a7f3d0; }
 
@@ -282,8 +282,9 @@
 </div>
 
 <script>
-    const AppData = { customers: [], tourtravel: [], cash: [], banks: [], daily: [], paid: [] };
-    const DB_MAP = { customers: 'records', tourtravel: 'tourtravel', cash: 'cash', banks: 'banks', daily: 'daily', paid: 'paid' };
+    // Removed 'paid: []' and 'paid: paid' from AppData and DB_MAP to prevent database querying
+    const AppData = { customers: [], tourtravel: [], cash: [], banks: [], daily: [] };
+    const DB_MAP = { customers: 'records', tourtravel: 'tourtravel', cash: 'cash', banks: 'banks', daily: 'daily' };
     let currentUser = null;
     let editingTTRecordId = null; let editingCashRecordId = null; let editingBanksRecordId = null; let editingDailyRecordId = null;
 
@@ -297,7 +298,7 @@
     });
 
     function handleLogin() { auth.signInWithPopup(provider).catch((error) => alert("Login failed: " + error.message)); }
-    function handleLogout() { auth.signOut(); AppData = { customers: [], tourtravel: [], cash: [], banks: [], daily: [], paid: [] }; }
+    function handleLogout() { auth.signOut(); AppData = { customers: [], tourtravel: [], cash: [], banks: [], daily: [] }; }
 
     async function loadCollection(collectionName) {
         if (!currentUser) return;
@@ -319,7 +320,23 @@
 
     function recalculateAllFormulas() { calculateCustomerDues(); calculateLedgerBalance('tourtravel', 'tt-total-in', 'tt-total-out', 'tt-current-balance'); calculateLedgerBalance('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); calculateLedgerBalance('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance'); renderDailyTable(); renderPaidTable(); }
 
-    function switchTab(tabName) { document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(`tab-${tabName}`).classList.add('active'); document.getElementById('sidebar').classList.remove('open'); if (AppData[tabName].length === 0 && tabName !== 'paid') { loadCollection(tabName); } else { renderActiveTab(); } }
+    function switchTab(tabName) { 
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); 
+        event.currentTarget.classList.add('active'); 
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); 
+        document.getElementById(`tab-${tabName}`).classList.add('active'); 
+        document.getElementById('sidebar').classList.remove('open'); 
+        
+        // FIX: Paid tab is a virtual filter of Customers, not a DB collection
+        if (tabName === 'paid') {
+            renderActiveTab();
+        } else if (AppData[tabName].length === 0) { 
+            loadCollection(tabName); 
+        } else { 
+            renderActiveTab(); 
+        } 
+    }
+    
     function renderActiveTab() { const activeTab = document.querySelector('.tab-content.active'); if (activeTab.id === 'tab-customers') renderCustomerTable(); else if (activeTab.id === 'tab-tourtravel') renderTourTravelTable(); else if (activeTab.id === 'tab-cash') renderCashTable(); else if (activeTab.id === 'tab-banks') renderBanksTable(); else if (activeTab.id === 'tab-daily') renderDailyTable(); else if (activeTab.id === 'tab-paid') renderPaidTable(); }
 
     function updateDatalist(elementId, defaults, dataArray) { const datalist = document.getElementById(elementId); if(!datalist) return; const usedPortals = [...new Set(dataArray.map(r => r.portal).filter(Boolean))]; const allPortals = [...new Set([...defaults, ...usedPortals])].sort(); datalist.innerHTML = ''; allPortals.forEach(p => { const option = document.createElement('option'); option.value = p; datalist.appendChild(option); }); }
