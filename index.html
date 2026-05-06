@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial & Workflow Tracker</title>
+    <title>FinTracker Pro</title>
     
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Firebase Compat SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -32,60 +30,72 @@
     
     <style>
         :root {
-            --primary: #2563eb; --primary-hover: #1d4ed8; --secondary: #0f172a; --success: #10b981;
-            --danger: #ef4444; --warning: #f59e0b; --bg-main: #f1f5f9; --bg-card: #ffffff;
-            --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0;
-            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-            --radius: 0.75rem; --info-bg: #eff6ff; --info-border: #bfdbfe;
+            --primary: #2563eb; --primary-hover: #1d4ed8; --primary-glow: rgba(37, 99, 235, 0.25);
+            --secondary: #0f172a; --success: #10b981; --success-bg: #ecfdf5; --success-border: #a7f3d0; --success-text: #065f46;
+            --danger: #ef4444; --warning: #f59e0b;
+            --bg-main: #f8fafc; --bg-card: #ffffff;
+            --text-main: #0f172a; --text-muted: #64748b;
+            --border: #e2e8f0; --border-focus: #93c5fd;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.03);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
+            --radius: 16px; --radius-sm: 12px;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; font-variant-numeric: tabular-nums; }
+
         .sidebar { width: 260px; background: var(--secondary); color: white; display: flex; flex-direction: column; transition: width 0.3s; z-index: 10; }
         .sidebar-header { padding: 1.5rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .logo-placeholder { width: 36px; height: 36px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
         .sidebar-header h2 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.5px; }
         .nav-menu { flex: 1; padding: 1rem 0; overflow-y: auto; }
-        .nav-item { display: flex; align-items: center; padding: 0.85rem 1.5rem; color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.2s; font-weight: 500; font-size: 0.9rem; border-left: 3px solid transparent; }
+        .nav-item { display: flex; align-items: center; padding: 0.85rem 1.5rem; color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.2s; font-weight: 500; font-size: 0.9rem; border-left: 3px solid transparent; }
         .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
-        .nav-item.active { background: rgba(37, 99, 235, 0.2); color: white; border-left-color: var(--primary); }
+        .nav-item.active { background: rgba(37, 99, 235, 0.15); color: white; border-left-color: var(--primary); }
         .nav-icon { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
+
         .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--bg-card); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); z-index: 5; border-bottom: 1px solid var(--border); }
         .user-info { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; font-weight: 500; color: var(--text-main); }
         .btn-logout { background: transparent; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 500; color: var(--text-muted); transition: 0.2s; }
         .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+
         .main-content { flex: 1; padding: 2rem; overflow-y: auto; background: var(--bg-main); }
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
         h2.page-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--secondary); }
+        
         .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
         .card-warning { border-left: 4px solid var(--warning); }
         .card h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
         .card .value { font-size: 1.8rem; font-weight: 700; color: var(--secondary); }
         .card small { color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 8px; }
-        .form-card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 2rem; border: 1px solid var(--border); }
+
+        .form-card { background: var(--bg-card); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-lg); margin-bottom: 2rem; border: 1px solid var(--border); }
         .form-row { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
         .form-group { flex: 1; min-width: 150px; display: flex; flex-direction: column; }
-        .form-group label { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: var(--text-main); }
-        .form-group input, .form-group select { padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 0.5rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: border 0.2s; }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .form-group label { font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-group input, .form-group select { padding: 0.7rem 0.8rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: all 0.2s; background: #f8fafc; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); background: white; }
         .helper-text { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
-        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
         .btn-primary { background: var(--primary); color: white; } .btn-primary:hover { background: var(--primary-hover); }
         .btn-danger { background: var(--danger); color: white; } .btn-danger:hover { background: #dc2626; }
         .btn-outline { background: white; color: var(--text-main); border: 1px solid var(--border); } .btn-outline:hover { background: var(--bg-main); }
         .btn-cancel { background: white; color: var(--danger); border: 1px solid var(--danger); } .btn-cancel:hover { background: #fef2f2; }
-        .table-container { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--border); }
+
+        .table-container { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-lg); overflow: hidden; border: 1px solid var(--border); }
         .table-header { padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: var(--bg-main); }
         .search-input { padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 0.5rem; width: 250px; font-family: 'Inter', sans-serif; }
+        
         table { width: 100%; border-collapse: collapse; }
-        th { background: var(--secondary); color: white; padding: 0.85rem 1rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
-        td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; color: var(--text-main); }
-        tr:hover td { background: rgba(241, 245, 249, 0.5); }
-        tr.row-auto-calc td { background: var(--info-bg); border-bottom: 1px solid var(--info-border); }
+        th { background: #1e293b; color: #e2e8f0; padding: 0.85rem 1rem; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        td { padding: 0.85rem 1rem; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; color: var(--text-main); }
+        tr:nth-child(even) td { background: #f8fafc; }
+        tr:hover td { background: #eef2ff; }
         .status-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
         .status-paid { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .status-notpaid { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
@@ -94,18 +104,47 @@
         .action-btn:hover { background: var(--bg-main); }
         .action-btn.del:hover { border-color: var(--danger); color: var(--danger); }
         .action-btn.edit:hover { border-color: var(--primary); color: var(--primary); }
+
         .empty-state { text-align: center; padding: 3rem; color: var(--text-muted); }
         .auth-screen { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
-        .auth-card { background: white; padding: 3rem; border-radius: 1rem; box-shadow: var(--shadow-lg); text-align: center; max-width: 400px; width: 100%; }
+        .auth-card { background: white; padding: 3rem; border-radius: var(--radius); box-shadow: var(--shadow-lg); text-align: center; max-width: 400px; width: 100%; }
         .auth-card h1 { margin-bottom: 0.5rem; font-size: 1.8rem; color: var(--secondary); }
         .auth-card p { color: var(--text-muted); margin-bottom: 2rem; }
-        .btn-google { background: var(--primary); color: white; padding: 12px 24px; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; font-size: 1rem; width: 100%; transition: 0.2s; }
+        .btn-google { background: var(--primary); color: white; padding: 12px 24px; border: none; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; font-size: 1rem; width: 100%; transition: 0.2s; }
         .btn-google:hover { background: var(--primary-hover); }
         .hidden { display: none !important; }
+        
+        /* --- DAILY SHEET PREMIUM STYLES --- */
+        .daily-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+        .input-currency-group { position: relative; }
+        .input-currency-group .currency-prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; font-weight: 700; pointer-events: none; }
+        .input-currency-group input { padding-left: 45px !important; font-weight: 600; }
+        
+        .btn-fintech-primary { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; border: none; padding: 14px 32px; border-radius: var(--radius-sm); font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px var(--primary-glow); width: 100%; }
+        .btn-fintech-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
+
+        .fintech-table { border-collapse: separate; border-spacing: 0; width: 100%; }
+        .fintech-table th { background: #1e293b; color: #e2e8f0; font-size: 0.8rem; padding: 16px 24px; text-align: right; }
+        .fintech-table th:first-child { text-align: left; }
+        .fintech-table td { padding: 18px 24px; border-bottom: 1px solid #f1f5f9; font-size: 1rem; }
+        .fintech-table tr:nth-child(even) td { background: #f8fafc; }
+        .fintech-table tr:hover td { background: #eef2ff; }
+        .fintech-table td:last-child { text-align: right; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.5px; }
+        .fintech-table td:first-child { font-weight: 600; }
+        
+        .fintech-table tr.row-auto-calc td { background: var(--success-bg); border-bottom: 1px solid var(--success-border); }
+        .fintech-table tr.row-auto-calc:hover td { background: #d1fae5; }
+        .fintech-table tr.row-auto-calc td:last-child { color: var(--success-text); }
+        
+        .auto-badge { background: #d1fae5; color: var(--success-text); padding: 4px 10px; border-radius: 999px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; margin-left: 12px; letter-spacing: 0.05em; vertical-align: middle; border: 1px solid var(--success-border); }
+        
+        .fintech-table tfoot td { background: #0f172a; color: white; font-size: 1.5rem; font-weight: 800; padding: 24px; border-top: 3px solid var(--primary); letter-spacing: -0.5px; }
+        .fintech-table tfoot td:last-child { text-align: right; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 768px) {
             .sidebar { width: 0; overflow: hidden; position: absolute; height: 100%; } .sidebar.open { width: 260px; }
-            .main-content { padding: 1rem; } .form-row { flex-direction: column; }
+            .main-content { padding: 1rem; } .form-row { flex-direction: column; } .daily-grid { grid-template-columns: 1fr; }
             .table-header { flex-direction: column; gap: 1rem; align-items: flex-start; } .search-input { width: 100%; }
         }
     </style>
@@ -166,7 +205,7 @@
                     <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="tt-date" required></div><div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="tt-particulars" placeholder="e.g. Amjad Ullah Ticket" required></div><div class="form-group" style="flex:1;"><label>Portal / Method</label><input type="text" id="tt-portal" list="tt-portal-list" placeholder="Select or type" required><datalist id="tt-portal-list"></datalist></div></div>
                     <div class="form-row"><div class="form-group"><label>Amount In (+)</label><input type="number" id="tt-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Amount Out (-)</label><input type="number" id="tt-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;"><button class="btn btn-cancel hidden" id="tt-cancel-btn" onclick="cancelEditTourTravelRecord()">✕ Cancel</button><button class="btn btn-primary" id="tt-submit-btn" onclick="addTourTravelRecord()">+ Add Transaction</button></div></div>
                 </div>
-                <div class="table-container"><div class="table-header"><input type="text" id="tt-search" class="search-input" placeholder="Search..." onkeyup="filterTourTravelRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('tourtravel')">⬇ Backup</button><input type="file" id="importFileTT" accept=".json" style="display:none" onchange="importData(event, 'tourtravel')"></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="tt-table-body"></tbody></table></div>
+                <div class="table-container"><div class="table-header"><input type="text" id="tt-search" class="search-input" placeholder="Search..." onkeyup="filterTourTravelRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('tourtravel')">⬇ Backup</button></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="tt-table-body"></tbody></table></div>
             </section>
 
             <!-- CASH TAB -->
@@ -181,7 +220,7 @@
                     <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cash-date" required></div><div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="cash-particulars" placeholder="e.g. Cash on hand" required></div><div class="form-group" style="flex:1;"><label>Portal</label><input type="text" id="cash-portal" list="cash-portal-list" placeholder="Select or type" required><datalist id="cash-portal-list"></datalist></div></div>
                     <div class="form-row"><div class="form-group"><label>Amount In (+)</label><input type="number" id="cash-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Amount Out (-)</label><input type="number" id="cash-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;"><button class="btn btn-cancel hidden" id="cash-cancel-btn" onclick="cancelEditCashRecord()">✕ Cancel</button><button class="btn btn-primary" id="cash-submit-btn" onclick="addCashRecord()">+ Add Transaction</button></div></div>
                 </div>
-                <div class="table-container"><div class="table-header"><input type="text" id="cash-search" class="search-input" placeholder="Search..." onkeyup="filterCashRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('cash')">⬇ Backup</button><input type="file" id="importFileCash" accept=".json" style="display:none" onchange="importData(event, 'cash')"></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table></div>
+                <div class="table-container"><div class="table-header"><input type="text" id="cash-search" class="search-input" placeholder="Search..." onkeyup="filterCashRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('cash')">⬇ Backup</button></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table></div>
             </section>
 
             <!-- BANKS TAB -->
@@ -196,40 +235,84 @@
                     <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="banks-date" required></div><div class="form-group" style="flex:3;"><label>Name of Depositer</label><input type="text" id="banks-particulars" placeholder="e.g. Haji Aslam Ticket" required></div><div class="form-group" style="flex:1;"><label>Bank</label><input type="text" id="banks-portal" list="banks-portal-list" placeholder="Select or type" required><datalist id="banks-portal-list"></datalist></div></div>
                     <div class="form-row"><div class="form-group"><label>Ticket Amt / Deposit (+)</label><input type="number" id="banks-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Withdraw (-)</label><input type="number" id="banks-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;"><button class="btn btn-cancel hidden" id="banks-cancel-btn" onclick="cancelEditBanksRecord()">✕ Cancel</button><button class="btn btn-primary" id="banks-submit-btn" onclick="addBanksRecord()">+ Add Transaction</button></div></div>
                 </div>
-                <div class="table-container"><div class="table-header"><input type="text" id="banks-search" class="search-input" placeholder="Search..." onkeyup="filterBanksRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('banks')">⬇ Backup</button><input type="file" id="importFileBanks" accept=".json" style="display:none" onchange="importData(event, 'banks')"></div></div><table><thead><tr><th>Date</th><th>Depositer</th><th>Bank</th><th>Ticket Amt (+)</th><th>Withdraw (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="banks-table-body"></tbody></table></div>
+                <div class="table-container"><div class="table-header"><input type="text" id="banks-search" class="search-input" placeholder="Search..." onkeyup="filterBanksRecords()"><div style="display:flex; gap:8px;"><button class="btn btn-outline" onclick="exportData('banks')">⬇ Backup</button></div></div><table><thead><tr><th>Date</th><th>Depositer</th><th>Bank</th><th>Ticket Amt (+)</th><th>Withdraw (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="banks-table-body"></tbody></table></div>
             </section>
 
-            <!-- DAILY TAB -->
+            <!-- DAILY TAB (PREMIUM UI) -->
             <section id="tab-daily" class="tab-content">
                 <h2 class="page-title">WAHAT AL DHAID TOURS - Daily Sheet</h2>
                 <div class="form-card">
-                    <div class="form-row">
-                        <div class="form-group" style="max-width: 250px;"><label>Select Date</label><input type="date" id="daily-date" required onchange="loadDailySnapshot()"></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>AIR ARABIA G9</label><input type="number" id="daily-g9" placeholder="0" step="0.01" value="0"></div>
-                        <div class="form-group"><label>AKBAR PORTAL</label><input type="number" id="daily-akbar" placeholder="0" step="0.01" value="0"></div>
-                        <div class="form-group"><label>VIA</label><input type="number" id="daily-via" placeholder="0" step="0.01" value="0"></div>
-                        <div class="form-group"><label>SERENE AIR LINE</label><input type="number" id="daily-serene" placeholder="0" step="0.01" value="0"></div>
-                        <div class="form-group"><label>AL GHAZI TRAVEL</label><input type="number" id="daily-alghazi" placeholder="0" step="0.01" value="0"></div>
-                        <div class="form-group"><label>B2B</label><input type="number" id="daily-b2b" placeholder="0" step="0.01" value="0"></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group" style="justify-content: flex-end; flex-direction: row; gap: 8px; align-items: flex-start;">
-                            <button class="btn btn-cancel hidden" id="daily-cancel-btn" onclick="cancelEditDailyRecord()">✕ Cancel</button>
-                            <button class="btn btn-primary" id="daily-submit-btn" onclick="saveDailySnapshot()">💾 Save Daily Sheet</button>
+                    <div class="form-row" style="margin-bottom: 24px;">
+                        <div class="form-group" style="max-width: 300px;">
+                            <label style="font-size: 0.85rem;">Select Date</label>
+                            <input type="date" id="daily-date" required onchange="loadDailySnapshot()" style="font-size: 1rem; font-weight: 600;">
                         </div>
+                    </div>
+                    
+                    <div class="daily-grid">
+                        <div class="form-group">
+                            <label>AIR ARABIA G9</label>
+                            <div class="input-currency-group">
+                                <span class="currency-prefix">AED</span>
+                                <input type="number" id="daily-g9" placeholder="0.00" step="0.01" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>AKBAR PORTAL</label>
+                            <div class="input-currency-group">
+                                <span class="currency-prefix">AED</span>
+                                <input type="number" id="daily-akbar" placeholder="0.00" step="0.01" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>VIA</label>
+                            <div class="input-currency-group">
+                                <span class="currency-prefix">AED</span>
+                                <input type="number" id="daily-via" placeholder="0.00" step="0.01" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>SERENE AIR LINE</label>
+                            <div class="input-currency-group">
+                                <span class="currency-prefix">AED</span>
+                                <input type="number" id="daily-serene" placeholder="0.00" step="0.01" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>AL GHAZI TRAVEL</label>
+                            <div class="input-currency-group">
+                                <span class="currency-prefix">AED</span>
+                                <input type="number" id="daily-alghazi" placeholder="0.00" step="0.01" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>B2B</label>
+                            <div class="input-currency-group">
+                                <span class="currency-prefix">AED</span>
+                                <input type="number" id="daily-b2b" placeholder="0.00" step="0.01" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 32px; display: flex; gap: 12px; align-items: center;">
+                        <button class="btn-fintech-primary" id="daily-submit-btn" onclick="saveDailySnapshot()">💾 Save Daily Sheet</button>
+                        <button class="btn btn-cancel hidden" id="daily-cancel-btn" onclick="cancelEditDailyRecord()" style="height: 50px;">✕ Cancel Edit</button>
                     </div>
                 </div>
 
-                <div class="table-container">
-                    <table>
-                        <thead><tr><th>Particulars</th><th style="text-align:right;">Amounts (AED)</th></tr></thead>
+                <div class="table-container" style="overflow: hidden;">
+                    <table class="fintech-table">
+                        <thead>
+                            <tr>
+                                <th>Particulars</th>
+                                <th style="text-align: right;">Amounts (AED)</th>
+                            </tr>
+                        </thead>
                         <tbody id="daily-table-body"></tbody>
                         <tfoot>
-                            <tr style="background: var(--secondary); color: white; font-weight: 700; font-size: 1.1rem;">
-                                <td style="border: none;">TOTAL DAILY BALANCE</td>
-                                <td style="border: none; text-align:right;" id="daily-grand-total">0</td>
+                            <tr>
+                                <td>TOTAL DAILY BALANCE</td>
+                                <td id="daily-grand-total">0.00</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -283,26 +366,24 @@
     function switchTab(tabName) { document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); event.currentTarget.classList.add('active'); document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(`tab-${tabName}`).classList.add('active'); document.getElementById('sidebar').classList.remove('open'); if (AppData[tabName].length === 0) { loadCollection(tabName); } else { renderActiveTab(); } }
     function renderActiveTab() { const activeTab = document.querySelector('.tab-content.active'); if (activeTab.id === 'tab-customers') renderCustomerTable(); else if (activeTab.id === 'tab-tourtravel') renderTourTravelTable(); else if (activeTab.id === 'tab-cash') renderCashTable(); else if (activeTab.id === 'tab-banks') renderBanksTable(); else if (activeTab.id === 'tab-daily') renderDailyTable(); }
 
-    // --- SHARED UTILITY FUNCTIONS ---
     function updateDatalist(elementId, defaults, dataArray) { const datalist = document.getElementById(elementId); if(!datalist) return; const usedPortals = [...new Set(dataArray.map(r => r.portal).filter(Boolean))]; const allPortals = [...new Set([...defaults, ...usedPortals])].sort(); datalist.innerHTML = ''; allPortals.forEach(p => { const option = document.createElement('option'); option.value = p; datalist.appendChild(option); }); }
-    function calculateLedgerBalance(tabName, inId, outId, balanceId) { let runningBalance = 0, totalIn = 0, totalOut = 0; AppData[tabName].forEach(r => { runningBalance += (r.amountIn || 0) - (r.amountOut || 0); totalIn += (r.amountIn || 0); totalOut += (r.amountOut || 0); r.balance = runningBalance; }); const elIn = document.getElementById(inId); if(elIn) elIn.innerText = totalIn.toLocaleString() + ' AED'; const elOut = document.getElementById(outId); if(elOut) elOut.innerText = totalOut.toLocaleString() + ' AED'; const el = document.getElementById(balanceId); if (el) { const finalBalance = AppData[tabName].length > 0 ? AppData[tabName][AppData[tabName].length - 1].balance : 0; el.innerText = finalBalance.toLocaleString() + ' AED'; el.style.color = finalBalance < 0 ? 'var(--danger)' : 'var(--success)'; } }
-    function renderLedgerTable(tabName, tbodyId, editFnName, deleteFnName) { const tbody = document.getElementById(tbodyId); tbody.innerHTML = ''; if (AppData[tabName].length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No transactions found.</td></tr>'; return; } [...AppData[tabName]].reverse().forEach((r) => { const balanceColor = r.balance < 0 ? 'var(--danger)' : 'var(--success)'; tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.particulars}</strong></td><td><span class="status-badge" style="background:rgba(37,99,235,0.1);color:var(--primary);">${r.portal}</span></td><td style="color:var(--success); font-weight:600;">${r.amountIn ? parseFloat(r.amountIn).toLocaleString() : '-'}</td><td style="color:var(--danger); font-weight:600;">${r.amountOut ? parseFloat(r.amountOut).toLocaleString() : '-'}</td><td><strong style="color:${balanceColor}">${r.balance.toLocaleString()}</strong></td><td class="action-btns"><button class="action-btn edit" onclick="${editFnName}('${r.id}')">✎</button><button class="action-btn del" onclick="${deleteFnName}('${r.id}')">✕</button></td></tr>`; }); }
+    function calculateLedgerBalance(tabName, inId, outId, balanceId) { let runningBalance = 0, totalIn = 0, totalOut = 0; AppData[tabName].forEach(r => { runningBalance += (r.amountIn || 0) - (r.amountOut || 0); totalIn += (r.amountIn || 0); totalOut += (r.amountOut || 0); r.balance = runningBalance; }); const elIn = document.getElementById(inId); if(elIn) elIn.innerText = totalIn.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' AED'; const elOut = document.getElementById(outId); if(elOut) elOut.innerText = totalOut.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' AED'; const el = document.getElementById(balanceId); if (el) { const finalBalance = AppData[tabName].length > 0 ? AppData[tabName][AppData[tabName].length - 1].balance : 0; el.innerText = finalBalance.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' AED'; el.style.color = finalBalance < 0 ? 'var(--danger)' : 'var(--success)'; } }
+    function renderLedgerTable(tabName, tbodyId, editFnName, deleteFnName) { const tbody = document.getElementById(tbodyId); tbody.innerHTML = ''; if (AppData[tabName].length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No transactions found.</td></tr>'; return; } [...AppData[tabName]].reverse().forEach((r) => { const balanceColor = r.balance < 0 ? 'var(--danger)' : 'var(--success)'; tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.particulars}</strong></td><td><span class="status-badge" style="background:rgba(37,99,235,0.1);color:var(--primary);">${r.portal}</span></td><td style="color:var(--success); font-weight:600; text-align:right;">${r.amountIn ? r.amountIn.toLocaleString('en-US', {minimumFractionDigits: 2}) : '-'}</td><td style="color:var(--danger); font-weight:600; text-align:right;">${r.amountOut ? r.amountOut.toLocaleString('en-US', {minimumFractionDigits: 2}) : '-'}</td><td style="text-align:right; font-weight:700; color:${balanceColor}">${r.balance.toLocaleString('en-US', {minimumFractionDigits: 2})}</td><td class="action-btns"><button class="action-btn edit" onclick="${editFnName}('${r.id}')">✎</button><button class="action-btn del" onclick="${deleteFnName}('${r.id}')">✕</button></td></tr>`; }); }
 
     // ==========================================
-    // CUSTOMERS, TOURTRAVEL, CASH, BANKS LOGIC
-    // (Condensed for space - remains exactly the same as previous version)
+    // TAB LOGICS (CONDENSED)
     // ==========================================
-    function calculateCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; }); const el = document.getElementById('cust-total-dues'); if (el) el.innerText = total.toLocaleString(); }
-    function renderCustomerTable() { const tbody = document.getElementById('cust-table-body'); tbody.innerHTML = ''; if (AppData.customers.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No customer records found.</td></tr>'; calculateCustomerDues(); return; } [...AppData.customers].reverse().forEach((r) => { tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.name}</strong></td><td>${r.contact || '-'}</td><td>${parseFloat(r.total).toLocaleString()}</td><td>${parseFloat(r.paid).toLocaleString()}</td><td><strong>${parseFloat(r.balance).toLocaleString()}</strong></td><td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td><td>${r.paidDate || '-'}</td><td class="action-btns">${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}<button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button></td></tr>`; }); calculateCustomerDues(); }
+    function calculateCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; }); const el = document.getElementById('cust-total-dues'); if (el) el.innerText = total.toLocaleString('en-US', {minimumFractionDigits: 2}); }
+    function renderCustomerTable() { const tbody = document.getElementById('cust-table-body'); tbody.innerHTML = ''; if (AppData.customers.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No records found.</td></tr>'; calculateCustomerDues(); return; } [...AppData.customers].reverse().forEach((r) => { tbody.innerHTML += `<tr><td>${r.date}</td><td><strong>${r.name}</strong></td><td>${r.contact || '-'}</td><td style="text-align:right">${parseFloat(r.total).toLocaleString('en-US', {minimumFractionDigits: 2})}</td><td style="text-align:right">${parseFloat(r.paid).toLocaleString('en-US', {minimumFractionDigits: 2})}</td><td style="text-align:right; font-weight:700">${parseFloat(r.balance).toLocaleString('en-US', {minimumFractionDigits: 2})}</td><td><span class="status-badge ${r.status === 'PAID' ? 'status-paid' : 'status-notpaid'}">${r.status}</span></td><td>${r.paidDate || '-'}</td><td class="action-btns">${r.status !== 'PAID' ? `<button class="action-btn" onclick="markCustomerPaid('${r.id}')">✓ Pay</button>` : ''}<button class="action-btn del" onclick="deleteCustomerRecord('${r.id}')">✕</button></td></tr>`; }); calculateCustomerDues(); }
     async function addCustomerRecord() { const date = document.getElementById('cust-date').value; const name = document.getElementById('cust-name').value; const contact = document.getElementById('cust-contact').value; const total = parseFloat(document.getElementById('cust-total').value) || 0; const paid = parseFloat(document.getElementById('cust-paid').value) || 0; const balance = total - paid; const status = balance <= 0 ? 'PAID' : 'NOTPAID'; const paidDate = status === 'PAID' ? new Date().toISOString().split('T')[0] : ''; if(!date || !name || !total) return alert('Please fill Date, Name, and Total.'); try { const docId = await saveToCollection('customers', { date, name, contact, total, paid, balance, status, paidDate }); AppData.customers.push({ id: docId, date, name, contact, total, paid, balance, status, paidDate }); renderCustomerTable(); recalculateAllFormulas(); document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0'; } catch (error) { alert('Error: ' + error.message); } }
     async function markCustomerPaid(docId) { const record = AppData.customers.find(r => r.id === docId); if (!record || !confirm(`Mark ${record.name} as fully paid?`)) return; try { const updateData = { paid: record.total, balance: 0, status: 'PAID', paidDate: new Date().toISOString().split('T')[0] }; await updateInCollection('customers', docId, updateData); record.paid = record.total; record.balance = 0; record.status = 'PAID'; record.paidDate = updateData.paidDate; renderCustomerTable(); recalculateAllFormulas(); } catch (error) { alert('Error: ' + error.message); } }
-    async function deleteCustomerRecord(docId) { if (!confirm('Delete this record?')) return; try { await deleteFromCollection('customers', docId); AppData.customers = AppData.customers.filter(r => r.id !== docId); renderCustomerTable(); recalculateAllFormulas(); } catch (error) { alert('Error: ' + error.message); } }
-    function filterCustomerRecords() { const search = document.getElementById('cust-search').value.toLowerCase(); renderCustomerTable(); } // Simplified filter for length
+    async function deleteCustomerRecord(docId) { if (!confirm('Delete?')) return; try { await deleteFromCollection('customers', docId); AppData.customers = AppData.customers.filter(r => r.id !== docId); renderCustomerTable(); recalculateAllFormulas(); } catch (error) { alert('Error: ' + error.message); } }
+    function filterCustomerRecords() { renderCustomerTable(); }
 
     function renderTourTravelTable() { renderLedgerTable('tourtravel', 'tt-table-body', 'editTourTravelRecord', 'deleteTourTravelRecord'); }
     function editTourTravelRecord(docId) { const record = AppData.tourtravel.find(r => r.id === docId); if (!record) return; document.getElementById('tt-date').value = record.date; document.getElementById('tt-particulars').value = record.particulars; document.getElementById('tt-portal').value = record.portal; document.getElementById('tt-in').value = record.amountIn || 0; document.getElementById('tt-out').value = record.amountOut || 0; editingTTRecordId = docId; document.getElementById('tt-submit-btn').innerText = '💾 Update'; document.getElementById('tt-cancel-btn').classList.remove('hidden'); }
     function cancelEditTourTravelRecord() { editingTTRecordId = null; document.getElementById('tt-date').value = ''; document.getElementById('tt-particulars').value = ''; document.getElementById('tt-portal').value = ''; document.getElementById('tt-in').value = '0'; document.getElementById('tt-out').value = '0'; document.getElementById('tt-submit-btn').innerText = '+ Add Transaction'; document.getElementById('tt-cancel-btn').classList.add('hidden'); }
-    async function addTourTravelRecord() { const date = document.getElementById('tt-date').value; const particulars = document.getElementById('tt-particulars').value; const portal = document.getElementById('tt-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('tt-in').value) || 0; const amountOut = parseFloat(document.getElementById('tt-out').value) || 0; if(!date || !particulars || !portal) return alert('Please fill Date, Particulars, and Portal.'); if(amountIn > 0 && amountOut > 0) return alert('Cannot be both IN and OUT.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingTTRecordId) { try { await updateInCollection('tourtravel', editingTTRecordId, recordData); const record = AppData.tourtravel.find(r => r.id === editingTTRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error: ' + error.message); } } else { try { const docId = await saveToCollection('tourtravel', recordData); recordData.id = docId; AppData.tourtravel.push(recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error: ' + error.message); } } }
+    async function addTourTravelRecord() { const date = document.getElementById('tt-date').value; const particulars = document.getElementById('tt-particulars').value; const portal = document.getElementById('tt-portal').value.trim().toUpperCase(); const amountIn = parseFloat(document.getElementById('tt-in').value) || 0; const amountOut = parseFloat(document.getElementById('tt-out').value) || 0; if(!date || !particulars || !portal) return alert('Fill all fields.'); const recordData = { date, particulars, portal, amountIn, amountOut }; if (editingTTRecordId) { try { await updateInCollection('tourtravel', editingTTRecordId, recordData); const record = AppData.tourtravel.find(r => r.id === editingTTRecordId); Object.assign(record, recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error: ' + error.message); } } else { try { const docId = await saveToCollection('tourtravel', recordData); recordData.id = docId; AppData.tourtravel.push(recordData); recalculateAllFormulas(); renderTourTravelTable(); cancelEditTourTravelRecord(); } catch (error) { alert('Error: ' + error.message); } } }
     async function deleteTourTravelRecord(docId) { if (!confirm('Delete?')) return; try { await deleteFromCollection('tourtravel', docId); AppData.tourtravel = AppData.tourtravel.filter(r => r.id !== docId); recalculateAllFormulas(); renderTourTravelTable(); } catch (error) { alert('Error: ' + error.message); } }
     function filterTourTravelRecords() { renderLedgerTable('tourtravel', 'tt-table-body', 'editTourTravelRecord', 'deleteTourTravelRecord'); }
 
@@ -322,7 +403,7 @@
 
 
     // ==========================================
-    // DAILY TAB LOGIC (CROSS-SHEET FORMULAS)
+    // DAILY TAB LOGIC (PREMIUM)
     // ==========================================
     function getLiveBalance(tabName) { return AppData[tabName].length > 0 ? AppData[tabName][AppData[tabName].length - 1].balance : 0; }
     function getLiveCustomerDues() { let total = 0; AppData.customers.forEach(r => { if(r.status === 'NOTPAID') total += r.balance; }); return total; }
@@ -330,8 +411,6 @@
     function loadDailySnapshot() {
         const selectedDate = document.getElementById('daily-date').value;
         if(!selectedDate) return;
-        
-        // Find if a snapshot already exists for this date
         const existingRecord = AppData.daily.find(r => r.date === selectedDate);
         
         if (existingRecord) {
@@ -345,12 +424,8 @@
             document.getElementById('daily-submit-btn').innerText = '💾 Update Daily Sheet';
             document.getElementById('daily-cancel-btn').classList.remove('hidden');
         } else {
-            document.getElementById('daily-g9').value = 0;
-            document.getElementById('daily-akbar').value = 0;
-            document.getElementById('daily-via').value = 0;
-            document.getElementById('daily-serene').value = 0;
-            document.getElementById('daily-alghazi').value = 0;
-            document.getElementById('daily-b2b').value = 0;
+            document.getElementById('daily-g9').value = 0; document.getElementById('daily-akbar').value = 0; document.getElementById('daily-via').value = 0;
+            document.getElementById('daily-serene').value = 0; document.getElementById('daily-alghazi').value = 0; document.getElementById('daily-b2b').value = 0;
             editingDailyRecordId = null;
             document.getElementById('daily-submit-btn').innerText = '💾 Save Daily Sheet';
             document.getElementById('daily-cancel-btn').classList.add('hidden');
@@ -371,14 +446,12 @@
     async function saveDailySnapshot() {
         const date = document.getElementById('daily-date').value;
         if(!date) return alert("Please select a date.");
-        
         const g9 = parseFloat(document.getElementById('daily-g9').value) || 0;
         const akbar = parseFloat(document.getElementById('daily-akbar').value) || 0;
         const via = parseFloat(document.getElementById('daily-via').value) || 0;
         const serene = parseFloat(document.getElementById('daily-serene').value) || 0;
         const alghazi = parseFloat(document.getElementById('daily-alghazi').value) || 0;
         const b2b = parseFloat(document.getElementById('daily-b2b').value) || 0;
-
         const recordData = { date, g9, akbar, via, serene, alghazi, b2b };
 
         if (editingDailyRecordId) {
@@ -394,7 +467,6 @@
         const tbody = document.getElementById('daily-table-body');
         tbody.innerHTML = '';
         
-        // Get manual inputs from form
         const g9 = parseFloat(document.getElementById('daily-g9').value) || 0;
         const akbar = parseFloat(document.getElementById('daily-akbar').value) || 0;
         const via = parseFloat(document.getElementById('daily-via').value) || 0;
@@ -402,13 +474,11 @@
         const alghazi = parseFloat(document.getElementById('daily-alghazi').value) || 0;
         const b2b = parseFloat(document.getElementById('daily-b2b').value) || 0;
 
-        // Get Auto-Calculated Formulas
         const custDues = getLiveCustomerDues();
         const toursBalance = getLiveBalance('tourtravel');
         const banksBalance = getLiveBalance('banks');
         const cashBalance = getLiveBalance('cash');
 
-        // Build Table Rows
         const manualRows = [
             { name: 'AIR ARABIA G9', amount: g9 },
             { name: 'AKBAR PORTAL', amount: akbar },
@@ -419,32 +489,31 @@
         ];
 
         const autoRows = [
-            { name: 'TOURS TRAVEL ON WAHAT', amount: toursBalance, source: '(Auto from TourTravel Tab)' },
-            { name: 'ADIB NBD BANKS', amount: banksBalance, source: '(Auto from Banks Tab)' },
-            { name: 'CUSTOMERS DUES', amount: custDues, source: '(Auto from Customers Tab)' },
-            { name: 'CASH ON HAND', amount: cashBalance, source: '(Auto from Cash Tab)' }
+            { name: 'TOURS TRAVEL ON WAHAT', amount: toursBalance, source: 'Auto from TourTravel' },
+            { name: 'ADIB NBD BANKS', amount: banksBalance, source: 'Auto from Banks' },
+            { name: 'CUSTOMERS DUES', amount: custDues, source: 'Auto from Customers' },
+            { name: 'CASH ON HAND', amount: cashBalance, source: 'Auto from Cash' }
         ];
 
         let grandTotal = 0;
+        const fmt = (num) => num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
         manualRows.forEach(row => {
             grandTotal += row.amount;
-            tbody.innerHTML += `<tr><td><strong>${row.name}</strong></td><td style="text-align:right; font-weight: 600;">${row.amount.toLocaleString()}</td></tr>`;
+            tbody.innerHTML += `<tr><td>${row.name}</td><td>${fmt(row.amount)}</td></tr>`;
         });
 
         autoRows.forEach(row => {
             grandTotal += row.amount;
-            const colorStyle = row.amount < 0 ? 'color: var(--danger);' : 'color: var(--success);';
-            tbody.innerHTML += `<tr class="row-auto-calc"><td><strong>${row.name}</strong> <small style="color:var(--primary); font-size:0.7rem;">${row.source}</small></td><td style="text-align:right; font-weight: 700; ${colorStyle}">${row.amount.toLocaleString()}</td></tr>`;
+            const colorStyle = row.amount < 0 ? 'color: var(--danger);' : 'color: var(--success-text);';
+            tbody.innerHTML += `<tr class="row-auto-calc"><td><strong>${row.name}</strong> <span class="auto-badge">${row.source}</span></td><td style="${colorStyle}">${fmt(row.amount)}</td></tr>`;
         });
 
-        document.getElementById('daily-grand-total').innerText = grandTotal.toLocaleString() + ' AED';
-        document.getElementById('daily-grand-total').style.color = grandTotal < 0 ? 'var(--danger)' : 'white';
+        const totalEl = document.getElementById('daily-grand-total');
+        totalEl.innerText = fmt(grandTotal) + ' AED';
+        totalEl.style.color = grandTotal < 0 ? '#f87171' : '#4ade80'; // Lighter red/green for dark footer
     }
 
-    // ==========================================
-    // IMPORT / EXPORT
-    // ==========================================
     function exportData(collectionName) { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppData[collectionName], null, 2)); const dlAnchorElem = document.createElement('a'); dlAnchorElem.setAttribute("href", dataStr); dlAnchorElem.setAttribute("download", `${collectionName}_backup_${new Date().toISOString().split('T')[0]}.json`); dlAnchorElem.click(); }
     function importData(event, collectionName) { const fileReader = new FileReader(); fileReader.onload = async function(event) { if(confirm("Import data?")) { try { const importedRecords = JSON.parse(event.target.result); for (const record of importedRecords) { if (record.id) delete record.id; await saveToCollection(collectionName, record); } await loadCollection(collectionName); alert('Data imported!'); } catch (error) { alert('Error: ' + error.message); } } }; fileReader.readAsText(event.target.files[0]); }
 
