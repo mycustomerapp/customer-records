@@ -950,6 +950,7 @@
             </div>`;
     }
 
+    // ===================== CORRECTED addCustomerRecord =====================
     async function addCustomerRecord() { 
         const date = document.getElementById('cust-date').value; const name = document.getElementById('cust-name').value; const contact = document.getElementById('cust-contact').value;
         const total = safeNum(document.getElementById('cust-total').value); const paidAmount = safeNum(document.getElementById('cust-paid').value);
@@ -960,9 +961,15 @@
         if (editingCustomerId) {
             const record = AppData.customers.find(r => r.id === editingCustomerId); const oldData = { ...record };
             Object.assign(record, { date, name, contact, total, paid: paidAmount, balance, status, paymentHistory, paidDate, paidSyncedAt });
-            renderCustomerTable(); recalculateAllFormulas(); cancelEditCustomerRecord();
-            try { await updateInCollection('customers', editingCustomerId, { date, name, contact, total, paid: paidAmount, balance, status, paymentHistory, paidDate, paidSyncedAt, userid: currentUser.uid }); showToast('Customer updated successfully', 'success'); }
-            catch (error) { Object.assign(record, oldData); renderCustomerTable(); recalculateAllFormulas(); showToast('Error updating: ' + error.message, 'error'); }
+            renderCustomerTable(); recalculateAllFormulas();
+            try {
+                await updateInCollection('customers', editingCustomerId, { date, name, contact, total, paid: paidAmount, balance, status, paymentHistory, paidDate, paidSyncedAt, userid: currentUser.uid });
+                showToast('Customer updated successfully', 'success');
+            } catch (error) {
+                Object.assign(record, oldData); renderCustomerTable(); recalculateAllFormulas();
+                showToast('Error updating: ' + error.message, 'error');
+            }
+            cancelEditCustomerRecord();
         } else {
             const tempId = 'temp_' + Date.now(); const recordData = { date, name, contact, total, paid: paidAmount, paymentHistory, balance, status, paidDate, paidSyncedAt, createdAt: new Date().toISOString() };
             AppData.customers.push({ id: tempId, ...recordData }); AppData.customers.sort((a,b) => (a.date||'').localeCompare(b.date||'') || (a.createdAt||'').localeCompare(b.createdAt||''));
@@ -995,13 +1002,22 @@
     function editCashRecord(docId) { const record = AppData.cash.find(r => r.id === docId); if (!record) return; document.getElementById('cash-date').value = record.date; document.getElementById('cash-particulars').value = record.particulars; document.getElementById('cash-portal').value = record.portal; document.getElementById('cash-in').value = record.amountIn || 0; document.getElementById('cash-out').value = record.amountOut || 0; editingCashRecordId = docId; document.getElementById('cash-submit-btn').innerText = 'Update'; document.getElementById('cash-cancel-btn').classList.remove('hidden'); }
     function cancelEditCashRecord() { editingCashRecordId = null; document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; document.getElementById('cash-submit-btn').innerText = '+ Add Transaction'; document.getElementById('cash-cancel-btn').classList.add('hidden'); }
     
+    // ===================== CORRECTED addCashRecord =====================
     async function addCashRecord() { 
         const date = document.getElementById('cash-date').value; const particulars = document.getElementById('cash-particulars').value; const portal = document.getElementById('cash-portal').value.trim().toUpperCase(); const amountIn = safeNum(document.getElementById('cash-in').value); const amountOut = safeNum(document.getElementById('cash-out').value); 
         if(!date || !particulars || !portal) return showToast('Fill all fields.', 'error'); const recordData = { date, particulars, portal, amountIn, amountOut, createdAt: new Date().toISOString() };
         if (editingCashRecordId) {
             const record = AppData.cash.find(r => r.id === editingCashRecordId); const oldData = {...record}; Object.assign(record, recordData);
-            calculateLedgerBalance('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); renderCashTable(); cancelEditCashRecord();
-            try { await updateInCollection('cash', editingCashRecordId, { ...recordData, userid: currentUser.uid }); await recalculateAndSyncBalances('cash'); showToast('Record updated', 'success'); } catch (error) { Object.assign(record, oldData); recalculateAllFormulas(); renderCashTable(); showToast('Update failed: ' + error.message, 'error'); }
+            calculateLedgerBalance('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); renderCashTable();
+            try {
+                await updateInCollection('cash', editingCashRecordId, { ...recordData, userid: currentUser.uid });
+                await recalculateAndSyncBalances('cash');
+                showToast('Record updated', 'success');
+            } catch (error) {
+                Object.assign(record, oldData); recalculateAllFormulas(); renderCashTable();
+                showToast('Update failed: ' + error.message, 'error');
+            }
+            cancelEditCashRecord();
         } else {
             const tempId = 'temp_' + Date.now(); recordData.id = tempId; recordData.balance = 0; AppData.cash.push(recordData); AppData.cash.sort((a,b) => (a.date||'').localeCompare(b.date||'') || (a.createdAt||'').localeCompare(b.createdAt||''));
             calculateLedgerBalance('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); renderCashTable(); cancelEditCashRecord();
@@ -1016,13 +1032,22 @@
     function editBanksRecord(docId) { const record = AppData.banks.find(r => r.id === docId); if (!record) return; document.getElementById('banks-date').value = record.date; document.getElementById('banks-particulars').value = record.particulars; document.getElementById('banks-portal').value = record.portal; document.getElementById('banks-in').value = record.amountIn || 0; document.getElementById('banks-out').value = record.amountOut || 0; editingBanksRecordId = docId; document.getElementById('banks-submit-btn').innerText = 'Update'; document.getElementById('banks-cancel-btn').classList.remove('hidden'); }
     function cancelEditBanksRecord() { editingBanksRecordId = null; document.getElementById('banks-date').value = ''; document.getElementById('banks-particulars').value = ''; document.getElementById('banks-portal').value = ''; document.getElementById('banks-in').value = '0'; document.getElementById('banks-out').value = '0'; document.getElementById('banks-submit-btn').innerText = '+ Add Transaction'; document.getElementById('banks-cancel-btn').classList.add('hidden'); }
     
+    // ===================== CORRECTED addBanksRecord =====================
     async function addBanksRecord() { 
         const date = document.getElementById('banks-date').value; const particulars = document.getElementById('banks-particulars').value; const portal = document.getElementById('banks-portal').value.trim().toUpperCase(); const amountIn = safeNum(document.getElementById('banks-in').value); const amountOut = safeNum(document.getElementById('banks-out').value); 
         if(!date || !particulars || !portal) return showToast('Fill all fields.', 'error'); const recordData = { date, particulars, portal, amountIn, amountOut, createdAt: new Date().toISOString() };
         if (editingBanksRecordId) {
             const record = AppData.banks.find(r => r.id === editingBanksRecordId); const oldData = {...record}; Object.assign(record, recordData);
-            calculateLedgerBalance('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance'); renderBanksTable(); cancelEditBanksRecord();
-            try { await updateInCollection('banks', editingBanksRecordId, { ...recordData, userid: currentUser.uid }); await recalculateAndSyncBalances('banks'); showToast('Record updated', 'success'); } catch (error) { Object.assign(record, oldData); recalculateAllFormulas(); renderBanksTable(); showToast('Update failed: ' + error.message, 'error'); }
+            calculateLedgerBalance('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance'); renderBanksTable();
+            try {
+                await updateInCollection('banks', editingBanksRecordId, { ...recordData, userid: currentUser.uid });
+                await recalculateAndSyncBalances('banks');
+                showToast('Record updated', 'success');
+            } catch (error) {
+                Object.assign(record, oldData); recalculateAllFormulas(); renderBanksTable();
+                showToast('Update failed: ' + error.message, 'error');
+            }
+            cancelEditBanksRecord();
         } else {
             const tempId = 'temp_' + Date.now(); recordData.id = tempId; recordData.balance = 0; AppData.banks.push(recordData); AppData.banks.sort((a,b) => (a.date||'').localeCompare(b.date||'') || (a.createdAt||'').localeCompare(b.createdAt||''));
             calculateLedgerBalance('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance'); renderBanksTable(); cancelEditBanksRecord();
