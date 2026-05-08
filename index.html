@@ -10,45 +10,76 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                primary: { DEFAULT: '#3b82f6', hover: '#2563eb' },
-                secondary: '#0f172a',
-                success: '#10b981',
-                danger: '#ef4444',
-                warning: '#f59e0b',
-                'bg-main': '#050a14',
-                'bg-card': 'rgba(15, 23, 42, 0.5)',
-                'bg-card-solid': '#1e293b',
-                'text-main': '#f8fafc',
-                'text-muted': '#94a3b8',
-                'border-custom': 'rgba(148, 163, 184, 0.1)',
-                'border-highlight': 'rgba(255, 255, 255, 0.15)',
-                'success-text': '#6ee7b7',
-                'danger-text': '#fca5a5',
-              },
-              borderRadius: { radius: '16px', 'radius-sm': '10px' },
-              boxShadow: { 'primary-glow': '0 4px 15px rgba(59, 130, 246, 0.5)' },
-              backdropBlur: { glass: '24px' },
-              animation: {
-                meshMove: 'meshMove 20s ease-in-out infinite alternate',
-                floatIcon: 'floatIcon 3s ease-in-out infinite',
-                fadeIn: 'fadeIn 0.2s',
-                slideIn: 'slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                fadeSlideIn: 'fadeSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-              },
-              keyframes: {
-                meshMove: { '0%': { transform: 'scale(1) translate(0, 0)' }, '100%': { transform: 'scale(1.1) translate(-2%, 5%)' } },
-                floatIcon: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } },
-                fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } },
-                slideIn: { from: { opacity: '0', transform: 'translateX(50px)' }, to: { opacity: '1', transform: 'translateX(0)' } },
-                fadeSlideIn: { from: { opacity: '0', transform: 'translateY(15px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
-              },
-            }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'sans-serif'] },
+            colors: {
+              primary: { DEFAULT: '#3b82f6', hover: '#2563eb', glow: 'rgba(59,130,246,0.5)' },
+              secondary: '#0f172a',
+              success: { DEFAULT: '#10b981', bg: 'rgba(16,185,129,0.1)', border: 'rgba(16,185,129,0.3)', text: '#6ee7b7' },
+              danger: { DEFAULT: '#ef4444', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.3)', text: '#fca5a5' },
+              warning: { DEFAULT: '#f59e0b', bg: 'rgba(245,158,11,0.1)' },
+              main: '#050a14',
+              card: { DEFAULT: 'rgba(15,23,42,0.5)', solid: '#1e293b' },
+              content: { DEFAULT: '#f8fafc', muted: '#94a3b8' },
+              highlight: 'rgba(255,255,255,0.15)',
+              bdr: 'rgba(148,163,184,0.1)',
+            },
+            borderRadius: { 'card': '16px', 'sm-card': '10px' },
+            boxShadow: {
+              'card': '0 4px 6px -1px rgba(0,0,0,0.3)', 'card-lg': '0 10px 25px -5px rgba(0,0,0,0.5)',
+              'glow': '0 4px 15px rgba(59,130,246,0.5)', 'glow-hover': '0 6px 20px rgba(59,130,246,0.5)',
+              'success-glow': '0 2px 8px rgba(16,185,129,0.1)', 'danger-glow': '0 2px 8px rgba(239,68,68,0.1)', 'primary-inner': '0 2px 8px rgba(59,130,246,0.1)',
+            },
+            backdropBlur: { 'glass': '24px' },
+            animation: {
+              'mesh-move': 'meshMove 20s ease-in-out infinite alternate', 'float-icon': 'floatIcon 3s ease-in-out infinite',
+              'fade-in': 'fadeIn 0.2s', 'slide-in': 'slideIn 0.4s cubic-bezier(0.16,1,0.3,1)', 'fade-slide-in': 'fadeSlideIn 0.4s cubic-bezier(0.16,1,0.3,1)',
+            },
+            keyframes: {
+              meshMove: { '0%': { transform: 'scale(1) translate(0,0)' }, '100%': { transform: 'scale(1.1) translate(-2%,5%)' } },
+              floatIcon: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } },
+              fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } },
+              slideIn: { from: { opacity: '0', transform: 'translateX(50px)' }, to: { opacity: '1', transform: 'translateX(0)' } },
+              fadeSlideIn: { from: { opacity: '0', transform: 'translateY(15px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+            },
           }
-        }
+        },
+        plugins: [
+          function({ addUtilities, addComponents }) {
+            addUtilities({
+              '.scrollbar-thin': { 'scrollbar-width': 'thin', 'scrollbar-color': 'rgba(255,255,255,0.1) transparent', '&::-webkit-scrollbar': { width: '6px' }, '&::-webkit-scrollbar-track': { background: 'transparent' }, '&::-webkit-scrollbar-thumb': { background: 'rgba(255,255,255,0.1)', borderRadius: '10px' } },
+              '.tabular-nums': { 'font-variant-numeric': 'tabular-nums' },
+            });
+            addComponents({
+              '.responsive-table': {
+                '@media (max-width: 768px)': {
+                  '&, thead, tbody, th, td, tr': { display: 'block' }, 'thead': { position: 'absolute', left: '-9999px', top: '-9999px' },
+                  'tr': { marginBottom: '1rem', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', overflow: 'hidden', background: 'rgba(15,23,42,0.5)' },
+                  'td': { borderBottom: '1px solid rgba(148,163,184,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem 1rem', textAlign: 'right !important' },
+                  'td::before': { content: 'attr(data-label)', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', fontSize: '0.7rem', textAlign: 'left', paddingRight: '1rem', flex: '1' },
+                  'td:last-child': { borderBottom: 'none' },
+                }
+              },
+              '.nav-item': { display: 'flex', alignItems: 'center', padding: '0.85rem 1.2rem', color: '#94a3b8', cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: '500', fontSize: '0.9rem', borderRadius: '10px', marginBottom: '4px', gap: '12px', position: 'relative', '&:hover': { background: 'rgba(255,255,255,0.05)', color: 'white', transform: 'translateX(4px)' }, '&.active': { background: 'linear-gradient(135deg, #3b82f6, #4f46e5)', color: 'white', boxShadow: '0 4px 15px rgba(59,130,246,0.5)' }, '&:active': { transform: 'scale(0.97)' } },
+              '.form-group': { flex: '1', minWidth: '150px', display: 'flex', flexDirection: 'column', '& label': { fontSize: '0.75rem', fontWeight: '700', marginBottom: '8px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }, '& input, & select': { padding: '0.75rem 0.9rem', border: '1px solid rgba(148,163,184,0.1)', borderRadius: '10px', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', transition: 'all 0.2s', background: 'rgba(0,0,0,0.3)', color: '#f8fafc', '&:focus': { outline: 'none', borderColor: '#3b82f6', boxShadow: '0 0 0 4px rgba(59,130,246,0.5)', background: 'rgba(0,0,0,0.5)' } } },
+              '.btn': { padding: '0.7rem 1.4rem', border: 'none', borderRadius: '10px', fontWeight: '700', cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '8px', position: 'relative', overflow: 'hidden', '&:active': { transform: 'scale(0.95)' }, '&:disabled': { opacity: '0.5', cursor: 'not-allowed' } },
+              '.btn-primary': { background: 'linear-gradient(135deg, #3b82f6, #4f46e5)', color: 'white', boxShadow: '0 4px 15px rgba(59,130,246,0.5)', '&:hover:not(:disabled)': { transform: 'translateY(-2px)', boxShadow: '0 6px 20px rgba(59,130,246,0.5)' } },
+              '.btn-outline': { background: 'transparent', color: '#94a3b8', border: '1px solid rgba(148,163,184,0.1)', '&:hover:not(:disabled)': { background: 'rgba(255,255,255,0.05)', borderColor: '#94a3b8', color: 'white' } },
+              '.btn-cancel': { background: 'transparent', color: '#ef4444', border: '1px solid #ef4444', '&:hover': { background: 'rgba(239,68,68,0.1)' } },
+              '.btn-danger': { background: '#ef4444', color: 'white', boxShadow: '0 4px 15px rgba(239,68,68,0.3)', '&:hover': { background: '#dc2626' } },
+              '.action-btn': { padding: '6px 10px', borderRadius: '8px', border: '1px solid rgba(148,163,184,0.1)', background: 'transparent', cursor: 'pointer', fontSize: '0.75rem', fontWeight: '700', transition: '0.2s', color: '#94a3b8', display: 'inline-flex', alignItems: 'center', gap: '6px', '&:hover': { background: 'rgba(255,255,255,0.1)', color: 'white', borderColor: '#94a3b8', transform: 'translateY(-1px)' }, '&.del:hover': { borderColor: '#ef4444', color: '#ef4444', background: 'rgba(239,68,68,0.1)' }, '&.edit:hover': { borderColor: '#f59e0b', color: '#f59e0b', background: 'rgba(245,158,11,0.1)' }, '&:active': { transform: 'scale(0.95)' } },
+              '.status-badge': { padding: '6px 14px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '6px', letterSpacing: '0.3px' },
+              '.status-paid': { background: 'rgba(16,185,129,0.15)', color: '#6ee7b7', border: '1px solid rgba(16,185,129,0.3)', boxShadow: '0 2px 8px rgba(16,185,129,0.1)' },
+              '.status-notpaid': { background: 'rgba(239,68,68,0.15)', color: '#fca5a5', border: '1px solid rgba(239,68,68,0.3)', boxShadow: '0 2px 8px rgba(239,68,68,0.1)' },
+              '.card': { background: 'rgba(15,23,42,0.5)', backdropFilter: 'blur(24px)', padding: '1.75rem', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.15)', transition: 'transform 0.3s ease, box-shadow 0.3s ease', position: 'relative', overflow: 'hidden', '&::before': { content: '""', position: 'absolute', top: '0', left: '0', right: '0', height: '2px', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)' }, '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 12px 30px rgba(0,0,0,0.4)' } },
+              '.table-container': { background: 'rgba(15,23,42,0.4)', backdropFilter: 'blur(24px)', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.3)', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.15)' },
+              '.input-currency-group': { position: 'relative', '& .currency-prefix': { position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '0.85rem', fontWeight: '700', pointerEvents: 'none' }, '& input': { paddingLeft: '45px !important', fontWeight: '600' } },
+            });
+          }
+        ]
+      }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
@@ -78,163 +109,151 @@
             else console.error("Persistence error", err);
         });
     </script>
-    
-    <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; }
-        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-        @media (max-width: 768px) {
-            table, thead, tbody, th, td, tr { display: block; }
-            thead { position: absolute; left: -9999px; top: -9999px; }
-            tr { margin-bottom: 1rem; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; overflow: hidden; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(24px); }
-            td { border-bottom: 1px solid rgba(148, 163, 184, 0.1); display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; text-align: right !important; }
-            td:before { content: attr(data-label); font-weight: 700; color: #94a3b8; text-transform: uppercase; font-size: 0.7rem; text-align: left; padding-right: 1rem; flex: 1; }
-            td:last-child { border-bottom: none; }
-            .fintech-table tr { background: transparent; border: none; border-bottom: 1px solid rgba(148, 163, 184, 0.1); border-radius: 0; backdrop-filter: none; }
-            .fintech-table td { background: transparent; }
-        }
-    </style>
 </head>
-<body class="bg-bg-main text-text-main flex h-screen overflow-hidden">
+<body class="font-sans bg-main text-content flex h-screen overflow-hidden tabular-nums">
 
-<div class="fixed top-0 left-0 w-screen h-screen -z-10 bg-[radial-gradient(at_20%_30%,rgba(59,130,246,0.15)_0px,transparent_50%),radial-gradient(at_80%_70%,rgba(139,92,246,0.15)_0px,transparent_50%),radial-gradient(at_40%_80%,rgba(16,185,129,0.08)_0px,transparent_50%)] animate-meshMove"></div>
+<div class="fixed top-0 left-0 w-screen h-screen -z-10 animate-mesh-move bg-[radial-gradient(at_20%_30%,rgba(59,130,246,0.15)_0px,transparent_50%),radial-gradient(at_80%_70%,rgba(139,92,246,0.15)_0px,transparent_50%),radial-gradient(at_40%_80%,rgba(16,185,129,0.08)_0px,transparent_50%)]"></div>
 <div id="toast-container" class="fixed top-6 right-6 z-[2000] flex flex-col gap-2"></div>
 <div id="modal-root"></div>
 
-<div id="loginPrompt" class="flex justify-center items-center h-screen w-full bg-bg-main">
-    <div class="bg-secondary/60 backdrop-blur-glass p-12 rounded-radius shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] text-center max-w-[420px] w-full border border-border-highlight">
-        <div class="w-14 h-14 bg-gradient-to-br from-primary to-violet-500 rounded-radius-sm flex items-center justify-center font-black text-xl shadow-primary-glow mx-auto mb-6">F</div>
-        <h1 class="font-black tracking-tight text-[1.8rem] mb-2">FinTracker Pro</h1>
-        <p class="mb-8 text-text-muted">Sign in to access your secure financial dashboard.</p>
-        <button class="bg-gradient-to-br from-primary to-indigo-600 text-white py-3.5 px-7 border-none rounded-radius-sm font-bold cursor-pointer text-base w-full transition-all hover:-translate-y-0.5 hover:shadow-primary-glow active:scale-[0.98] inline-flex justify-center items-center gap-2.5" onclick="handleLogin()"><i data-lucide="log-in" class="w-5 h-5"></i> Sign in with Google</button>
+<div id="loginPrompt" class="flex justify-center items-center h-screen w-full bg-main">
+    <div class="bg-secondary/60 backdrop-blur-glass p-12 rounded-card shadow-card-lg text-center max-w-[420px] w-full border border-highlight">
+        <div class="w-14 h-14 bg-gradient-to-br from-primary to-purple-500 rounded-sm-card flex items-center justify-center font-black text-2xl shadow-glow mx-auto mb-6">F</div>
+        <h1 class="font-black tracking-tight text-3xl mb-2">FinTracker Pro</h1>
+        <p class="mb-8 text-content-muted">Sign in to access your secure financial dashboard.</p>
+        <button class="btn btn-primary w-full justify-center py-3.5 text-base shadow-glow" onclick="handleLogin()"><i data-lucide="log-in" class="w-5 h-5"></i> Sign in with Google</button>
     </div>
 </div>
 
-<div id="mainApp" class="hidden flex w-full h-screen">
-    <aside class="w-[260px] bg-secondary/60 backdrop-blur-glass border-r border-border-highlight text-white flex flex-col transition-all duration-300 z-10 max-md:hidden">
-        <div class="p-6 flex items-center gap-3 border-b border-border-custom"><div class="w-10 h-10 bg-gradient-to-br from-primary to-violet-500 rounded-radius-sm flex items-center justify-content font-black text-xl shadow-primary-glow flex items-center justify-center">F</div><h2 class="text-[1.1rem] font-bold tracking-tight">FinTracker</h2></div>
-        <nav class="flex-1 p-3 overflow-y-auto">
-            <div class="flex items-center py-3 px-5 text-text-muted cursor-pointer transition-all duration-200 ease-in font-medium text-[0.9rem] rounded-radius-sm mb-1 gap-3 relative hover:bg-white/5 hover:text-white hover:translate-x-1 active:scale-95 active:bg-white/5 active:text-white nav-item active" onclick="switchTab('overview', this)"><i data-lucide="layout-dashboard" class="w-5 h-5"></i> Overview</div>
-            <div class="flex items-center py-3 px-5 text-text-muted cursor-pointer transition-all duration-200 ease-in font-medium text-[0.9rem] rounded-radius-sm mb-1 gap-3 relative hover:bg-white/5 hover:text-white hover:translate-x-1 active:scale-95 active:bg-white/5 active:text-white nav-item" onclick="switchTab('customers', this)"><i data-lucide="users" class="w-5 h-5"></i> Customers</div>
-            <div class="flex items-center py-3 px-5 text-text-muted cursor-pointer transition-all duration-200 ease-in font-medium text-[0.9rem] rounded-radius-sm mb-1 gap-3 relative hover:bg-white/5 hover:text-white hover:translate-x-1 active:scale-95 active:bg-white/5 active:text-white nav-item" onclick="switchTab('cash', this)"><i data-lucide="banknote" class="w-5 h-5"></i> Cash</div>
-            <div class="flex items-center py-3 px-5 text-text-muted cursor-pointer transition-all duration-200 ease-in font-medium text-[0.9rem] rounded-radius-sm mb-1 gap-3 relative hover:bg-white/5 hover:text-white hover:translate-x-1 active:scale-95 active:bg-white/5 active:text-white nav-item" onclick="switchTab('banks', this)"><i data-lucide="landmark" class="w-5 h-5"></i> Banks</div>
-            <div class="flex items-center py-3 px-5 text-text-muted cursor-pointer transition-all duration-200 ease-in font-medium text-[0.9rem] rounded-radius-sm mb-1 gap-3 relative hover:bg-white/5 hover:text-white hover:translate-x-1 active:scale-95 active:bg-white/5 active:text-white nav-item" onclick="switchTab('daily', this)"><i data-lucide="calendar-check" class="w-5 h-5"></i> Daily Sheet</div>
-            <div class="flex items-center py-3 px-5 text-text-muted cursor-pointer transition-all duration-200 ease-in font-medium text-[0.9rem] rounded-radius-sm mb-1 gap-3 relative hover:bg-white/5 hover:text-white hover:translate-x-1 active:scale-95 active:bg-white/5 active:text-white nav-item" onclick="switchTab('paid', this)"><i data-lucide="check-circle" class="w-5 h-5"></i> Paid Ledger</div>
+<div id="mainApp" class="hidden w-full h-screen flex">
+    <aside class="w-[260px] bg-secondary/60 backdrop-blur-glass border-r border-highlight text-white flex flex-col transition-all duration-300 z-10">
+        <div class="p-6 flex items-center gap-3 border-b border-bdr"><div class="w-10 h-10 bg-gradient-to-br from-primary to-purple-500 rounded-sm-card flex items-center justify-center font-black text-xl shadow-glow">F</div><h2 class="text-lg font-bold tracking-tight">FinTracker</h2></div>
+        <nav class="flex-1 p-3 overflow-y-auto scrollbar-thin">
+            <div class="nav-item active" onclick="switchTab('overview', this)"><i data-lucide="layout-dashboard" class="w-5 h-5"></i> Overview</div>
+            <div class="nav-item" onclick="switchTab('customers', this)"><i data-lucide="users" class="w-5 h-5"></i> Customers</div>
+            <div class="nav-item" onclick="switchTab('cash', this)"><i data-lucide="banknote" class="w-5 h-5"></i> Cash</div>
+            <div class="nav-item" onclick="switchTab('banks', this)"><i data-lucide="landmark" class="w-5 h-5"></i> Banks</div>
+            <div class="nav-item" onclick="switchTab('daily', this)"><i data-lucide="calendar-check" class="w-5 h-5"></i> Daily Sheet</div>
+            <div class="nav-item" onclick="switchTab('paid', this)"><i data-lucide="check-circle" class="w-5 h-5"></i> Paid Ledger</div>
         </nav>
     </aside>
 
-    <nav class="flex md:hidden fixed bottom-0 left-0 right-0 bg-secondary/90 backdrop-blur-glass border-t border-border-highlight z-20 py-2 pb-[env(safe-area-inset-bottom)] justify-around">
-        <a class="flex flex-col items-center text-text-muted text-[0.65rem] gap-1 p-2 cursor-pointer transition-all mob-nav-item active" onclick="switchTab('overview', this)"><i data-lucide="layout-dashboard" class="w-[22px] h-[22px]"></i><span>Overview</span></a>
-        <a class="flex flex-col items-center text-text-muted text-[0.65rem] gap-1 p-2 cursor-pointer transition-all mob-nav-item" onclick="switchTab('customers', this)"><i data-lucide="users" class="w-[22px] h-[22px]"></i><span>Customers</span></a>
-        <a class="flex flex-col items-center text-text-muted text-[0.65rem] gap-1 p-2 cursor-pointer transition-all mob-nav-item" onclick="switchTab('cash', this)"><i data-lucide="banknote" class="w-[22px] h-[22px]"></i><span>Cash</span></a>
-        <a class="flex flex-col items-center text-text-muted text-[0.65rem] gap-1 p-2 cursor-pointer transition-all mob-nav-item" onclick="switchTab('banks', this)"><i data-lucide="landmark" class="w-[22px] h-[22px]"></i><span>Banks</span></a>
-        <a class="flex flex-col items-center text-text-muted text-[0.65rem] gap-1 p-2 cursor-pointer transition-all mob-nav-item" onclick="switchTab('daily', this)"><i data-lucide="calendar-check" class="w-[22px] h-[22px]"></i><span>Daily</span></a>
-        <a class="flex flex-col items-center text-text-muted text-[0.65rem] gap-1 p-2 cursor-pointer transition-all mob-nav-item" onclick="switchTab('paid', this)"><i data-lucide="check-circle" class="w-[22px] h-[22px]"></i><span>Paid</span></a>
+    <nav class="hidden max-md:flex fixed bottom-0 left-0 right-0 bg-secondary/90 backdrop-blur-glass border-t border-highlight z-20 py-2 px-0 justify-around">
+        <a class="mob-nav-item active" onclick="switchTab('overview', this)"><i data-lucide="layout-dashboard" class="w-[22px] h-[22px]"></i><span class="text-[0.65rem]">Overview</span></a>
+        <a class="mob-nav-item" onclick="switchTab('customers', this)"><i data-lucide="users" class="w-[22px] h-[22px]"></i><span class="text-[0.65rem]">Customers</span></a>
+        <a class="mob-nav-item" onclick="switchTab('cash', this)"><i data-lucide="banknote" class="w-[22px] h-[22px]"></i><span class="text-[0.65rem]">Cash</span></a>
+        <a class="mob-nav-item" onclick="switchTab('banks', this)"><i data-lucide="landmark" class="w-[22px] h-[22px]"></i><span class="text-[0.65rem]">Banks</span></a>
+        <a class="mob-nav-item" onclick="switchTab('daily', this)"><i data-lucide="calendar-check" class="w-[22px] h-[22px]"></i><span class="text-[0.65rem]">Daily</span></a>
+        <a class="mob-nav-item" onclick="switchTab('paid', this)"><i data-lucide="check-circle" class="w-[22px] h-[22px]"></i><span class="text-[0.65rem]">Paid</span></a>
     </nav>
 
     <div class="flex-1 flex flex-col overflow-hidden max-md:pb-[60px]">
-        <header class="bg-secondary/60 backdrop-blur-glass px-8 py-4 flex justify-between items-center z-[5] border-b border-border-highlight gap-4 max-md:px-4 max-md:py-3 max-md:gap-2">
+        <header class="bg-secondary/60 backdrop-blur-glass px-8 py-4 flex justify-between items-center z-5 border-b border-highlight gap-4 max-md:px-4 max-md:gap-2">
             <div class="flex-1 max-w-[500px] relative">
-                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none w-4 h-4"></i>
-                <input type="text" id="global-search" class="py-2.5 px-4 pl-10 border border-border-custom rounded-radius-sm w-full bg-black/30 text-text-main transition-all duration-200 focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="Search across all modules..." oninput="handleGlobalSearch(this.value)" onfocus="handleGlobalSearch(this.value)" onblur="setTimeout(()=>closeGlobalSearch(), 200)">
-                <div id="global-search-results" class="absolute top-[calc(100%+12px)] left-0 right-0 bg-bg-card-solid border border-border-highlight rounded-radius-sm shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] max-h-[400px] overflow-y-auto z-[100] hidden"></div>
+                <i data-lucide="search" class="search-icon absolute left-3 top-1/2 -translate-y-1/2 text-content-muted pointer-events-none w-4 h-4"></i>
+                <input type="text" id="global-search" class="py-[0.7rem] px-4 pl-10 border border-bdr rounded-sm-card w-full font-sans bg-black/30 text-content transition 0.2s focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="Search across all modules..." oninput="handleGlobalSearch(this.value)" onfocus="handleGlobalSearch(this.value)" onblur="setTimeout(()=>closeGlobalSearch(), 200)">
+                <div id="global-search-results" class="absolute top-[calc(100%+12px)] left-0 right-0 bg-card-solid border border-highlight rounded-sm-card shadow-card-lg max-h-[400px] overflow-y-auto z-100 hidden"></div>
             </div>
             <div class="flex items-center gap-2 max-md:hidden">
-                <button class="py-2 px-3 border border-border-custom rounded-radius-sm cursor-pointer font-bold text-text-muted transition-all hover:border-text-muted hover:text-white hover:bg-white/5 inline-flex items-center gap-2" onclick="exportToExcel()"><i data-lucide="download" class="w-4 h-4"></i> Backup</button>
-                <button class="py-2 px-3 border border-border-custom rounded-radius-sm cursor-pointer font-bold text-text-muted transition-all hover:border-text-muted hover:text-white hover:bg-white/5 inline-flex items-center gap-2" onclick="document.getElementById('importExcelFile').click()"><i data-lucide="upload" class="w-4 h-4"></i> Restore</button>
+                <button class="btn btn-outline" onclick="exportToExcel()"><i data-lucide="download" class="w-4 h-4"></i> Backup</button>
+                <button class="btn btn-outline" onclick="document.getElementById('importExcelFile').click()"><i data-lucide="upload" class="w-4 h-4"></i> Restore</button>
                 <input type="file" id="importExcelFile" accept=".xlsx,.xls" class="hidden" onchange="importFromExcel(event)">
             </div>
-            <div class="flex items-center gap-3 text-[0.9rem] font-semibold text-text-main whitespace-nowrap">
+            <div class="flex items-center gap-3 text-sm font-semibold text-content whitespace-nowrap">
                 <span id="userName" class="max-md:hidden">User</span>
-                <button class="bg-transparent border border-border-custom py-1.5 px-3 rounded-radius-sm cursor-pointer font-semibold text-text-muted transition-all hover:border-danger hover:text-danger hover:bg-danger/10 flex items-center gap-1.5" onclick="handleLogout()"><i data-lucide="log-out" class="w-[14px] h-[14px]"></i> Logout</button>
+                <button class="bg-transparent border border-bdr px-3 py-1.5 rounded-sm-card cursor-pointer font-semibold text-content-muted transition 0.2s flex items-center gap-1.5 hover:border-danger hover:text-danger hover:bg-danger-bg" onclick="handleLogout()"><i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout</button>
             </div>
         </header>
 
-        <main class="flex-1 p-8 overflow-y-auto pb-8 max-md:p-4 max-md:pb-20">
-            <section id="tab-overview" class="tab-content active animate-fadeSlideIn">
-                <h2 class="text-[1.6rem] mb-6 text-text-main font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-7 h-7 text-primary"></i> Dashboard Overview</h2>
+        <main class="flex-1 p-8 overflow-y-auto pb-8 max-md:p-4 max-md:pb-20 scrollbar-thin">
+            
+            <section id="tab-overview" class="tab-content active animate-fade-slide-in">
+                <h2 class="text-[1.6rem] mb-6 text-content font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-7 h-7 text-primary"></i> Dashboard Overview</h2>
                 <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8">
-                    <div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-warning before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Total Receivables</h3><div class="text-[2.2rem] font-black text-text-main tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="kpi-receivables">0.00 AED</div><small class="text-text-muted text-[0.75rem] block mt-3 opacity-70">Outstanding balance from customers</small></div>
-                    <div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-primary before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Net Liquidity</h3><div class="text-[2.2rem] font-black text-text-main tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="kpi-liquidity">0.00 AED</div><small class="text-text-muted text-[0.75rem] block mt-3 opacity-70">Cash on Hand + Bank Balances</small></div>
-                    <div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-success before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Monthly Revenue</h3><div class="text-[2.2rem] font-black text-text-main tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="kpi-revenue">0.00 AED</div><small class="text-text-muted text-[0.75rem] block mt-3 opacity-70">Collected from Paid Ledger this month</small></div>
+                    <div class="card border-l-4 border-warning"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Total Receivables</h3><div class="text-[2.2rem] font-black text-content tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="kpi-receivables">0.00 AED</div><small class="text-content-muted text-xs block mt-3 opacity-70">Outstanding balance from customers</small></div>
+                    <div class="card border-l-4 border-primary"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Net Liquidity</h3><div class="text-[2.2rem] font-black text-content tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="kpi-liquidity">0.00 AED</div><small class="text-content-muted text-xs block mt-3 opacity-70">Cash on Hand + Bank Balances</small></div>
+                    <div class="card border-l-4 border-success"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Monthly Revenue</h3><div class="text-[2.2rem] font-black text-content tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="kpi-revenue">0.00 AED</div><small class="text-content-muted text-xs block mt-3 opacity-70">Collected from Paid Ledger this month</small></div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6 mb-8">
-                    <div class="bg-bg-card backdrop-blur-glass p-6 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight"><h3 class="mb-4 text-[0.75rem] text-text-muted uppercase tracking-wider font-bold">Revenue vs Expenses</h3><div class="relative h-[300px]"><canvas id="revenueChart"></canvas></div></div>
-                    <div class="bg-bg-card backdrop-blur-glass p-6 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight"><h3 class="mb-4 text-[0.75rem] text-text-muted uppercase tracking-wider font-bold">Fund Allocation</h3><div class="relative h-[300px]"><canvas id="allocationChart"></canvas></div></div>
+                <div class="grid grid-cols-2 gap-6 mb-8 max-md:grid-cols-1">
+                    <div class="card p-6"><h3 class="mb-4">Revenue vs Expenses</h3><div class="relative h-[300px]"><canvas id="revenueChart"></canvas></div></div>
+                    <div class="card p-6"><h3 class="mb-4">Fund Allocation</h3><div class="relative h-[300px]"><canvas id="allocationChart"></canvas></div></div>
                 </div>
-                <div class="bg-bg-card backdrop-blur-glass p-6 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight"><h3 class="mb-4 text-[0.75rem] text-text-muted uppercase tracking-wider font-bold">Recent Activity</h3><div class="activity-list flex flex-col gap-4 max-h-[350px] overflow-y-auto" id="activity-feed"><div class="text-center py-8 text-text-muted">No recent activity.</div></div></div>
+                <div class="card p-6"><h3 class="mb-4">Recent Activity</h3><div class="flex flex-col gap-4 max-h-[350px] overflow-y-auto" id="activity-feed"><div class="text-center py-8 text-content-muted">No recent activity.</div></div></div>
             </section>
 
-            <section id="tab-customers" class="tab-content hidden animate-fadeSlideIn">
-                <h2 class="text-[1.6rem] mb-6 text-text-main font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="users" class="w-7 h-7 text-primary"></i> Customers Management</h2>
-                <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8"><div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-warning before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Total Dues on Customers</h3><div class="text-[2.2rem] font-black text-text-main tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none"><span id="cust-total-dues">0.00</span> AED</div><small class="text-text-muted text-[0.75rem] block mt-3 opacity-70">Outstanding balance from unpaid customers</small></div></div>
-                <div class="bg-bg-card backdrop-blur-glass p-5 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight mb-1 flex items-center gap-3 transition-all focus-within:border-primary focus-within:shadow-[0_0_0_4px_rgba(59,130,246,0.15),0_4px_6px_-1px_rgba(0,0,0,0.3)]" id="cust-history-search-bar">
+            <section id="tab-customers" class="tab-content hidden animate-fade-slide-in">
+                <h2 class="text-[1.6rem] mb-6 text-content font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="users" class="w-7 h-7 text-primary"></i> Customers Management</h2>
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8"><div class="card border-l-4 border-warning"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Total Dues on Customers</h3><div class="text-[2.2rem] font-black text-content tracking-tighter leading-none"><span id="cust-total-dues">0.00</span> AED</div><small class="text-content-muted text-xs block mt-3 opacity-70">Outstanding balance from unpaid customers</small></div></div>
+
+                <div class="bg-card backdrop-blur-glass p-5 rounded-card shadow-card border border-highlight mb-1 flex items-center gap-3 transition focus-within:border-primary focus-within:shadow-[0_0_0_4px_rgba(59,130,246,0.15),var(--tw-shadow)]">
                     <i data-lucide="user-search" class="text-primary flex-shrink-0 w-5 h-5"></i>
-                    <input type="text" id="cust-history-search-input" class="flex-1 bg-transparent border-none outline-none font-sans text-[0.95rem] font-medium text-text-main placeholder:text-text-muted placeholder:font-normal" placeholder="Search Customer History... (e.g. ALI BALOCH)" oninput="handleCustomerHistorySearch(this.value)">
-                    <button class="bg-danger/10 text-danger-text border border-danger/25 py-1.5 px-3.5 rounded-lg font-sans text-[0.8rem] font-bold cursor-pointer transition-all hover:bg-danger/20 hover:border-danger/50 hover:-translate-y-0.5 active:scale-95 inline-flex items-center gap-1.5 whitespace-nowrap hidden" id="btn-clear-cust-history" onclick="clearCustomerHistorySearch()"><i data-lucide="x-circle" class="w-[14px] h-[14px]"></i> Clear Search</button>
+                    <input type="text" id="cust-history-search-input" class="flex-1 bg-transparent border-none outline-none font-sans text-[0.95rem] font-medium text-content p-0 placeholder:text-content-muted placeholder:font-normal" placeholder="Search Customer History... (e.g. ALI BALOCH)" oninput="handleCustomerHistorySearch(this.value)">
+                    <button class="bg-danger-bg text-danger-text border border-[rgba(239,68,68,0.25)] px-3.5 py-1.5 rounded-lg font-sans text-sm font-bold cursor-pointer transition hover:bg-[rgba(239,68,68,0.2)] hover:border-[rgba(239,68,68,0.5)] hover:-translate-y-0.5 active:scale-95 hidden inline-flex items-center gap-1.5 whitespace-nowrap" id="btn-clear-cust-history" onclick="clearCustomerHistorySearch()"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i> Clear Search</button>
                 </div>
-                <div class="text-[0.7rem] text-text-muted -mt-2 mb-6 pl-1 opacity-70" id="ch-search-hint">Type a customer name to view their complete payment history across all records</div>
+                <div class="text-[0.7rem] text-content-muted -mt-2 mb-6 pl-1 opacity-70" id="ch-search-hint">Type a customer name to view their complete payment history across all records</div>
+
                 <div id="cust-default-view">
-                    <div class="bg-bg-card backdrop-blur-glass p-8 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] mb-8 border border-border-highlight">
-                        <div class="flex gap-4 mb-4 flex-wrap"><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Date</label><input type="date" id="cust-date" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" required></div><div class="flex-[2] min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Customer Name</label><input type="text" id="cust-name" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="e.g. John Doe" required></div><div class="flex-[2] min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Contact / Reference</label><input type="text" id="cust-contact" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="e.g. +971..."></div></div>
+                    <div class="card mb-8">
+                        <div class="flex gap-4 mb-4 flex-wrap"><div class="form-group"><label>Date</label><input type="date" id="cust-date" required></div><div class="form-group flex-[2]"><label>Customer Name</label><input type="text" id="cust-name" placeholder="e.g. John Doe" required></div><div class="form-group flex-[2]"><label>Contact / Reference</label><input type="text" id="cust-contact" placeholder="e.g. +971..."></div></div>
                         <div class="flex gap-4 flex-wrap">
-                            <div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Total Amount</label><input type="number" id="cust-total" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" required></div>
-                            <div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Paid Amount</label><input type="number" id="cust-paid" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div>
-                            <div class="flex-1 min-w-[150px] justify-end flex-row gap-2 items-start"><button class="py-2.5 px-5 border border-danger text-danger bg-transparent rounded-radius-sm cursor-pointer font-bold transition-all hover:bg-danger/10 hidden" id="cust-cancel-btn" onclick="cancelEditCustomerRecord()">Cancel</button><button class="py-2.5 px-5 border-none rounded-radius-sm font-bold cursor-pointer transition-all font-sans text-[0.85rem] inline-flex items-center gap-2 relative overflow-hidden bg-gradient-to-br from-primary to-indigo-600 text-white shadow-primary-glow hover:-translate-y-0.5 hover:shadow-primary-glow active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" id="cust-submit-btn" onclick="addCustomerRecord()">+ Add Customer</button></div>
+                            <div class="form-group"><label>Total Amount</label><input type="number" id="cust-total" placeholder="0.00" step="0.01" required></div>
+                            <div class="form-group"><label>Paid Amount</label><input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0"></div>
+                            <div class="form-group justify-end flex-row gap-2 items-start"><button class="btn btn-cancel hidden" id="cust-cancel-btn" onclick="cancelEditCustomerRecord()">Cancel</button><button class="btn btn-primary" id="cust-submit-btn" onclick="addCustomerRecord()">+ Add Customer</button></div>
                         </div>
                     </div>
-                    <div class="bg-secondary/40 backdrop-blur-glass rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden border border-border-highlight"><div class="p-4 px-6 flex justify-between items-center border-b border-border-custom bg-black/20"><div class="relative"><i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none w-4 h-4"></i><input type="text" id="cust-search" class="py-2.5 px-4 pl-9 border border-border-custom rounded-lg w-[250px] font-sans bg-black/40 text-text-main transition-all font-medium focus:outline-none focus:border-primary focus:bg-black/60 max-md:w-full" placeholder="Filter name, contact, dates..." oninput="filterCustomerRecords()"></div></div><table class="w-full border-collapse"><thead><tr><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Date</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Name</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Contact</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Total</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Paid</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Balance</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Status</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Actions</th></tr></thead><tbody id="cust-table-body"></tbody></table><div class="pagination-controls flex items-center justify-between p-4 px-6 border-t border-border-custom bg-black/20 max-md:flex-col max-md:gap-2 max-md:items-stretch max-md:text-center" id="cust-pagination"></div></div>
+                    <div class="table-container responsive-table"><div class="p-4 px-6 flex justify-between items-center border-b border-bdr bg-black/20"><div class="relative"><i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-content-muted pointer-events-none w-4 h-4"></i><input type="text" id="cust-search" class="py-2.5 px-4 pl-[2.2rem] border border-bdr rounded-lg w-[250px] font-sans bg-black/40 text-content transition font-medium focus:outline-none focus:border-primary focus:bg-black/60 max-md:w-full" placeholder="Filter name, contact, dates..." oninput="filterCustomerRecords()"></div></div><table class="w-full border-collapse"><thead><tr><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Date</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Name</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Contact</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Total</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Paid</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Balance</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Status</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Actions</th></tr></thead><tbody id="cust-table-body"></tbody></table><div class="pagination-controls flex items-center justify-between p-4 px-6 border-t border-bdr bg-black/20 max-md:flex-col max-md:gap-2" id="cust-pagination"></div></div>
                 </div>
-                <div id="cust-history-view" class="hidden animate-fadeSlideIn"></div>
+                <div id="cust-history-view" class="hidden animate-fade-slide-in"></div>
             </section>
 
-            <section id="tab-cash" class="tab-content hidden animate-fadeSlideIn">
-                <h2 class="text-[1.6rem] mb-6 text-text-main font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="banknote" class="w-7 h-7 text-primary"></i> Cash On Hand</h2>
-                <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8"><div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-success before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Total Cash In (+)</h3><div class="text-[2.2rem] font-black text-success-text tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="cash-total-in">0.00 AED</div></div><div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-danger before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Total Cash Out (-)</h3><div class="text-[2.2rem] font-black text-danger-text tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="cash-total-out">0.00 AED</div></div><div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-primary before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Current Cash Balance</h3><div class="text-[2.2rem] font-black text-text-main tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="cash-current-balance">0.00 AED</div></div></div>
-                <div class="bg-bg-card backdrop-blur-glass p-8 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] mb-8 border border-border-highlight"><div class="flex gap-4 mb-4 flex-wrap"><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Date</label><input type="date" id="cash-date" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" required></div><div class="flex-[3] min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Particulars</label><input type="text" id="cash-particulars" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="e.g. Cash on hand" required></div><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Portal</label><input type="text" id="cash-portal" list="cash-portal-list" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="Select or type" required><datalist id="cash-portal-list"></datalist></div></div><div class="flex gap-4 flex-wrap"><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Amount In (+)</label><input type="number" id="cash-in" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Amount Out (-)</label><input type="number" id="cash-out" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div><div class="flex-1 min-w-[150px] justify-end flex-row gap-2 items-start"><button class="py-2.5 px-5 border border-danger text-danger bg-transparent rounded-radius-sm cursor-pointer font-bold transition-all hover:bg-danger/10 hidden" id="cash-cancel-btn" onclick="cancelEditCashRecord()">Cancel</button><button class="py-2.5 px-5 border-none rounded-radius-sm font-bold cursor-pointer transition-all font-sans text-[0.85rem] inline-flex items-center gap-2 relative overflow-hidden bg-gradient-to-br from-primary to-indigo-600 text-white shadow-primary-glow hover:-translate-y-0.5 hover:shadow-primary-glow active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" id="cash-submit-btn" onclick="addCashRecord()">+ Add Transaction</button></div></div></div>
-                <div class="bg-secondary/40 backdrop-blur-glass rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden border border-border-highlight"><div class="p-4 px-6 flex justify-between items-center border-b border-border-custom bg-black/20"><div class="relative"><i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none w-4 h-4"></i><input type="text" id="cash-search" class="py-2.5 px-4 pl-9 border border-border-custom rounded-lg w-[250px] font-sans bg-black/40 text-text-main transition-all font-medium focus:outline-none focus:border-primary focus:bg-black/60 max-md:w-full" placeholder="Search particular, portal..." oninput="filterCashRecords()"></div></div><table class="w-full border-collapse"><thead><tr><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Date</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Particulars</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Portal</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">In (+)</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Out (-)</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Balance</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table><div class="pagination-controls flex items-center justify-between p-4 px-6 border-t border-border-custom bg-black/20 max-md:flex-col max-md:gap-2 max-md:items-stretch max-md:text-center" id="cash-pagination"></div></div>
+            <section id="tab-cash" class="tab-content hidden animate-fade-slide-in">
+                <h2 class="text-[1.6rem] mb-6 text-content font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="banknote" class="w-7 h-7 text-primary"></i> Cash On Hand</h2>
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8"><div class="card border-l-4 border-success"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Total Cash In (+)</h3><div class="text-[2.2rem] font-black text-success-text tracking-tighter leading-none" id="cash-total-in">0.00 AED</div></div><div class="card border-l-4 border-danger"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Total Cash Out (-)</h3><div class="text-[2.2rem] font-black text-danger-text tracking-tighter leading-none" id="cash-total-out">0.00 AED</div></div><div class="card border-l-4 border-primary"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Current Cash Balance</h3><div class="text-[2.2rem] font-black text-content tracking-tighter leading-none" id="cash-current-balance">0.00 AED</div></div></div>
+                <div class="card mb-8"><div class="flex gap-4 mb-4 flex-wrap"><div class="form-group"><label>Date</label><input type="date" id="cash-date" required></div><div class="form-group flex-[3]"><label>Particulars</label><input type="text" id="cash-particulars" placeholder="e.g. Cash on hand" required></div><div class="form-group flex-1"><label>Portal</label><input type="text" id="cash-portal" list="cash-portal-list" placeholder="Select or type" required><datalist id="cash-portal-list"></datalist></div></div><div class="flex gap-4 flex-wrap"><div class="form-group"><label>Amount In (+)</label><input type="number" id="cash-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Amount Out (-)</label><input type="number" id="cash-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group justify-end flex-row gap-2 items-start"><button class="btn btn-cancel hidden" id="cash-cancel-btn" onclick="cancelEditCashRecord()">Cancel</button><button class="btn btn-primary" id="cash-submit-btn" onclick="addCashRecord()">+ Add Transaction</button></div></div></div>
+                <div class="table-container responsive-table"><div class="p-4 px-6 flex justify-between items-center border-b border-bdr bg-black/20"><div class="relative"><i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-content-muted pointer-events-none w-4 h-4"></i><input type="text" id="cash-search" class="py-2.5 px-4 pl-[2.2rem] border border-bdr rounded-lg w-[250px] font-sans bg-black/40 text-content transition font-medium focus:outline-none focus:border-primary focus:bg-black/60 max-md:w-full" placeholder="Search particular, portal..." oninput="filterCashRecords()"></div></div><table class="w-full border-collapse"><thead><tr><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Date</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Particulars</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Portal</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">In (+)</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Out (-)</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Balance</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table><div class="pagination-controls flex items-center justify-between p-4 px-6 border-t border-bdr bg-black/20 max-md:flex-col max-md:gap-2" id="cash-pagination"></div></div>
             </section>
 
-            <section id="tab-banks" class="tab-content hidden animate-fadeSlideIn">
-                <h2 class="text-[1.6rem] mb-6 text-text-main font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="landmark" class="w-7 h-7 text-primary"></i> ADIB NBD Banks Account</h2>
-                <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8"><div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-success before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Total Deposits (+)</h3><div class="text-[2.2rem] font-black text-success-text tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="banks-total-in">0.00 AED</div></div><div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-danger before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Total Withdrawals (-)</h3><div class="text-[2.2rem] font-black text-danger-text tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="banks-total-out">0.00 AED</div></div><div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-primary before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Current Bank Balance</h3><div class="text-[2.2rem] font-black text-text-main tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="banks-current-balance">0.00 AED</div></div></div>
-                <div class="bg-bg-card backdrop-blur-glass p-8 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] mb-8 border border-border-highlight"><div class="flex gap-4 mb-4 flex-wrap"><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Date</label><input type="date" id="banks-date" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" required></div><div class="flex-[3] min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Name of Depositer</label><input type="text" id="banks-particulars" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="e.g. Haji Aslam Ticket" required></div><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Bank</label><input type="text" id="banks-portal" list="banks-portal-list" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="Select or type" required><datalist id="banks-portal-list"></datalist></div></div><div class="flex gap-4 flex-wrap"><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Ticket Amt / Deposit (+)</label><input type="number" id="banks-in" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div><div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Withdraw (-)</label><input type="number" id="banks-out" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div><div class="flex-1 min-w-[150px] justify-end flex-row gap-2 items-start"><button class="py-2.5 px-5 border border-danger text-danger bg-transparent rounded-radius-sm cursor-pointer font-bold transition-all hover:bg-danger/10 hidden" id="banks-cancel-btn" onclick="cancelEditBanksRecord()">Cancel</button><button class="py-2.5 px-5 border-none rounded-radius-sm font-bold cursor-pointer transition-all font-sans text-[0.85rem] inline-flex items-center gap-2 relative overflow-hidden bg-gradient-to-br from-primary to-indigo-600 text-white shadow-primary-glow hover:-translate-y-0.5 hover:shadow-primary-glow active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" id="banks-submit-btn" onclick="addBanksRecord()">+ Add Transaction</button></div></div></div>
-                <div class="bg-secondary/40 backdrop-blur-glass rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden border border-border-highlight"><div class="p-4 px-6 flex justify-between items-center border-b border-border-custom bg-black/20"><div class="relative"><i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none w-4 h-4"></i><input type="text" id="banks-search" class="py-2.5 px-4 pl-9 border border-border-custom rounded-lg w-[250px] font-sans bg-black/40 text-text-main transition-all font-medium focus:outline-none focus:border-primary focus:bg-black/60 max-md:w-full" placeholder="Search depositer, bank..." oninput="filterBanksRecords()"></div></div><table class="w-full border-collapse"><thead><tr><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Date</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Depositer</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Bank</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Ticket Amt (+)</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Withdraw (-)</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Balance</th><th class="sticky top-0 z-[2] bg-secondary/95 backdrop-blur-sm text-text-muted py-4 px-5 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Actions</th></tr></thead><tbody id="banks-table-body"></tbody></table><div class="pagination-controls flex items-center justify-between p-4 px-6 border-t border-border-custom bg-black/20 max-md:flex-col max-md:gap-2 max-md:items-stretch max-md:text-center" id="banks-pagination"></div></div>
+            <section id="tab-banks" class="tab-content hidden animate-fade-slide-in">
+                <h2 class="text-[1.6rem] mb-6 text-content font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="landmark" class="w-7 h-7 text-primary"></i> ADIB NBD Banks Account</h2>
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8"><div class="card border-l-4 border-success"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Total Deposits (+)</h3><div class="text-[2.2rem] font-black text-success-text tracking-tighter leading-none" id="banks-total-in">0.00 AED</div></div><div class="card border-l-4 border-danger"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Total Withdrawals (-)</h3><div class="text-[2.2rem] font-black text-danger-text tracking-tighter leading-none" id="banks-total-out">0.00 AED</div></div><div class="card border-l-4 border-primary"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Current Bank Balance</h3><div class="text-[2.2rem] font-black text-content tracking-tighter leading-none" id="banks-current-balance">0.00 AED</div></div></div>
+                <div class="card mb-8"><div class="flex gap-4 mb-4 flex-wrap"><div class="form-group"><label>Date</label><input type="date" id="banks-date" required></div><div class="form-group flex-[3]"><label>Name of Depositer</label><input type="text" id="banks-particulars" placeholder="e.g. Haji Aslam Ticket" required></div><div class="form-group flex-1"><label>Bank</label><input type="text" id="banks-portal" list="banks-portal-list" placeholder="Select or type" required><datalist id="banks-portal-list"></datalist></div></div><div class="flex gap-4 flex-wrap"><div class="form-group"><label>Ticket Amt / Deposit (+)</label><input type="number" id="banks-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Withdraw (-)</label><input type="number" id="banks-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group justify-end flex-row gap-2 items-start"><button class="btn btn-cancel hidden" id="banks-cancel-btn" onclick="cancelEditBanksRecord()">Cancel</button><button class="btn btn-primary" id="banks-submit-btn" onclick="addBanksRecord()">+ Add Transaction</button></div></div></div>
+                <div class="table-container responsive-table"><div class="p-4 px-6 flex justify-between items-center border-b border-bdr bg-black/20"><div class="relative"><i data-lucide="search" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-content-muted pointer-events-none w-4 h-4"></i><input type="text" id="banks-search" class="py-2.5 px-4 pl-[2.2rem] border border-bdr rounded-lg w-[250px] font-sans bg-black/40 text-content transition font-medium focus:outline-none focus:border-primary focus:bg-black/60 max-md:w-full" placeholder="Search depositer, bank..." oninput="filterBanksRecords()"></div></div><table class="w-full border-collapse"><thead><tr><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Date</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Depositer</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Bank</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Ticket Amt (+)</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Withdraw (-)</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Balance</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Actions</th></tr></thead><tbody id="banks-table-body"></tbody></table><div class="pagination-controls flex items-center justify-between p-4 px-6 border-t border-bdr bg-black/20 max-md:flex-col max-md:gap-2" id="banks-pagination"></div></div>
             </section>
 
-            <section id="tab-daily" class="tab-content hidden animate-fadeSlideIn">
-                <h2 class="text-[1.6rem] mb-6 text-text-main font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="calendar-check" class="w-7 h-7 text-primary"></i> Daily Sheet & Reconciliation</h2>
-                <div class="bg-bg-card backdrop-blur-glass p-8 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] mb-8 border border-border-highlight">
-                    <div class="flex gap-4 mb-6 flex-wrap"><div class="flex-1 min-w-[150px] flex flex-col max-w-[300px]"><label class="text-[0.85rem] font-bold mb-2 text-text-muted uppercase tracking-wider">Select Date</label><input type="date" id="daily-date" class="py-3 px-3.5 border border-border-custom rounded-radius-sm font-sans text-base font-semibold transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" required onchange="loadDailySnapshot()"></div></div>
-                    <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-6">
-                        <div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">AIR ARABIA G9</label><div class="relative"><span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[0.85rem] font-bold pointer-events-none">AED</span><input type="number" id="daily-g9" class="py-3 px-3.5 pl-[45px] font-semibold border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div></div>
-                        <div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">AKBAR PORTAL</label><div class="relative"><span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[0.85rem] font-bold pointer-events-none">AED</span><input type="number" id="daily-akbar" class="py-3 px-3.5 pl-[45px] font-semibold border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div></div>
-                        <div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">VIA</label><div class="relative"><span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[0.85rem] font-bold pointer-events-none">AED</span><input type="number" id="daily-via" class="py-3 px-3.5 pl-[45px] font-semibold border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div></div>
-                        <div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">SERENE AIR LINE</label><div class="relative"><span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[0.85rem] font-bold pointer-events-none">AED</span><input type="number" id="daily-serene" class="py-3 px-3.5 pl-[45px] font-semibold border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div></div>
-                        <div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">AL GHAZI TRAVEL</label><div class="relative"><span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[0.85rem] font-bold pointer-events-none">AED</span><input type="number" id="daily-alghazi" class="py-3 px-3.5 pl-[45px] font-semibold border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div></div>
-                        <div class="flex-1 min-w-[150px] flex flex-col"><label class="text-[0.75rem] font-bold mb-2 text-text-muted uppercase tracking-wider">B2B</label><div class="relative"><span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[0.85rem] font-bold pointer-events-none">AED</span><input type="number" id="daily-b2b" class="py-3 px-3.5 pl-[45px] font-semibold border border-border-custom rounded-radius-sm font-sans text-[0.9rem] transition-all bg-black/30 text-text-main focus:outline-none focus:border-primary focus:shadow-[0_0_0_4px_rgba(59,130,246,0.5)] focus:bg-black/50" placeholder="0.00" step="0.01" value="0"></div></div>
+            <section id="tab-daily" class="tab-content hidden animate-fade-slide-in">
+                <h2 class="text-[1.6rem] mb-6 text-content font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="calendar-check" class="w-7 h-7 text-primary"></i> Daily Sheet & Reconciliation</h2>
+                <div class="card">
+                    <div class="flex gap-4 mb-6 flex-wrap"><div class="form-group max-w-[300px]"><label class="text-sm">Select Date</label><input type="date" id="daily-date" required onchange="loadDailySnapshot()" class="text-base font-semibold!"></div></div>
+                    <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-6 max-md:grid-cols-1">
+                        <div class="form-group"><label>AIR ARABIA G9</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-g9" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>AKBAR PORTAL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-akbar" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>VIA</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-via" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>SERENE AIR LINE</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-serene" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>AL GHAZI TRAVEL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-alghazi" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>B2B</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-b2b" placeholder="0.00" step="0.01" value="0"></div></div>
                     </div>
                     <div class="mt-8 flex gap-3 items-center">
-                        <button class="py-2.5 px-5 border-none rounded-radius-sm font-bold cursor-pointer transition-all font-sans text-[0.85rem] inline-flex items-center gap-2 relative overflow-hidden bg-gradient-to-br from-primary to-violet-500 text-white shadow-primary-glow hover:-translate-y-0.5 hover:shadow-primary-glow active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed max-w-[400px] py-[14px] px-8" id="daily-submit-btn" onclick="saveDailySnapshot()">Save Daily Sheet</button>
-                        <button class="py-2.5 px-5 border border-danger text-danger bg-transparent rounded-radius-sm cursor-pointer font-bold transition-all hover:bg-danger/10 hidden h-[50px]" id="daily-cancel-btn" onclick="cancelEditDailyRecord()">Cancel Edit</button>
+                        <button class="btn btn-primary max-w-[400px] py-3.5 px-8 bg-gradient-to-br from-primary to-purple-500 shadow-glow" id="daily-submit-btn" onclick="saveDailySnapshot()">Save Daily Sheet</button>
+                        <button class="btn btn-cancel hidden h-[50px]" id="daily-cancel-btn" onclick="cancelEditDailyRecord()">Cancel Edit</button>
                     </div>
                 </div>
-                <div class="bg-secondary/40 backdrop-blur-glass rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden border border-border-highlight">
-                    <table class="w-full border-collapse fintech-table"><thead><tr><th class="bg-secondary/95 border-b-[3px] border-primary text-right py-[18px] px-7 text-left">Particulars</th><th class="bg-secondary/95 border-b-[3px] border-primary text-right py-[18px] px-7">Amounts (AED)</th></tr></thead><tbody id="daily-table-body"></tbody><tfoot><tr><td class="bg-secondary/95 text-white text-[1.5rem] font-black py-6 px-6 border-t-[3px] border-primary tracking-tight">TOTAL DAILY BALANCE</td><td class="bg-secondary/95 text-white text-[1.5rem] font-black py-6 px-6 border-t-[3px] border-primary tracking-tight text-right" id="daily-grand-total">0.00</td></tr></tfoot></table>
+                <div class="table-container mt-8 overflow-hidden">
+                    <table class="w-full border-collapse fintech-table"><thead><tr><th class="bg-secondary/95 border-b-3 border-primary text-right p-[18px_28px] text-left">Particulars</th><th class="bg-secondary/95 border-b-3 border-primary text-right p-[18px_28px]">Amounts (AED)</th></tr></thead><tbody id="daily-table-body"></tbody><tfoot><tr><td class="bg-secondary/95 text-white text-2xl font-black p-6 border-t-3 border-primary">TOTAL DAILY BALANCE</td><td class="bg-secondary/95 text-white text-2xl font-black p-6 border-t-3 border-primary text-right" id="daily-grand-total">0.00</td></tr></tfoot></table>
                 </div>
             </section>
 
-            <section id="tab-paid" class="tab-content hidden animate-fadeSlideIn">
-                <h2 class="text-[1.6rem] mb-6 text-text-main font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="check-circle" class="w-7 h-7 text-primary"></i> Paid Customers Ledger</h2>
-                <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8"><div class="bg-bg-card backdrop-blur-glass p-7 rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] border border-border-highlight transition-transform duration-300 ease-in hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)] relative overflow-hidden border-l-4 border-success before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"><h3 class="text-[0.75rem] text-text-muted uppercase tracking-wider mb-4 font-bold">Total Collected Revenue</h3><div class="text-[2.2rem] font-black text-success-text tracking-tighter drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] leading-none" id="paid-total-collected">0.00 AED</div><small class="text-text-muted text-[0.75rem] block mt-3 opacity-70">Auto-synced from Customers tab</small></div></div>
-                <div class="bg-secondary/40 backdrop-blur-glass rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden border border-border-highlight">
+            <section id="tab-paid" class="tab-content hidden animate-fade-slide-in">
+                <h2 class="text-[1.6rem] mb-6 text-content font-extrabold tracking-tight flex items-center gap-3"><i data-lucide="check-circle" class="w-7 h-7 text-primary"></i> Paid Customers Ledger</h2>
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 mb-8"><div class="card border-l-4 border-success"><h3 class="text-xs text-content-muted uppercase tracking-widest mb-4 font-bold">Total Collected Revenue</h3><div class="text-[2.2rem] font-black text-success-text tracking-tighter leading-none" id="paid-total-collected">0.00 AED</div><small class="text-content-muted text-xs block mt-3 opacity-70">Auto-synced from Customers tab</small></div></div>
+                <div class="table-container overflow-hidden">
                     <table class="w-full border-collapse fintech-table paid-table">
-                        <thead><tr><th class="bg-[#052e16] border-b-[3px] border-success text-right py-[18px] px-7 text-left">Paid Date</th><th class="bg-[#052e16] border-b-[3px] border-success text-right py-[18px] px-7 text-left">Customer Name</th><th class="bg-[#052e16] border-b-[3px] border-success text-right py-[18px] px-7 text-left">Contact / Ref</th><th class="bg-[#052e16] border-b-[3px] border-success text-right py-[18px] px-7">Original Total</th><th class="bg-[#052e16] border-b-[3px] border-success text-right py-[18px] px-7">Amount Paid</th><th class="bg-[#052e16] border-b-[3px] border-success text-right py-[18px] px-7 w-[140px]">Status</th></tr></thead>
+                        <thead><tr><th class="bg-[#052e16] border-b-3 border-success text-right p-[18px_28px] text-left">Paid Date</th><th class="bg-[#052e16] border-b-3 border-success text-right p-[18px_28px] text-left">Customer Name</th><th class="bg-[#052e16] border-b-3 border-success text-right p-[18px_28px] text-left">Contact / Ref</th><th class="bg-[#052e16] border-b-3 border-success text-right p-[18px_28px]">Original Total</th><th class="bg-[#052e16] border-b-3 border-success text-right p-[18px_28px]">Amount Paid</th><th class="bg-[#052e16] border-b-3 border-success text-right p-[18px_28px] w-[140px]">Status</th></tr></thead>
                         <tbody id="paid-table-body"></tbody>
-                        <tfoot><tr><td class="bg-[#052e16] text-white text-[1.5rem] font-black py-6 px-6 border-t-[3px] border-success tracking-tight text-right text-base" colspan="4">TOTAL PAID AMOUNT</td><td class="bg-[#052e16] text-white text-[1.5rem] font-black py-6 px-6 border-t-[3px] border-success tracking-tight text-right" id="paid-grand-total">0.00 AED</td><td class="bg-[#052e16] text-white text-[1.5rem] font-black py-6 px-6 border-t-[3px] border-success tracking-tight"></td></tr></tfoot>
+                        <tfoot><tr><td class="bg-[#052e16] text-white text-base font-black p-6 border-t-3 border-success text-right" colspan="4">TOTAL PAID AMOUNT</td><td class="bg-[#052e16] text-white text-base font-black p-6 border-t-3 border-success text-right" id="paid-grand-total">0.00 AED</td><td class="bg-[#052e16] p-6 border-t-3 border-success"></td></tr></tfoot>
                     </table>
                 </div>
             </section>
+
         </main>
     </div>
 </div>
@@ -249,7 +268,7 @@
     
     const PAGE_SIZE = 15;
     let currentPage = { customers: 1, cash: 1, banks: 1 };
-    let pageCursors = { customers: [null], cash: [null], banks: [null] };
+    let pageCursors = { customers: [null], cash: [null], banks: [null] }; 
     let totalDocs = { customers: 0, cash: 0, banks: 0 };
     let activeListeners = { customers: null, cash: null, banks: null, daily: null, stats: null };
 
@@ -266,7 +285,7 @@
         if (!str || typeof str !== 'string') return ''; return str.replace(/<[^>]*>/g, '').trim();
     }
 
-    function renderIcons(root) { if (!root) return; lucide.createIcons(); }
+    function renderIcons(root) { if (!root) return; const elements = root.querySelectorAll('[data-lucide]'); if (elements.length === 0) return; lucide.createIcons(); }
 
     lucide.createIcons();
 
@@ -297,6 +316,7 @@
 
         if (searchTerm.trim().length > 0) { clearBtn.classList.remove('hidden'); hint.style.display = 'none'; } 
         else { clearBtn.classList.add('hidden'); hint.style.display = ''; defaultView.classList.remove('hidden'); historyView.classList.add('hidden'); return; }
+        
         clearTimeout(custHistoryDebounceTimer);
         custHistoryDebounceTimer = setTimeout(() => { executeCustomerHistorySearch(searchTerm.trim()); }, 500);
     }
@@ -325,27 +345,27 @@
                 const paid = getTotalPaid(r); const balance = safeNum(r.total) - paid; const status = balance <= 0 ? 'PAID' : 'NOT PAID';
                 tableRows += `<tr>
                     <td data-label="Date" class="font-semibold whitespace-nowrap">${escapeHtml(r.date || '-')}</td>
-                    <td data-label="Contact" class="text-text-muted">${escapeHtml(r.contact || '-')}</td>
-                    <td data-label="Total Amount" class="font-bold">${fmt(r.total)}<span class="text-[0.7rem] text-text-muted font-normal ml-1">AED</span></td>
-                    <td data-label="Paid Amount" class="text-success-text font-bold">${fmt(paid)}<span class="text-[0.7rem] text-text-muted font-normal ml-1">AED</span></td>
-                    <td data-label="Balance" class="${balance > 0 ? 'text-danger-text' : 'text-success-text'} font-bold">${fmt(balance)}<span class="text-[0.7rem] text-text-muted font-normal ml-1">AED</span></td>
-                    <td data-label="Status"><span class="py-1.5 px-3.5 rounded-full text-[0.75rem] font-bold inline-flex items-center gap-1.5 tracking-wide ${balance <= 0 ? 'bg-success/15 text-success-text border border-success/30' : 'bg-danger/15 text-danger-text border border-danger/30'}"><i data-lucide="${balance <= 0 ? 'check-circle' : 'alert-circle'}" class="w-3 h-3"></i> ${status}</span></td>
+                    <td data-label="Contact" class="text-content-muted">${escapeHtml(r.contact || '-')}</td>
+                    <td data-label="Total Amount" class="font-bold">${fmt(r.total)}<span class="text-[0.7rem] text-content-muted font-normal ml-1">AED</span></td>
+                    <td data-label="Paid Amount" class="text-success-text font-bold">${fmt(paid)}<span class="text-[0.7rem] text-content-muted font-normal ml-1">AED</span></td>
+                    <td data-label="Balance" class="${balance > 0 ? 'text-danger-text' : 'text-success-text'} font-bold">${fmt(balance)}<span class="text-[0.7rem] text-content-muted font-normal ml-1">AED</span></td>
+                    <td data-label="Status"><span class="status-badge ${balance <= 0 ? 'status-paid' : 'status-notpaid'}"><i data-lucide="${balance <= 0 ? 'check-circle' : 'alert-circle'}" class="w-3 h-3"></i> ${status}</span></td>
                 </tr>`;
             });
 
             historyView.innerHTML = `
                 <div class="flex items-center gap-4 mb-6 flex-wrap">
-                    <div class="inline-flex items-center gap-2.5 bg-gradient-to-br from-primary/15 to-violet-500/15 border border-primary/30 py-2.5 px-5 rounded-radius-sm shadow-[0_4px_15px_rgba(59,130,246,0.1)]"><i data-lucide="user-check" class="w-5 h-5 text-primary"></i><span class="text-lg font-extrabold tracking-tight text-text-main">${escapeHtml(matchedRecords[0].name)}</span></div>
-                    <div class="text-sm font-semibold text-text-muted bg-white/5 py-1.5 px-3.5 rounded-full border border-border-custom">${matchedRecords.length} record${matchedRecords.length !== 1 ? 's' : ''} found</div>
+                    <div class="inline-flex items-center gap-2.5 bg-gradient-to-br from-primary/15 to-purple-500/15 border border-primary/30 py-2.5 px-5 rounded-sm-card shadow-primary-inner"><i data-lucide="user-check" class="w-5 h-5 text-primary"></i><span class="text-xl font-extrabold tracking-tight">${escapeHtml(matchedRecords[0].name)}</span></div>
+                    <div class="text-sm font-semibold text-content-muted bg-white/5 py-1.5 px-3.5 rounded-full border border-bdr">${matchedRecords.length} record${matchedRecords.length !== 1 ? 's' : ''} found</div>
                 </div>
                 <div class="grid grid-cols-3 gap-4 mb-6 max-md:grid-cols-1">
-                    <div class="bg-bg-card backdrop-blur-glass p-5 rounded-radius-sm border border-border-highlight text-center transition-transform hover:-translate-y-0.5 border-t-[3px] border-primary"><div class="text-[0.7rem] uppercase tracking-wider text-text-muted font-bold mb-2">Total Amounts</div><div class="text-[1.6rem] font-black tracking-tight leading-none text-primary">${fmt(sumTotal)}<span class="text-[0.8rem] font-semibold ml-1 opacity-70">AED</span></div></div>
-                    <div class="bg-bg-card backdrop-blur-glass p-5 rounded-radius-sm border border-border-highlight text-center transition-transform hover:-translate-y-0.5 border-t-[3px] border-success"><div class="text-[0.7rem] uppercase tracking-wider text-text-muted font-bold mb-2">Total Paid</div><div class="text-[1.6rem] font-black tracking-tight leading-none text-success-text">${fmt(sumPaid)}<span class="text-[0.8rem] font-semibold ml-1 opacity-70">AED</span></div></div>
-                    <div class="bg-bg-card backdrop-blur-glass p-5 rounded-radius-sm border border-border-highlight text-center transition-transform hover:-translate-y-0.5 border-t-[3px] ${isZeroBalance ? 'border-success' : 'border-danger'}"><div class="text-[0.7rem] uppercase tracking-wider text-text-muted font-bold mb-2">Outstanding Balance</div><div class="text-[1.6rem] font-black tracking-tight leading-none ${isZeroBalance ? 'text-success-text' : 'text-danger-text'}">${fmt(totalOutstanding)}<span class="text-[0.8rem] font-semibold ml-1 opacity-70">AED</span></div></div>
+                    <div class="bg-card backdrop-blur-glass p-5 rounded-sm-card border border-highlight text-center hover:-translate-y-0.5 border-t-3 border-primary"><div class="text-[0.7rem] uppercase tracking-widest text-content-muted font-bold mb-2">Total Amounts</div><div class="text-[1.6rem] font-black tracking-tight leading-none text-primary">${fmt(sumTotal)}<span class="text-sm font-semibold ml-1 opacity-70">AED</span></div></div>
+                    <div class="bg-card backdrop-blur-glass p-5 rounded-sm-card border border-highlight text-center hover:-translate-y-0.5 border-t-3 border-success"><div class="text-[0.7rem] uppercase tracking-widest text-content-muted font-bold mb-2">Total Paid</div><div class="text-[1.6rem] font-black tracking-tight leading-none text-success-text">${fmt(sumPaid)}<span class="text-sm font-semibold ml-1 opacity-70">AED</span></div></div>
+                    <div class="bg-card backdrop-blur-glass p-5 rounded-sm-card border border-highlight text-center hover:-translate-y-0.5 border-t-3 border-danger ${isZeroBalance ? '!border-t-success' : ''}"><div class="text-[0.7rem] uppercase tracking-widest text-content-muted font-bold mb-2">Outstanding Balance</div><div class="text-[1.6rem] font-black tracking-tight leading-none ${isZeroBalance ? 'text-success-text' : 'text-danger-text'}">${fmt(totalOutstanding)}<span class="text-sm font-semibold ml-1 opacity-70">AED</span></div></div>
                 </div>
-                <div class="bg-secondary/40 backdrop-blur-glass rounded-radius shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] overflow-hidden border border-border-highlight">
-                    <div class="p-4 px-6 flex justify-between items-center border-b border-primary/15 bg-primary/5"><span class="text-[0.85rem] font-bold text-primary"><i data-lucide="receipt" class="w-4 h-4 inline-block align-[-2px] mr-1.5"></i> Transaction History for ${escapeHtml(matchedRecords[0].name)}</span></div>
-                    <table class="w-full border-collapse"><thead><tr><th class="sticky top-0 z-[2] bg-secondary/95 text-text-muted py-3 px-2 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Date</th><th class="sticky top-0 z-[2] bg-secondary/95 text-text-muted py-3 px-2 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Contact / Ref</th><th class="sticky top-0 z-[2] bg-secondary/95 text-text-muted py-3 px-2 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Total Amount</th><th class="sticky top-0 z-[2] bg-secondary/95 text-text-muted py-3 px-2 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Paid Amount</th><th class="sticky top-0 z-[2] bg-secondary/95 text-text-muted py-3 px-2 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Balance</th><th class="sticky top-0 z-[2] bg-secondary/95 text-text-muted py-3 px-2 text-left text-[0.7rem] uppercase tracking-wider font-extrabold border-b border-border-highlight">Status</th></tr></thead><tbody>${tableRows}</tbody></table>
+                <div class="bg-[rgba(15,23,42,0.4)] backdrop-blur-glass rounded-card shadow-card overflow-hidden border border-highlight">
+                    <div class="p-4 px-6 flex justify-between items-center border-b border-[rgba(59,130,246,0.15)] bg-[rgba(59,130,246,0.05)]"><span class="text-sm font-bold text-primary"><i data-lucide="receipt" class="w-4 h-4 inline-block align-[-2px] mr-1.5"></i> Transaction History for ${escapeHtml(matchedRecords[0].name)}</span></div>
+                    <table class="w-full border-collapse responsive-table"><thead><tr><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Date</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Contact / Ref</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Total Amount</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Paid Amount</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Balance</th><th class="sticky top-0 z-2 bg-secondary/95 backdrop-blur-sm text-content-muted p-4 px-5 text-left text-[0.7rem] uppercase tracking-widest font-extrabold border-b border-highlight">Status</th></tr></thead><tbody>${tableRows}</tbody></table>
                 </div>`;
             renderIcons(historyView);
         } catch (error) { console.error("History search error:", error); showHistoryNoResults(searchTerm, "Error fetching records."); }
@@ -354,7 +374,7 @@
     function showHistoryNoResults(searchTerm, customMessage) {
         const historyView = document.getElementById('cust-history-view');
         const msg = customMessage || `No records found for a customer named "<strong>${escapeHtml(searchTerm)}</strong>". Check the spelling or try a partial name.`;
-        historyView.innerHTML = `<div class="text-center py-12 px-4"><div class="mb-6 opacity-40 flex justify-center"><i data-lucide="search-x" class="w-12 h-12"></i></div><div class="text-[1.1rem] font-bold mb-2 text-text-main">No Results Found</div><p class="text-text-muted text-[0.9rem] mt-2">${msg}</p></div>`;
+        historyView.innerHTML = `<div class="text-center py-12 px-4"><div class="mb-6 opacity-40 flex justify-center"><i data-lucide="search-x" class="w-12 h-12"></i></div><div class="text-lg font-bold mb-2 text-content">No Results Found</div><p class="text-content-muted text-sm mt-2">${msg}</p></div>`;
         renderIcons(historyView);
     }
 
@@ -363,7 +383,7 @@
     }
 
     function showToast(message, type = 'info') {
-        const container = document.getElementById('toast-container'); const toast = document.createElement('div'); toast.className = `toast py-3.5 px-3.5 rounded-radius-sm text-white text-[0.85rem] font-semibold shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] animate-slideIn flex items-center gap-2.5 backdrop-blur-[10px] toast-${type}`;
+        const container = document.getElementById('toast-container'); const toast = document.createElement('div'); toast.className = `toast toast-${type} py-3.5 px-5 rounded-sm-card text-white text-sm font-semibold shadow-card-lg animate-slide-in flex items-center gap-2.5 backdrop-blur-[10px]`;
         const iconName = type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : 'info';
         toast.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4"></i> ${escapeHtml(message)}`;
         container.appendChild(toast); renderIcons(toast);
@@ -372,7 +392,7 @@
 
     function showConfirm(title, message, onConfirm) {
         const root = document.getElementById('modal-root');
-        root.innerHTML = `<div class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[1000] flex items-center justify-center animate-fadeIn" data-action="closeModal"><div class="bg-bg-card-solid p-10 rounded-radius border border-border-highlight max-w-[400px] w-[90%] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] text-center"><h3 class="mb-2 text-[1.2rem] font-extrabold tracking-tight">${escapeHtml(title)}</h3><p class="text-text-muted text-[0.9rem] mb-6 leading-relaxed">${escapeHtml(message)}</p><div class="flex gap-4 justify-center"><button class="py-2.5 px-5 border border-border-custom bg-transparent text-text-muted rounded-radius-sm cursor-pointer font-bold transition-all hover:bg-white/5 hover:border-text-muted hover:text-white" data-action="closeModal">Cancel</button><button class="py-2.5 px-5 border-none rounded-radius-sm font-bold cursor-pointer transition-all font-sans text-[0.85rem] inline-flex items-center gap-2 relative overflow-hidden bg-danger text-white shadow-[0_4px_15px_rgba(239,68,68,0.3)] hover:bg-[#dc2626] active:scale-95" id="modal-confirm-btn" data-action="modalConfirm">Confirm</button></div></div></div>`;
+        root.innerHTML = `<div class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black/70 backdrop-blur-sm z-[1000] flex items-center justify-center animate-fade-in" data-action="closeModal"><div class="bg-card-solid p-10 rounded-card border border-highlight max-w-[400px] w-[90%] shadow-card-lg text-center"><h3 class="mb-2 text-xl font-extrabold tracking-tight">${escapeHtml(title)}</h3><p class="text-content-muted text-sm mb-6 leading-relaxed">${escapeHtml(message)}</p><div class="flex gap-4 justify-center"><button class="btn btn-outline" data-action="closeModal">Cancel</button><button class="btn btn-danger" id="modal-confirm-btn" data-action="modalConfirm">Confirm</button></div></div></div>`;
         renderIcons(root);
         document.getElementById('modal-confirm-btn').addEventListener('click', () => { onConfirm(); closeModal(); });
     }
@@ -386,7 +406,416 @@
         } else { currentUser = null; document.getElementById('mainApp').classList.add('hidden'); document.getElementById('loginPrompt').classList.remove('hidden'); }
     });
 
-    function handleLogin() { 
-        auth.signInWithPopup(provider).catch((error) => {
-            console.error("Login Error:", error.code, error.message);
-            if (error.code === 'auth/unauthorized-domain')
+    function handleLogin() { auth.signInWithPopup(provider).catch((error) => showToast("Login failed: " + error.message, 'error')); }
+    function handleLogout() { 
+        unsubscribers.forEach(unsub => unsub()); unsubscribers = [];
+        if(activeListeners.stats) activeListeners.stats(); activeListeners.stats = null;
+        auth.signOut(); AppData = { customers: [], cash: [], banks: [], daily: [], stats: {} }; 
+    }
+
+    async function loadAllCollections() { 
+        await Promise.all(['customers', 'cash', 'banks', 'daily'].map(c => loadCollection(c, 1))); 
+    }
+
+    function initStatsListener() {
+        if (!currentUser) return;
+        const statsRef = db.collection('userStats').doc(currentUser.uid);
+        activeListeners.stats = statsRef.onSnapshot((doc) => {
+            AppData.stats = doc.exists ? doc.data() : { totalReceivables: 0, totalCashIn: 0, totalCashOut: 0, totalBanksIn: 0, totalBanksOut: 0, monthlyRevenue: 0 };
+            updateDashboardKPIs();
+        });
+    }
+
+    async function loadCollection(collectionName, page, searchField, searchValue) {
+        if (!currentUser) return;
+        const dbCollection = DB_MAP[collectionName];
+        if (activeListeners[collectionName]) activeListeners[collectionName]();
+        
+        let query = db.collection(dbCollection).where('userid', '==', currentUser.uid);
+        
+        if (searchField && searchValue) {
+            query = query.where(searchField, '>=', searchValue).where(searchField, '<=', searchValue + '\uf8ff');
+        } else if (collectionName !== 'daily') {
+            query = query.orderBy('date').orderBy('createdAt');
+        }
+        
+        if (!searchField && page > 1 && pageCursors[collectionName][page - 1]) {
+            query = query.startAfter(pageCursors[collectionName][page - 1]);
+        }
+        
+        if (collectionName !== 'daily') query = query.limit(PAGE_SIZE);
+        
+        activeListeners[collectionName] = query.onSnapshot((querySnapshot) => {
+            AppData[collectionName] = [];
+            if (!searchField && querySnapshot.docs.length > 0) {
+                pageCursors[collectionName][page] = querySnapshot.docs[0]; 
+            }
+            
+            querySnapshot.forEach((doc) => { 
+                const data = doc.data();
+                if (collectionName === 'customers' && safeNum(data.paid) > 0 && (!data.paymentHistory || data.paymentHistory.length === 0)) data.paymentHistory = [{ date: data.paidDate || data.date, amount: safeNum(data.paid) }];
+                if (collectionName === 'customers' && !data.paymentHistory) data.paymentHistory = [];
+                AppData[collectionName].push({ id: doc.id, ...data }); 
+            });
+            
+            currentPage[collectionName] = page;
+            renderActiveTab(); 
+            if(collectionName === 'cash') updateDatalist('cash-portal-list', ['CASH', 'G9', 'AP', 'VIA', 'B2B', 'DEPOSIT'], AppData.cash);
+            if(collectionName === 'banks') updateDatalist('banks-portal-list', ['ADIB', 'NBD', 'SHARAF', 'CASH', 'G9', 'AP', 'AL AIN', 'SALARY'], AppData.banks);
+        }, (error) => { console.error(`Error listening to ${collectionName}:`, error); });
+        
+        if (!searchField) {
+            const countSnap = await db.collection(dbCollection).where('userid', '==', currentUser.uid).get();
+            totalDocs[collectionName] = countSnap.size;
+        }
+    }
+
+    async function saveToCollection(collectionName, record) { 
+        if (!currentUser) return; const dbCollection = DB_MAP[collectionName]; 
+        const recordWithUser = { ...record, userid: currentUser.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp() }; 
+        const docRef = await db.collection(dbCollection).add(recordWithUser); return docRef.id; 
+    }
+    
+    async function updateInCollection(collectionName, docId, updateData) { const dbCollection = DB_MAP[collectionName]; await db.doc(`${dbCollection}/${docId}`).update(updateData); }
+    async function deleteFromCollection(collectionName, docId) { const dbCollection = DB_MAP[collectionName]; await db.doc(`${dbCollection}/${docId}`).delete(); }
+
+    async function updateUserStats(delta) {
+        if (!currentUser) return;
+        const statsRef = db.collection('userStats').doc(currentUser.uid);
+        try {
+            await db.runTransaction(async (transaction) => {
+                const doc = await transaction.get(statsRef);
+                if (!doc.exists) { transaction.set(statsRef, delta); return; }
+                const newStats = { ...doc.data() };
+                for (const key in delta) { newStats[key] = safeNum(newStats[key]) + safeNum(delta[key]); }
+                transaction.update(statsRef, newStats);
+            });
+        } catch (e) { console.error("Stats transaction failed: ", e); }
+    }
+
+    function switchTab(tabName, el) { 
+        document.querySelectorAll('.nav-item, .mob-nav-item').forEach(item => item.classList.remove('active')); 
+        if(el) el.classList.add('active'); 
+        document.querySelectorAll('.tab-content').forEach(item => item.classList.remove('active')); 
+        document.getElementById(`tab-${tabName}`).classList.add('active'); renderActiveTab(); 
+    }
+    
+    function renderActiveTab() { 
+        const activeTab = document.querySelector('.tab-content.active'); if (!activeTab) return; 
+        if (activeTab.id === 'tab-overview') updateDashboard(); 
+        else if (activeTab.id === 'tab-customers') { const historyView = document.getElementById('cust-history-view'); if (historyView.classList.contains('hidden')) renderCustomerTable(); } 
+        else if (activeTab.id === 'tab-cash') renderCashTable(); 
+        else if (activeTab.id === 'tab-banks') renderBanksTable(); 
+        else if (activeTab.id === 'tab-daily') renderDailyTable(); 
+        else if (activeTab.id === 'tab-paid') renderPaidTable(); 
+    }
+
+    function updateDatalist(elementId, defaults, dataArray) { const datalist = document.getElementById(elementId); if(!datalist) return; const usedPortals = [...new Set(dataArray.map(r => r.portal).filter(Boolean))]; const allPortals = [...new Set([...defaults, ...usedPortals])].sort(); datalist.innerHTML = ''; allPortals.forEach(p => { const option = document.createElement('option'); option.value = p; datalist.appendChild(option); }); }
+
+    async function handleGlobalSearch(term) {
+        const dropdown = document.getElementById('global-search-results');
+        if (!term || term.length < 2) { dropdown.classList.remove('active'); return; }
+        
+        let html = ''; let resultsFound = false;
+        const searchConfig = [
+            { key: 'customers', dbKey: 'records', name: 'Customers', fields: ['name', 'contact'] },
+            { key: 'cash', dbKey: 'cash', name: 'Cash', fields: ['particulars', 'portal'] },
+            { key: 'banks', dbKey: 'banks', name: 'Banks', fields: ['particulars', 'portal'] }
+        ];
+
+        try {
+            for (const config of searchConfig) {
+                let matches = [];
+                for (const field of config.fields) {
+                    const q = db.collection(config.dbKey).where('userid', '==', currentUser.uid).where(field, '>=', term).where(field, '<=', term + '\uf8ff').limit(3);
+                    const snap = await q.get();
+                    snap.forEach(doc => matches.push({ id: doc.id, ...doc.data() }));
+                }
+                const uniqueMatches = Array.from(new Map(matches.map(m => [m.id, m])).values()).slice(0, 3);
+                
+                if (uniqueMatches.length > 0) {
+                    resultsFound = true; html += `<div class="gs-category py-3 px-4 text-[0.7rem] uppercase tracking-widest text-content-muted border-b border-bdr font-bold bg-black/30">${escapeHtml(config.name)} (${uniqueMatches.length})</div>`;
+                    uniqueMatches.forEach(m => { 
+                        const title = m.name || m.particulars || 'Unknown'; const subtitle = m.portal || m.contact || m.date; 
+                        html += `<div class="gs-item py-3 px-4 border-b border-bdr cursor-pointer flex justify-between items-center transition hover:bg-primary/10" data-action="jumpToSearch" data-id="${config.key}" data-searchid="${config.key === 'customers' ? 'cust-search' : config.key + '-search'}" data-term="${escapeHtml(term)}"><div><div class="gs-title text-sm font-semibold text-content">${escapeHtml(title)}</div><div class="text-xs text-content-muted">${escapeHtml(subtitle)}</div></div><span class="text-[0.7rem] text-primary">Go</span></div>`; 
+                    });
+                }
+            }
+        } catch (error) { console.error("Global search error:", error); }
+
+        if (!resultsFound) html = `<div class="p-4 text-content-muted text-center">No results found.</div>`;
+        dropdown.innerHTML = html; dropdown.classList.add('active'); renderIcons(dropdown);
+    }
+
+    function closeGlobalSearch() { document.getElementById('global-search-results').classList.remove('active'); }
+    
+    function jumpToTabSearch(tabKey, searchInputId, term) { 
+        const navItem = document.querySelector(`.nav-item[onclick*="'${tabKey}'"]`); if(navItem) switchTab(tabKey, navItem); 
+        setTimeout(() => { 
+            const searchInput = document.getElementById(searchInputId); 
+            if(searchInput) { searchInput.value = term; searchInput.dispatchEvent(new Event('input')); searchInput.focus(); } 
+            document.getElementById('global-search').value = ''; closeGlobalSearch(); 
+        }, 100); 
+    }
+
+    function generateEmptyState(isSearch) {
+        const icon = isSearch ? 'search-x' : 'inbox'; const text = isSearch ? 'No matching records found' : 'No records added yet'; const sub = isSearch ? 'Try adjusting your search terms.' : 'Add a new record using the form above.';
+        return `<tr><td colspan="9" class="text-center py-16 px-4 text-content-muted"><div class="mb-6 opacity-40 flex justify-center"><i data-lucide="${icon}" class="w-12 h-12 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)] animate-float-icon"></i></div><div class="text-lg font-bold mb-2 text-content">${text}</div><div class="text-sm max-w-[300px] mx-auto">${sub}</div></td></tr>`;
+    }
+
+    function renderPagination(tabName, totalItems) {
+        const pagEl = document.getElementById(`${tabName}-pagination`); if (!pagEl) return;
+        const totalPages = Math.ceil(totalItems / PAGE_SIZE) || 1;
+        if (currentPage[tabName] > totalPages) currentPage[tabName] = totalPages;
+        pagEl.innerHTML = `
+            <span class="text-sm text-content-muted font-semibold">${totalItems} records (Page ${currentPage[tabName]} of ${totalPages})</span>
+            <div class="flex gap-2">
+                <button class="btn btn-outline" onclick="changePage('${tabName}', ${currentPage[tabName] - 1})" ${currentPage[tabName] <= 1 ? 'disabled' : ''}><i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Prev</button>
+                <button class="btn btn-outline" onclick="changePage('${tabName}', ${currentPage[tabName] + 1})" ${currentPage[tabName] >= totalPages ? 'disabled' : ''}>Next <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></button>
+            </div>`;
+        renderIcons(pagEl);
+    }
+    
+    function changePage(tabName, page) { 
+        if (page < 1 || page > Math.ceil(totalDocs[tabName] / PAGE_SIZE)) return;
+        loadCollection(tabName, page); 
+    }
+
+    function renderCustomerTable() {
+        const data = AppData.customers; const tbody = document.getElementById('cust-table-body'); 
+        tbody.innerHTML = '';
+        if (data.length === 0) { tbody.innerHTML = generateEmptyState(true); renderIcons(tbody); renderPagination('customers', 0); return; }
+        const reversedData = [...data].reverse(); 
+        reversedData.forEach((r) => { 
+            const paid = getTotalPaid(r); const balance = safeNum(r.total) - paid; const status = balance <= 0 ? 'PAID' : 'NOTPAID';
+            tbody.innerHTML += `<tr>
+                <td data-label="Date" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5">${escapeHtml(r.date)}</td><td data-label="Name" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 font-bold">${escapeHtml(r.name)}</td><td data-label="Contact" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 text-content-muted">${escapeHtml(r.contact || '-')}</td>
+                <td data-label="Total" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5">${fmt(r.total)}</td><td data-label="Paid" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 text-success-text font-semibold">${fmt(paid)}</td>
+                <td data-label="Balance" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 font-bold ${balance > 0 ? 'text-danger-text' : 'text-success-text'}">${fmt(balance)}</td>
+                <td data-label="Status" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5"><span class="status-badge ${status === 'PAID' ? 'status-paid' : 'status-notpaid'}"><i data-lucide="${status === 'PAID' ? 'check-circle' : 'alert-circle'}" class="w-3 h-3"></i> ${status}</span></td>
+                <td data-label="Actions" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 flex gap-2">
+                    <button class="action-btn edit" data-action="editCustomer" data-id="${escapeHtml(r.id)}"><i data-lucide="pen-line" class="w-3 h-3"></i></button>
+                    ${status !== 'PAID' ? `<button class="action-btn border-success text-success" data-action="payCustomer" data-id="${escapeHtml(r.id)}"><i data-lucide="plus-circle" class="w-3 h-3"></i> Pay</button>` : ''}
+                    <button class="action-btn border-primary text-primary" data-action="historyCustomer" data-id="${escapeHtml(r.id)}"><i data-lucide="history" class="w-3 h-3"></i></button>
+                    <button class="action-btn del" data-action="deleteCustomer" data-id="${escapeHtml(r.id)}"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                </td></tr>`; 
+        }); 
+        renderIcons(tbody); renderPagination('customers', totalDocs.customers);
+    }
+
+    function filterCustomerRecords() { 
+        const term = document.getElementById('cust-search').value;
+        if(!term) { loadCollection('customers', 1); return; }
+        loadCollection('customers', 1, 'name', term); 
+    }
+
+    function editCustomerRecord(docId) {
+        const record = AppData.customers.find(r => r.id === docId); if (!record) return;
+        document.getElementById('cust-date').value = record.date; document.getElementById('cust-name').value = record.name;
+        document.getElementById('cust-contact').value = record.contact || ''; document.getElementById('cust-total').value = record.total;
+        document.getElementById('cust-paid').value = getTotalPaid(record);
+        editingCustomerId = docId;
+        const submitBtn = document.getElementById('cust-submit-btn'); submitBtn.innerText = 'Update Customer'; submitBtn.style.background = 'linear-gradient(135deg, #8b5cf6, #6d28d9)';
+        document.getElementById('cust-cancel-btn').classList.remove('hidden');
+        document.getElementById('tab-customers').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cancelEditCustomerRecord() {
+        editingCustomerId = null;
+        document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = '';
+        document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0';
+        const submitBtn = document.getElementById('cust-submit-btn'); submitBtn.innerText = '+ Add Customer'; submitBtn.style.background = '';
+        document.getElementById('cust-cancel-btn').classList.add('hidden');
+    }
+
+    function openAddPaymentModal(id) {
+        const record = AppData.customers.find(r => r.id === id); if(!record) return;
+        const remainingBalance = safeNum(record.total) - getTotalPaid(record);
+        const root = document.getElementById('modal-root');
+        root.innerHTML = `
+            <div class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black/70 backdrop-blur-sm z-[1000] flex items-center justify-center animate-fade-in" data-action="closeModal">
+                <div class="bg-card-solid p-10 rounded-card border border-highlight max-w-[450px] w-[90%] shadow-card-lg text-left">
+                    <h3 class="text-center mb-4">Record Payment</h3>
+                    <p class="text-content-muted text-center mb-6 leading-relaxed">Recording payment for <strong class="text-white">${escapeHtml(record.name)}</strong><br>Remaining balance: <strong class="text-primary">${fmt(remainingBalance)} AED</strong></p>
+                    <div class="form-group mb-4"><label>Payment Date</label><input type="date" id="pay-date" value="${new Date().toISOString().split('T')[0]}"></div>
+                    <div class="form-group mb-6"><label>Amount</label><input type="number" id="pay-amount" placeholder="0.00" step="0.01" max="${remainingBalance}"></div>
+                    <div class="flex gap-4 justify-center">
+                        <button class="btn btn-outline" data-action="closeModal">Cancel</button>
+                        <button class="btn btn-primary" data-action="submitPayment" data-id="${escapeHtml(id)}">Record Payment</button>
+                    </div>
+                </div>
+            </div>`; renderIcons(root);
+    }
+
+    async function submitPayment(id) {
+        const date = document.getElementById('pay-date').value; const amount = safeNum(document.getElementById('pay-amount').value);
+        if (!date || amount <= 0) return showToast('Please enter a valid date and amount.', 'error');
+        const record = AppData.customers.find(r => r.id === id); if(!record) return;
+        let paymentHistory = [...(record.paymentHistory || [])];
+        paymentHistory.push({ date, amount }); 
+        const paid = getTotalPaid({ paymentHistory });
+        const balance = safeNum(record.total) - paid; const status = balance <= 0 ? 'PAID' : 'NOTPAID';
+        let paidDate = record.paidDate || ''; let paidSyncedAt = record.paidSyncedAt || null;
+        
+        let statsDelta = {};
+        if (status === 'PAID' && record.status !== 'PAID') { 
+            statsDelta.totalReceivables = -safeNum(record.balance); statsDelta.monthlyRevenue = paid;
+            paidDate = date; paidSyncedAt = new Date().toISOString();
+        } else if (record.status === 'NOTPAID') { statsDelta.totalReceivables = balance - safeNum(record.balance); }
+        
+        closeModal();
+        try { 
+            await updateInCollection('customers', id, { paymentHistory, paid, balance, status, paidDate, paidSyncedAt: paidSyncedAt ? firebase.firestore.FieldValue.serverTimestamp() : null, userid: currentUser.uid }); 
+            if (Object.keys(statsDelta).length > 0) await updateUserStats(statsDelta);
+            showToast('Payment recorded successfully', 'success'); 
+        } catch (error) { showToast('Error recording payment: ' + error.message, 'error'); }
+    }
+
+    function openHistoryModal(id) {
+        const record = AppData.customers.find(r => r.id === id); if(!record) return; const root = document.getElementById('modal-root');
+        let tableRows = '';
+        if (record.paymentHistory && record.paymentHistory.length > 0) {
+            const sortedHistory = [...record.paymentHistory].sort((a,b) => b.date.localeCompare(a.date));
+            sortedHistory.forEach(p => { tableRows += `<tr><td class="p-3 border-b border-bdr">${escapeHtml(p.date)}</td><td class="p-3 border-b border-bdr text-right text-success-text font-semibold">${fmt(p.amount)} AED</td></tr>`; });
+        } else { tableRows = `<tr><td colspan="2" class="text-center py-8 text-content-muted">No payment history found.</td></tr>`; }
+        const totalPaid = getTotalPaid(record); const balance = safeNum(record.total) - totalPaid;
+        root.innerHTML = `
+            <div class="modal-overlay fixed top-0 left-0 right-0 bottom-0 bg-black/70 backdrop-blur-sm z-[1000] flex items-center justify-center animate-fade-in" data-action="closeModal">
+                <div class="bg-card-solid p-10 rounded-card border border-highlight max-w-[500px] w-[90%] shadow-card-lg text-left">
+                    <h3 class="text-center mb-6">Payment History: ${escapeHtml(record.name)}</h3>
+                    <div class="bg-black/20 rounded-sm-card px-4 mb-6 max-h-[250px] overflow-y-auto">
+                        <table class="w-full border-collapse"><thead><tr><th class="p-3 text-left border-b border-bdr">Date</th><th class="p-3 text-right border-b border-bdr">Amount</th></tr></thead><tbody>${tableRows}</tbody></table>
+                    </div>
+                    <div class="bg-primary/10 p-5 rounded-sm-card flex justify-between mb-6 border border-primary/20">
+                        <div><span class="text-xs text-content-muted uppercase tracking-wider">Total Paid</span><br><strong class="text-xl text-success-text">${fmt(totalPaid)} AED</strong></div>
+                        <div class="text-right"><span class="text-xs text-content-muted uppercase tracking-wider">Remaining</span><br><strong class="text-xl ${balance > 0 ? 'text-danger-text' : 'text-success-text'}">${fmt(balance)} AED</strong></div>
+                    </div>
+                    <div class="flex gap-4 justify-center"><button class="btn btn-primary" data-action="closeModal">Close</button></div>
+                </div>
+            </div>`;
+        renderIcons(root);
+    }
+
+    async function addCustomerRecord() { 
+        const date = document.getElementById('cust-date').value; const name = sanitizeInput(document.getElementById('cust-name').value); const contact = sanitizeInput(document.getElementById('cust-contact').value);
+        const total = safeNum(document.getElementById('cust-total').value); const paidAmount = safeNum(document.getElementById('cust-paid').value);
+        if(!date || !name || !total) return showToast('Please fill Date, Name, and Total.', 'error'); 
+
+        if (editingCustomerId) {
+            const record = AppData.customers.find(r => r.id === editingCustomerId); 
+            let paymentHistory = record.paymentHistory || []; let paidDate = record.paidDate || ''; let paidSyncedAt = record.paidSyncedAt || null;
+            const currentTotalPaid = getTotalPaid(record);
+            if (paidAmount > currentTotalPaid) paymentHistory.push({ date, amount: paidAmount - currentTotalPaid });
+            
+            const finalPaid = getTotalPaid({ paymentHistory }); const balance = total - finalPaid; const status = balance <= 0 ? 'PAID' : 'NOTPAID';
+            if (status === 'PAID' && !paidDate) { paidDate = date; paidSyncedAt = new Date().toISOString(); }
+            
+            let statsDelta = {};
+            if (record.status === 'NOTPAID') statsDelta.totalReceivables = balance - safeNum(record.balance);
+            if (status === 'PAID' && record.status !== 'PAID') { statsDelta.totalReceivables = -safeNum(record.balance); statsDelta.monthlyRevenue = finalPaid; }
+
+            try {
+                await updateInCollection('customers', editingCustomerId, { date, name, contact, total, paid: finalPaid, balance, status, paymentHistory, paidDate, paidSyncedAt: paidSyncedAt ? firebase.firestore.FieldValue.serverTimestamp() : null, userid: currentUser.uid });
+                if (Object.keys(statsDelta).length > 0) await updateUserStats(statsDelta);
+                showToast('Customer updated successfully', 'success');
+            } catch (error) { showToast('Error updating: ' + error.message, 'error'); }
+            cancelEditCustomerRecord();
+        } else {
+            const balance = total - paidAmount; const status = balance <= 0 ? 'PAID' : 'NOTPAID';
+            let paymentHistory = [], paidDate = '', paidSyncedAt = '';
+            if (paidAmount > 0) { paymentHistory.push({ date, amount: paidAmount }); if (status === 'PAID') { paidDate = date; paidSyncedAt = new Date().toISOString(); } }
+            const recordData = { date, name, contact, total, paid: paidAmount, paymentHistory, balance, status, paidDate, paidSyncedAt };
+            try { 
+                await saveToCollection('customers', recordData); 
+                let statsDelta = { totalReceivables: status === 'NOTPAID' ? balance : 0 };
+                if (status === 'PAID') statsDelta.monthlyRevenue = paidAmount;
+                await updateUserStats(statsDelta);
+                showToast('Customer added successfully', 'success'); 
+            } catch (error) { showToast('Error: ' + error.message, 'error'); }
+            cancelEditCustomerRecord();
+        }
+    }
+
+    async function deleteCustomerRecord(docId) { 
+        showConfirm('Delete Record?', 'This action cannot be undone. Are you sure?', async () => {
+            const record = AppData.customers.find(r => r.id === docId); 
+            let statsDelta = {};
+            if (record.status === 'NOTPAID') statsDelta.totalReceivables = -safeNum(record.balance);
+            if (record.status === 'PAID') statsDelta.monthlyRevenue = -safeNum(record.paid);
+            
+            try { 
+                await deleteFromCollection('customers', docId); 
+                if (Object.keys(statsDelta).length > 0) await updateUserStats(statsDelta);
+                showToast('Record deleted', 'success'); 
+            } catch (error) { showToast('Delete failed: ' + error.message, 'error'); } 
+        });
+    }
+
+    function renderLedgerTable(tabName, tbodyId, editFnName, deleteFnName) { 
+        const tbody = document.getElementById(tbodyId); const data = AppData[tabName]; tbody.innerHTML = '';
+        if (data.length === 0) { tbody.innerHTML = generateEmptyState(true); renderIcons(tbody); renderPagination(tabName, totalDocs[tabName]); return; } 
+        const reversedData = [...data].reverse(); 
+        reversedData.forEach((r) => { 
+            const balanceColor = safeNum(r.balance) < 0 ? 'text-danger-text' : 'text-success-text'; 
+            tbody.innerHTML += `<tr><td data-label="Date" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5">${escapeHtml(r.date)}</td><td data-label="Particulars" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 font-bold">${escapeHtml(r.particulars)}</td><td data-label="Portal" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5"><span class="status-badge bg-primary/10 text-primary border border-primary/30 shadow-primary-inner">${escapeHtml(r.portal)}</span></td><td data-label="In (+)" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 text-success-text font-semibold text-right">${r.amountIn ? fmt(r.amountIn) : '-'}</td><td data-label="Out (-)" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 text-danger-text font-semibold text-right">${r.amountOut ? fmt(r.amountOut) : '-'}</td><td data-label="Balance" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 text-right font-bold ${balanceColor}">${fmt(r.balance)}</td><td data-label="Actions" class="p-4 px-5 border-b border-bdr text-sm transition hover:bg-primary/5 flex gap-2"><button class="action-btn edit" data-action="${editFnName}" data-id="${escapeHtml(r.id)}"><i data-lucide="edit" class="w-3 h-3"></i></button><button class="action-btn del" data-action="${deleteFnName}" data-id="${escapeHtml(r.id)}"><i data-lucide="trash-2" class="w-3 h-3"></i></button></td></tr>`; 
+        }); renderIcons(tbody); renderPagination(tabName, totalDocs[tabName]);
+    }
+
+    function filterLedgerRecords(tabName, searchId, field) { 
+        const term = document.getElementById(searchId).value; 
+        if(!term) { loadCollection(tabName, 1); return; }
+        loadCollection(tabName, 1, field, term);
+    }
+
+    function editCashRecord(docId) { const record = AppData.cash.find(r => r.id === docId); if (!record) return; document.getElementById('cash-date').value = record.date; document.getElementById('cash-particulars').value = record.particulars; document.getElementById('cash-portal').value = record.portal; document.getElementById('cash-in').value = record.amountIn || 0; document.getElementById('cash-out').value = record.amountOut || 0; editingCashRecordId = docId; document.getElementById('cash-submit-btn').innerText = 'Update'; document.getElementById('cash-cancel-btn').classList.remove('hidden'); }
+    function cancelEditCashRecord() { editingCashRecordId = null; document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; document.getElementById('cash-submit-btn').innerText = '+ Add Transaction'; document.getElementById('cash-cancel-btn').classList.add('hidden'); }
+    
+    async function addCashRecord() { 
+        const date = document.getElementById('cash-date').value; const particulars = sanitizeInput(document.getElementById('cash-particulars').value); const portal = sanitizeInput(document.getElementById('cash-portal').value).toUpperCase(); const amountIn = safeNum(document.getElementById('cash-in').value); const amountOut = safeNum(document.getElementById('cash-out').value); 
+        if(!date || !particulars || !portal) return showToast('Fill all fields.', 'error'); 
+        
+        if (editingCashRecordId) {
+            const record = AppData.cash.find(r => r.id === editingCashRecordId); if(!record) return;
+            const oldIn = safeNum(record.amountIn); const oldOut = safeNum(record.amountOut); const newIn = amountIn; const newOut = amountOut;
+            const netChange = (newIn - newOut) - (oldIn - oldOut);
+            
+            try { 
+                await updateInCollection('cash', editingCashRecordId, { date, particulars, portal, amountIn, amountOut, userid: currentUser.uid }); 
+                await recalculateForwardBalances('cash', record.date, record.id, netChange);
+                await updateUserStats({ totalCashIn: newIn - oldIn, totalCashOut: newOut - oldOut });
+                showToast('Record updated', 'success'); 
+            } catch (error) { showToast('Update failed: ' + error.message, 'error'); }
+            cancelEditCashRecord();
+        } else {
+            try {
+                const lastSnap = await db.collection('cash').where('userid', '==', currentUser.uid).orderBy('date', 'desc').orderBy('createdAt', 'desc').limit(1).get();
+                let runningBalance = 0; 
+                if (!lastSnap.empty) { runningBalance = safeNum(lastSnap.docs[0].data().balance); }
+                
+                runningBalance += amountIn - amountOut;
+                const recordData = { date, particulars, portal, amountIn, amountOut, balance: runningBalance };
+                await saveToCollection('cash', recordData); 
+                await updateUserStats({ totalCashIn: amountIn, totalCashOut: amountOut });
+                showToast('Transaction added', 'success'); 
+            } catch (error) { showToast('Add failed: ' + error.message, 'error'); }
+            cancelEditCashRecord();
+        }
+    }
+
+    async function deleteCashRecord(docId) { 
+        showConfirm('Delete Transaction?', 'This will alter subsequent balances. Proceed?', async () => { 
+            const record = AppData.cash.find(r => r.id === docId); if(!record) return;
+            try { 
+                await deleteFromCollection('cash', docId); 
+                await recalculateForwardBalances('cash', record.date, record.id, -(safeNum(record.amountIn) - safeNum(record.amountOut)));
+                await updateUserStats({ totalCashIn: -safeNum(record.amountIn), totalCashOut: -safeNum(record.amountOut) });
+                showToast('Transaction deleted', 'success'); 
+            } catch (error) { showToast('Delete failed: ' + error.message, 'error'); } 
+        }); 
+    }
+    
+    function renderCashTable() { renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
+    function filterCashRecords() { filterLedgerRecords('cash', 'cash-search', 'particulars'); }
+
+    function editBanksRecord(docId) { const record = AppData.banks.find(r => r.id === docId); if (!record) return; document.getElementById('banks-date').value = record.date; document.getElementById('banks-particulars').value = record.particulars; document.getElementById('banks-portal').value = record.portal; document.getElementById('banks-in').value = record.amountIn || 0; document.getElementById('banks-out').value = record.amountOut || 0; editingBanksRecordId = docId; document.getElementById('banks-submit-btn').innerText = 'Update'; document.getElementById('banks-cancel-btn').classList.remove('hidden'); }
+    function cancelEditBanksRecord() { editingBanksRecordId = null; document.getElementById('banks-date').value = '';
