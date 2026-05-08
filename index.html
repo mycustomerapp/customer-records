@@ -104,9 +104,6 @@
         .form-group label{font-size:0.75rem;font-weight:700;margin-bottom:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em}
         .form-group input,.form-group select{padding:0.75rem 0.9rem;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:0.9rem;transition:all 0.2s;background:rgba(0,0,0,0.3);color:var(--text-main)}
         .form-group input:focus,.form-group select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-glow);background:rgba(0,0,0,0.5)}
-        .form-group input:disabled{opacity:0.5;cursor:not-allowed;background:rgba(0,0,0,0.15)}
-        .field-hint{font-size:0.65rem;color:var(--primary);font-weight:600;margin-top:4px;letter-spacing:0.02em;display:none}
-        .field-hint.visible{display:block}
         .btn{padding:0.7rem 1.4rem;border:none;border-radius:var(--radius-sm);font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;font-size:0.85rem;display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden}
         .btn:active{transform:scale(0.95)}
         .btn:disabled{opacity:0.5;cursor:not-allowed}
@@ -114,7 +111,6 @@
         .btn-outline{background:transparent;color:var(--text-muted);border:1px solid var(--border)}.btn-outline:hover:not(:disabled){background:rgba(255,255,255,0.05);border-color:var(--text-muted);color:#fff}
         .btn-cancel{background:transparent;color:var(--danger);border:1px solid var(--danger)}.btn-cancel:hover{background:var(--danger-bg)}
         .btn-danger{background:var(--danger);color:#fff;box-shadow:0 4px 15px rgba(239,68,68,0.3)}.btn-danger:hover{background:#dc2626}
-        .btn-reset{background:transparent;color:var(--warning);border:1px solid var(--warning);padding:14px 28px;font-size:0.85rem}.btn-reset:hover{background:var(--warning-bg)}
         .table-container{background:rgba(15,23,42,0.4);backdrop-filter:var(--glass-blur);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--border-highlight)}
         .table-header{padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2)}
         .local-search-input{padding:0.6rem 1rem 0.6rem 2.2rem;border:1px solid var(--border);border-radius:0.5rem;width:250px;font-family:'Inter',sans-serif;background:rgba(0,0,0,0.4);color:var(--text-main);transition:0.2s;font-weight:500}
@@ -215,10 +211,6 @@
         .ch-balance-positive{color:var(--danger-text);font-weight:700}
         .ch-balance-zero{color:var(--success-text);font-weight:700}
         .ch-no-results{text-align:center;padding:3rem 1rem}.ch-no-results p{color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem}
-        .daily-save-status{font-size:0.75rem;color:var(--text-muted);font-weight:600;display:inline-flex;align-items:center;gap:6px;margin-left:16px;opacity:0;transition:opacity 0.3s}
-        .daily-save-status.visible{opacity:1}
-        .daily-save-status.saved{color:var(--success-text)}
-        .daily-save-status.unsaved{color:var(--warning)}
         @media(max-width:768px){
             .sidebar{display:none}.mobile-bottom-nav{display:flex}
             .main-content{padding:1rem;padding-bottom:5rem}.main-wrapper{padding-bottom:60px}
@@ -292,6 +284,7 @@
             </div>
         </header>
         <main class="main-content">
+            <!-- Overview Tab -->
             <section id="tab-overview" class="tab-content active">
                 <h2 class="page-title"><i data-lucide="layout-dashboard" style="width:28px;height:28px;color:var(--primary);"></i> Dashboard Overview</h2>
                 <div class="summary-cards">
@@ -305,6 +298,8 @@
                 </div>
                 <div class="card" style="padding:1.5rem;"><h3 style="margin-bottom:1rem;">Recent Activity</h3><div class="activity-list" id="activity-feed"><div class="empty-state">No recent activity.</div></div></div>
             </section>
+
+            <!-- Customers Tab -->
             <section id="tab-customers" class="tab-content">
                 <h2 class="page-title"><i data-lucide="users" style="width:28px;height:28px;color:var(--primary);"></i> Customers Management</h2>
                 <div class="summary-cards"><div class="card card-warning"><h3>Total Dues on Customers</h3><div class="value"><span id="cust-total-dues">0.00</span> AED</div><small>Outstanding balance from unpaid customers</small></div></div>
@@ -319,7 +314,7 @@
                         <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cust-date"></div><div class="form-group" style="flex:2;"><label>Customer Name</label><input type="text" id="cust-name" placeholder="e.g. John Doe"></div><div class="form-group" style="flex:2;"><label>Contact / Reference</label><input type="text" id="cust-contact" placeholder="e.g. +971..."></div></div>
                         <div class="form-row">
                             <div class="form-group"><label>Total Amount</label><input type="number" id="cust-total" placeholder="0.00" step="0.01"></div>
-                            <div class="form-group"><label>Paid Amount</label><input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0"><span class="field-hint" id="cust-paid-hint">Use the Pay button on the table to add payments</span></div>
+                            <div class="form-group"><label>Paid Amount</label><input type="number" id="cust-paid" placeholder="0.00" step="0.01" value="0"></div>
                             <div class="form-group" style="justify-content:flex-end;flex-direction:row;gap:8px;align-items:flex-start;"><button class="btn btn-cancel hidden" id="cust-cancel-btn" onclick="cancelEditCustomerRecord()">Cancel</button><button class="btn btn-primary" id="cust-submit-btn" onclick="addCustomerRecord()">+ Add Customer</button></div>
                         </div>
                     </div>
@@ -327,12 +322,16 @@
                 </div>
                 <div id="cust-history-view" class="hidden customer-history-view"></div>
             </section>
+
+            <!-- Cash Tab -->
             <section id="tab-cash" class="tab-content">
                 <h2 class="page-title"><i data-lucide="banknote" style="width:28px;height:28px;color:var(--primary);"></i> Cash On Hand</h2>
                 <div class="summary-cards"><div class="card card-success"><h3>Total Cash In (+)</h3><div class="value" id="cash-total-in" style="color:var(--success-text);">0.00 AED</div></div><div class="card" style="border-left:4px solid var(--danger);"><h3>Total Cash Out (-)</h3><div class="value" id="cash-total-out" style="color:#fca5a5;">0.00 AED</div></div><div class="card card-primary"><h3>Current Cash Balance</h3><div class="value" id="cash-current-balance">0.00 AED</div></div></div>
                 <div class="form-card"><div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cash-date"></div><div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="cash-particulars" placeholder="e.g. Cash on hand"></div><div class="form-group" style="flex:1;"><label>Portal</label><input type="text" id="cash-portal" list="cash-portal-list" placeholder="Select or type"><datalist id="cash-portal-list"></datalist></div></div><div class="form-row"><div class="form-group"><label>Amount In (+)</label><input type="number" id="cash-in" placeholder="0.00" step="0.01" value="0"></div><div class="form-group"><label>Amount Out (-)</label><input type="number" id="cash-out" placeholder="0.00" step="0.01" value="0"></div><div class="form-group" style="justify-content:flex-end;flex-direction:row;gap:8px;align-items:flex-start;"><button class="btn btn-cancel hidden" id="cash-cancel-btn" onclick="cancelEditCashRecord()">Cancel</button><button class="btn btn-primary" id="cash-submit-btn" onclick="addCashRecord()">+ Add Transaction</button></div></div></div>
                 <div class="table-container"><div class="table-header"><div class="local-search-wrapper"><i data-lucide="search" class="search-icon"></i><input type="text" id="cash-search" class="local-search-input" placeholder="Search particular, portal..." oninput="filterCashRecords()"></div></div><table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table><div class="pagination-controls" id="cash-pagination"></div></div>
             </section>
+
+            <!-- Banks Tab -->
             <section id="tab-banks" class="tab-content">
                 <h2 class="page-title"><i data-lucide="landmark" style="width:28px;height:28px;color:var(--primary);"></i> ADIB NBD Banks Account</h2>
                 <div class="summary-cards"><div class="card card-success"><h3>Total Deposits (+)</h3><div class="value" id="banks-total-in" style="color:var(--success-text);">0.00 AED</div></div><div class="card" style="border-left:4px solid var(--danger);"><h3>Total Withdrawals (-)</h3><div class="value" id="banks-total-out" style="color:#fca5a5;">0.00 AED</div></div><div class="card card-primary"><h3>Current Bank Balance</h3><div class="value" id="banks-current-balance">0.00 AED</div></div></div>
@@ -340,32 +339,26 @@
                 <div class="table-container"><div class="table-header"><div class="local-search-wrapper"><i data-lucide="search" class="search-icon"></i><input type="text" id="banks-search" class="local-search-input" placeholder="Search depositer, bank..." oninput="filterBanksRecords()"></div></div><table><thead><tr><th>Date</th><th>Depositer</th><th>Bank</th><th>Ticket Amt (+)</th><th>Withdraw (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="banks-table-body"></tbody></table><div class="pagination-controls" id="banks-pagination"></div></div>
             </section>
 
-            <!-- ===== SIMPLIFIED DAILY SHEET — NO DATE, DIRECT REPLICATION ===== -->
+            <!-- Daily Sheet Tab (Simplified) -->
             <section id="tab-daily" class="tab-content">
-                <h2 class="page-title"><i data-lucide="calendar-check" style="width:28px;height:28px;color:var(--primary);"></i> Daily Sheet</h2>
+                <h2 class="page-title"><i data-lucide="calendar-check" style="width:28px;height:28px;color:var(--primary);"></i> Daily Sheet & Reconciliation</h2>
                 <div class="form-card">
-                    <div class="form-row" style="margin-bottom:8px;align-items:center;">
-                        <h3 style="font-size:1rem;font-weight:700;color:var(--text-main);margin:0;">Manual Entries</h3>
-                        <span class="daily-save-status" id="daily-save-status"></span>
-                    </div>
-                    <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;">Enter today's amounts below. The Particulars table updates instantly as you type. Click Save to persist values across sessions.</p>
                     <div class="daily-grid">
-                        <div class="form-group"><label>AIR ARABIA G9</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-g9" placeholder="0.00" step="0.01" value="0" oninput="onDailyInputChange()"></div></div>
-                        <div class="form-group"><label>AKBAR PORTAL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-akbar" placeholder="0.00" step="0.01" value="0" oninput="onDailyInputChange()"></div></div>
-                        <div class="form-group"><label>VIA</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-via" placeholder="0.00" step="0.01" value="0" oninput="onDailyInputChange()"></div></div>
-                        <div class="form-group"><label>SERENE AIR LINE</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-serene" placeholder="0.00" step="0.01" value="0" oninput="onDailyInputChange()"></div></div>
-                        <div class="form-group"><label>AL GHAZI TRAVEL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-alghazi" placeholder="0.00" step="0.01" value="0" oninput="onDailyInputChange()"></div></div>
-                        <div class="form-group"><label>B2B</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-b2b" placeholder="0.00" step="0.01" value="0" oninput="onDailyInputChange()"></div></div>
+                        <div class="form-group"><label>AIR ARABIA G9</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-g9" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>AKBAR PORTAL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-akbar" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>VIA</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-via" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>SERENE AIR LINE</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-serene" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>AL GHAZI TRAVEL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-alghazi" placeholder="0.00" step="0.01" value="0"></div></div>
+                        <div class="form-group"><label>B2B</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-b2b" placeholder="0.00" step="0.01" value="0"></div></div>
                     </div>
-                    <div style="margin-top:28px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-                        <button class="btn btn-primary" id="daily-save-btn" onclick="saveDailyValues()" style="padding:14px 32px;background:linear-gradient(135deg,var(--primary),#8b5cf6);box-shadow:0 4px 15px var(--primary-glow);"><i data-lucide="save" style="width:16px;height:16px;"></i> Save Values</button>
-                        <button class="btn btn-reset" onclick="resetDailyValues()"><i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i> Reset to Zero</button>
+                    <div style="margin-top:32px;display:flex;gap:12px;align-items:center;">
+                        <button class="btn btn-primary" id="daily-submit-btn" onclick="saveDailySnapshot()" style="max-width:400px;padding:14px 32px;background:linear-gradient(135deg,var(--primary),#8b5cf6);box-shadow:0 4px 15px var(--primary-glow);">Update Daily Sheet</button>
                     </div>
                 </div>
-                <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--text-main);padding-left:4px;">Particulars</h3>
                 <div class="table-container" style="overflow:hidden;"><table class="fintech-table"><thead><tr><th>Particulars</th><th style="text-align:right;">Amounts (AED)</th></tr></thead><tbody id="daily-table-body"></tbody><tfoot><tr><td>TOTAL DAILY BALANCE</td><td id="daily-grand-total">0.00</td></tr></tfoot></table></div>
             </section>
 
+            <!-- Paid Ledger Tab -->
             <section id="tab-paid" class="tab-content">
                 <h2 class="page-title"><i data-lucide="check-circle" style="width:28px;height:28px;color:var(--primary);"></i> Paid Customers Ledger</h2>
                 <div class="summary-cards"><div class="card card-success"><h3>Total Collected Revenue</h3><div class="value" id="paid-total-collected" style="color:var(--success-text);">0.00 AED</div><small>Auto-synced from Customers tab</small></div></div>
@@ -377,8 +370,8 @@
 
 <script>
 /* ===== GLOBAL STATE ===== */
-var AppData = {customers:[],cash:[],banks:[]};
-var DB_MAP = {customers:'records',cash:'cash',banks:'banks'};
+var AppData = {customers:[],cash:[],banks:[],daily:[]};
+var DB_MAP = {customers:'records',cash:'cash',banks:'banks',daily:'daily'};
 var currentUser = null;
 var editingCustomerId = null;
 var editingCashRecordId = null;
@@ -387,8 +380,6 @@ var revenueChart = null, allocationChart = null;
 var PAGE_SIZE = 15;
 var currentPage = {customers:1,cash:1,banks:1};
 var custHistoryDebounceTimer = null;
-var dailySaveTimer = null;
-var dailyIsDirty = false;
 
 /* ===== UTILS ===== */
 function safeNum(v){return parseFloat(v)||0}
@@ -397,185 +388,467 @@ function getTotalPaid(c){return(c.paymentHistory||[]).reduce(function(s,p){retur
 function escH(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function isTempId(id){return id&&id.indexOf('temp_')===0}
 function refreshIcons(){try{if(typeof lucide!=='undefined'&&lucide.createIcons)lucide.createIcons()}catch(e){}}
-function todayStr(){return new Date().toISOString().split('T')[0]}
 
 /* ===== TOAST ===== */
-function showToast(msg,type){type=type||'info';var c=document.getElementById('toast-container');var t=document.createElement('div');t.className='toast toast-'+type;var ic=type==='success'?'check-circle':type==='error'?'alert-circle':'info';t.innerHTML='<i data-lucide="'+ic+'" style="width:16px;height:16px;"></i> '+msg;c.appendChild(t);refreshIcons();setTimeout(function(){t.style.opacity='0';t.style.transform='translateX(50px)';setTimeout(function(){t.remove()},300)},3000)}
+function showToast(msg,type){
+    type=type||'info';
+    var c=document.getElementById('toast-container');
+    var t=document.createElement('div');
+    t.className='toast toast-'+type;
+    var ic=type==='success'?'check-circle':type==='error'?'alert-circle':'info';
+    t.innerHTML='<i data-lucide="'+ic+'" style="width:16px;height:16px;"></i> '+msg;
+    c.appendChild(t);refreshIcons();
+    setTimeout(function(){t.style.opacity='0';t.style.transform='translateX(50px)';setTimeout(function(){t.remove()},300)},3000);
+}
 
 /* ===== MODAL ===== */
-function showConfirm(title,msg,onConfirm){var r=document.getElementById('modal-root');r.innerHTML='<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card"><h3>'+title+'</h3><p>'+msg+'</p><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-danger" id="modal-confirm-btn">Confirm</button></div></div></div>';refreshIcons();document.getElementById('modal-confirm-btn').addEventListener('click',function(){onConfirm();closeModal()})}
+function showConfirm(title,msg,onConfirm){
+    var r=document.getElementById('modal-root');
+    r.innerHTML='<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card"><h3>'+title+'</h3><p>'+msg+'</p><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-danger" id="modal-confirm-btn">Confirm</button></div></div></div>';
+    refreshIcons();
+    document.getElementById('modal-confirm-btn').addEventListener('click',function(){onConfirm();closeModal()});
+}
 function closeModal(){document.getElementById('modal-root').innerHTML=''}
 
 /* ===== AUTH ===== */
-function handleLogin(){if(!auth){showToast('Firebase not initialized','error');return}auth.signInWithPopup(provider).catch(function(e){if(e.code==='auth/popup-blocked')showToast('Popup blocked.','error');else if(e.code!=='auth/cancelled-popup-request')showToast('Login failed: '+e.message,'error')})}
-function handleLogout(){auth.signOut();AppData={customers:[],cash:[],banks:[]}}
+function handleLogin(){
+    if(!auth){showToast('Firebase not initialized','error');return}
+    auth.signInWithPopup(provider).catch(function(e){
+        if(e.code==='auth/popup-blocked')showToast('Popup blocked. Allow popups for this site.','error');
+        else if(e.code!=='auth/cancelled-popup-request')showToast('Login failed: '+e.message,'error');
+    });
+}
+function handleLogout(){auth.signOut();AppData={customers:[],cash:[],banks:[],daily:[]}}
+
 document.getElementById('btn-login').addEventListener('click',handleLogin);
-auth.onAuthStateChanged(function(user){if(user){currentUser=user;document.getElementById('mainApp').classList.remove('hidden');document.getElementById('mainApp').style.display='flex';document.getElementById('loginPrompt').classList.add('hidden');document.getElementById('userName').innerText=user.displayName||user.email;loadAllCollections();initCharts()}else{currentUser=null;document.getElementById('mainApp').classList.add('hidden');document.getElementById('loginPrompt').classList.remove('hidden')}});
+
+auth.onAuthStateChanged(function(user){
+    if(user){
+        currentUser=user;
+        document.getElementById('mainApp').classList.remove('hidden');
+        document.getElementById('mainApp').style.display='flex';
+        document.getElementById('loginPrompt').classList.add('hidden');
+        document.getElementById('userName').innerText=user.displayName||user.email;
+        loadAllCollections();initCharts();
+    }else{
+        currentUser=null;
+        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('loginPrompt').classList.remove('hidden');
+    }
+});
 
 /* ===== FIRESTORE CRUD ===== */
-async function loadAllCollections(){await Promise.all(['customers','cash','banks'].map(function(c){return loadCollection(c)}));await loadDailyValues()}
-async function loadCollection(cn){if(!currentUser)return;var dc=DB_MAP[cn];try{var qs=await db.collection(dc).where('userid','==',currentUser.uid).get();AppData[cn]=[];qs.forEach(function(doc){var d=doc.data();if(cn==='customers'){if(safeNum(d.paid)>0&&(!d.paymentHistory||d.paymentHistory.length===0))d.paymentHistory=[{date:d.paidDate||d.date,amount:safeNum(d.paid)}];if(!d.paymentHistory)d.paymentHistory=[]}AppData[cn].push(Object.assign({id:doc.id},d))});AppData[cn].sort(function(a,b){var dc2=(a.date||'').localeCompare(b.date||'');return dc2!==0?dc2:(a.createdAt||'').localeCompare(b.createdAt||'')});renderActiveTab();recalculateAllFormulas();if(cn==='cash')updateDatalist('cash-portal-list',['CASH','G9','AP','VIA','B2B','DEPOSIT'],AppData.cash);if(cn==='banks')updateDatalist('banks-portal-list',['ADIB','NBD','SHARAF','CASH','G9','AP','AL AIN','SALARY'],AppData.banks)}catch(e){console.error('Load error '+cn,e);showToast('Failed to load '+cn+': '+e.message,'error')}}
-async function saveToCollection(cn,rec){if(!currentUser)return;var dc=DB_MAP[cn];var clean=Object.assign({},rec);delete clean.id;var r2=Object.assign({},clean,{userid:currentUser.uid,createdAt:new Date().toISOString()});var dr=await db.collection(dc).add(r2);return dr.id}
+async function loadAllCollections(){await Promise.all(['customers','cash','banks','daily'].map(function(c){return loadCollection(c)}))}
+
+async function loadCollection(cn){
+    if(!currentUser)return;
+    var dc=DB_MAP[cn];
+    try{
+        var qs=await db.collection(dc).where('userid','==',currentUser.uid).get();
+        AppData[cn]=[];
+        qs.forEach(function(doc){
+            var d=doc.data();
+            if(cn==='customers'){
+                if(safeNum(d.paid)>0&&(!d.paymentHistory||d.paymentHistory.length===0))d.paymentHistory=[{date:d.paidDate||d.date,amount:safeNum(d.paid)}];
+                if(!d.paymentHistory)d.paymentHistory=[];
+            }
+            AppData[cn].push(Object.assign({id:doc.id},d));
+        });
+        AppData[cn].sort(function(a,b){var dc2=(a.date||'').localeCompare(b.date||'');return dc2!==0?dc2:(a.createdAt||'').localeCompare(b.createdAt||'')});
+        if(cn==='daily'){
+            // Load manual entry for daily sheet
+            var manual = AppData.daily.find(function(d){ return d.id === 'manual_entry'; });
+            if(manual){
+                document.getElementById('daily-g9').value = manual.g9 || 0;
+                document.getElementById('daily-akbar').value = manual.akbar || 0;
+                document.getElementById('daily-via').value = manual.via || 0;
+                document.getElementById('daily-serene').value = manual.serene || 0;
+                document.getElementById('daily-alghazi').value = manual.alghazi || 0;
+                document.getElementById('daily-b2b').value = manual.b2b || 0;
+            }
+            renderDailyTable();
+        }
+        if(cn==='cash')updateDatalist('cash-portal-list',['CASH','G9','AP','VIA','B2B','DEPOSIT'],AppData.cash);
+        if(cn==='banks')updateDatalist('banks-portal-list',['ADIB','NBD','SHARAF','CASH','G9','AP','AL AIN','SALARY'],AppData.banks);
+        recalculateAllFormulas();
+        renderActiveTab();
+    }catch(e){console.error('Load error '+cn,e);showToast('Failed to load '+cn+': '+e.message,'error')}
+}
+
+async function saveToCollection(cn,rec){
+    if(!currentUser)return;
+    var dc=DB_MAP[cn];
+    var clean=Object.assign({},rec);
+    delete clean.id;
+    var r2=Object.assign({},clean,{userid:currentUser.uid,createdAt:new Date().toISOString()});
+    var dr=await db.collection(dc).add(r2);
+    return dr.id;
+}
+
 async function updateInCollection(cn,did,ud){await db.doc(DB_MAP[cn]+'/'+did).update(ud)}
 async function deleteFromCollection(cn,did){await db.doc(DB_MAP[cn]+'/'+did).delete()}
-async function recalcSyncBalances(tn){if(tn!=='cash'&&tn!=='banks')return;var running=0,batch=db.batch(),needs=false;AppData[tn].forEach(function(r){running+=safeNum(r.amountIn)-safeNum(r.amountOut);if(safeNum(r.balance)!==running){r.balance=running;needs=true;batch.update(db.doc(DB_MAP[tn]+'/'+r.id),{balance:running})}});if(needs){try{await batch.commit()}catch(e){console.error('Balance sync error',e)}}}
-function recalculateAllFormulas(){calculateCustomerDues();calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');renderDailyTable();renderPaidTable();updateDashboard()}
+
+async function recalcSyncBalances(tn){
+    if(tn!=='cash'&&tn!=='banks')return;
+    var running=0,batch=db.batch(),needs=false;
+    AppData[tn].forEach(function(r){running+=safeNum(r.amountIn)-safeNum(r.amountOut);if(safeNum(r.balance)!==running){r.balance=running;needs=true;batch.update(db.doc(DB_MAP[tn]+'/'+r.id),{balance:running})}});
+    if(needs){try{await batch.commit()}catch(e){console.error('Balance sync error',e)}}
+}
+
+function recalculateAllFormulas(){
+    calculateCustomerDues();
+    calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');
+    calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');
+    renderDailyTable();renderPaidTable();updateDashboard();
+}
 
 /* ===== NAV ===== */
-function switchTab(tn,el){document.querySelectorAll('.nav-item,.mob-nav-item').forEach(function(i){i.classList.remove('active')});if(el)el.classList.add('active');document.querySelectorAll('.tab-content').forEach(function(i){i.classList.remove('active')});var te=document.getElementById('tab-'+tn);if(te)te.classList.add('active');renderActiveTab()}
-function renderActiveTab(){var at=document.querySelector('.tab-content.active');if(!at)return;if(at.id==='tab-overview')updateDashboard();else if(at.id==='tab-customers'){var hv=document.getElementById('cust-history-view');if(hv.classList.contains('hidden'))filterCustomerRecords()}else if(at.id==='tab-cash')filterCashRecords();else if(at.id==='tab-banks')filterBanksRecords();else if(at.id==='tab-daily')renderDailyTable();else if(at.id==='tab-paid')renderPaidTable()}
-function updateDatalist(eid,defs,arr){var dl=document.getElementById(eid);if(!dl)return;var used=[];arr.forEach(function(r){if(r.portal&&used.indexOf(r.portal)===-1)used.push(r.portal)});var all=defs.concat(used).filter(function(v,i,a){return a.indexOf(v)===i}).sort();dl.innerHTML='';all.forEach(function(p){var o=document.createElement('option');o.value=p;dl.appendChild(o)})}
-function calcLedger(tn,inId,outId,balId){var rb=0,ti=0,to2=0;AppData[tn].forEach(function(r){rb+=safeNum(r.amountIn)-safeNum(r.amountOut);ti+=safeNum(r.amountIn);to2+=safeNum(r.amountOut);r.balance=rb});var ei=document.getElementById(inId);if(ei)ei.innerText=fmt(ti)+' AED';var eo=document.getElementById(outId);if(eo)eo.innerText=fmt(to2)+' AED';var eb=document.getElementById(balId);if(eb){var fb=AppData[tn].length>0?safeNum(AppData[tn][AppData[tn].length-1].balance):0;eb.innerText=fmt(fb)+' AED';eb.style.color=fb<0?'#fca5a5':'var(--success-text)'}}
+function switchTab(tn,el){
+    document.querySelectorAll('.nav-item,.mob-nav-item').forEach(function(i){i.classList.remove('active')});
+    if(el)el.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(function(i){i.classList.remove('active')});
+    var te=document.getElementById('tab-'+tn);if(te)te.classList.add('active');
+    renderActiveTab();
+}
+
+function renderActiveTab(){
+    var at=document.querySelector('.tab-content.active');if(!at)return;
+    if(at.id==='tab-overview')updateDashboard();
+    else if(at.id==='tab-customers'){var hv=document.getElementById('cust-history-view');if(hv.classList.contains('hidden'))filterCustomerRecords()}
+    else if(at.id==='tab-cash')filterCashRecords();
+    else if(at.id==='tab-banks')filterBanksRecords();
+    else if(at.id==='tab-daily')renderDailyTable();
+    else if(at.id==='tab-paid')renderPaidTable();
+}
+
+function updateDatalist(eid,defs,arr){
+    var dl=document.getElementById(eid);if(!dl)return;
+    var used=[];arr.forEach(function(r){if(r.portal&&used.indexOf(r.portal)===-1)used.push(r.portal)});
+    var all=defs.concat(used).filter(function(v,i,a){return a.indexOf(v)===i}).sort();
+    dl.innerHTML='';all.forEach(function(p){var o=document.createElement('option');o.value=p;dl.appendChild(o)});
+}
+
+function calcLedger(tn,inId,outId,balId){
+    var rb=0,ti=0,to2=0;
+    AppData[tn].forEach(function(r){rb+=safeNum(r.amountIn)-safeNum(r.amountOut);ti+=safeNum(r.amountIn);to2+=safeNum(r.amountOut);r.balance=rb});
+    var ei=document.getElementById(inId);if(ei)ei.innerText=fmt(ti)+' AED';
+    var eo=document.getElementById(outId);if(eo)eo.innerText=fmt(to2)+' AED';
+    var eb=document.getElementById(balId);
+    if(eb){var fb=AppData[tn].length>0?safeNum(AppData[tn][AppData[tn].length-1].balance):0;eb.innerText=fmt(fb)+' AED';eb.style.color=fb<0?'#fca5a5':'var(--success-text)'}
+}
 
 /* ===== GLOBAL SEARCH ===== */
-function handleGlobalSearch(term){var dd=document.getElementById('global-search-results');if(!term||term.length<2){dd.classList.remove('active');return}var lt=term.toLowerCase(),html='',found=false;var cfg=[{key:'customers',name:'Customers',fields:['name','contact','status','date'],sid:'cust-search'},{key:'cash',name:'Cash',fields:['particulars','portal','date'],sid:'cash-search'},{key:'banks',name:'Banks',fields:['particulars','portal','date'],sid:'banks-search'}];cfg.forEach(function(c){var m=AppData[c.key].filter(function(item){var sm=c.fields.some(function(f){return item[f]&&String(item[f]).toLowerCase().indexOf(lt)!==-1});var pm=false;if(item.paymentHistory)pm=item.paymentHistory.some(function(p){return p.date.indexOf(lt)!==-1||String(p.amount).indexOf(lt)!==-1});return sm||pm});if(m.length>0){found=true;html+='<div class="gs-category">'+c.name+' ('+m.length+')</div>';m.slice(0,3).forEach(function(r){var t=r.name||r.particulars||'?';var st=r.portal||r.contact||r.date;html+='<div class="gs-item" onmousedown="jumpToTabSearch(\''+c.key+'\',\''+c.sid+'\',\''+term.replace(/'/g,"\\'")+'\')"><div><div class="gs-title">'+t+'</div><div style="font-size:0.8rem;color:var(--text-muted);">'+st+'</div></div><span style="font-size:0.7rem;color:var(--primary);">Go</span></div>'})}});if(!found)html='<div style="padding:1rem;color:var(--text-muted);text-align:center;">No results found.</div>';dd.innerHTML=html;dd.classList.add('active')}
+function handleGlobalSearch(term){
+    var dd=document.getElementById('global-search-results');
+    if(!term||term.length<2){dd.classList.remove('active');return}
+    var lt=term.toLowerCase(),html='',found=false;
+    var cfg=[{key:'customers',name:'Customers',fields:['name','contact','status','date'],sid:'cust-search'},{key:'cash',name:'Cash',fields:['particulars','portal','date'],sid:'cash-search'},{key:'banks',name:'Banks',fields:['particulars','portal','date'],sid:'banks-search'}];
+    cfg.forEach(function(c){
+        var m=AppData[c.key].filter(function(item){var sm=c.fields.some(function(f){return item[f]&&String(item[f]).toLowerCase().indexOf(lt)!==-1});var pm=false;if(item.paymentHistory)pm=item.paymentHistory.some(function(p){return p.date.indexOf(lt)!==-1||String(p.amount).indexOf(lt)!==-1});return sm||pm});
+        if(m.length>0){found=true;html+='<div class="gs-category">'+c.name+' ('+m.length+')</div>';m.slice(0,3).forEach(function(r){var t=r.name||r.particulars||'?';var st=r.portal||r.contact||r.date;html+='<div class="gs-item" onmousedown="jumpToTabSearch(\''+c.key+'\',\''+c.sid+'\',\''+term.replace(/'/g,"\\'")+'\')"><div><div class="gs-title">'+t+'</div><div style="font-size:0.8rem;color:var(--text-muted);">'+st+'</div></div><span style="font-size:0.7rem;color:var(--primary);">Go</span></div>'})}
+    });
+    if(!found)html='<div style="padding:1rem;color:var(--text-muted);text-align:center;">No results found.</div>';
+    dd.innerHTML=html;dd.classList.add('active');
+}
 function closeGlobalSearch(){document.getElementById('global-search-results').classList.remove('active')}
-function jumpToTabSearch(tk,sid,term){var ni=document.querySelector('.nav-item[onclick*="'+tk+'"]');if(ni)switchTab(tk,ni);setTimeout(function(){var si=document.getElementById(sid);if(si){si.value=term;si.dispatchEvent(new Event('input'));si.focus()}document.getElementById('global-search').value='';closeGlobalSearch()},100)}
+function jumpToTabSearch(tk,sid,term){
+    var ni=document.querySelector('.nav-item[onclick*="'+tk+'"]');if(ni)switchTab(tk,ni);
+    setTimeout(function(){var si=document.getElementById(sid);if(si){si.value=term;si.dispatchEvent(new Event('input'));si.focus()}document.getElementById('global-search').value='';closeGlobalSearch()},100);
+}
 
 /* ===== PAGINATION ===== */
 function genEmpty(isS){var ic=isS?'search-x':'inbox';var tx=isS?'No matching records found':'No records added yet';var sb=isS?'Try adjusting your search terms.':'Add a new record using the form above.';return '<tr><td colspan="9" class="empty-state"><div class="empty-state-icon"><i data-lucide="'+ic+'" style="width:48px;height:48px;"></i></div><div class="empty-state-text">'+tx+'</div><div class="empty-state-sub">'+sb+'</div></td></tr>'}
-function renderPag(tn,ti){var pe=document.getElementById(tn+'-pagination');if(!pe)return;var tp=Math.ceil(ti/PAGE_SIZE)||1;if(currentPage[tn]>tp)currentPage[tn]=tp;pe.innerHTML='<span style="font-size:0.85rem;color:var(--text-muted);font-weight:600;">'+ti+' records (Page '+currentPage[tn]+' of '+tp+')</span><div style="display:flex;gap:8px;"><button class="btn btn-outline" onclick="changePage(\''+tn+'\','+(currentPage[tn]-1)+')" '+(currentPage[tn]<=1?'disabled':'')+'><i data-lucide="chevron-left" style="width:14px;height:14px;"></i> Prev</button><button class="btn btn-outline" onclick="changePage(\''+tn+'\','+(currentPage[tn]+1)+')" '+(currentPage[tn]>=tp?'disabled':'')+'>Next <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></button></div>';refreshIcons()}
+
+function renderPag(tn,ti){
+    var pe=document.getElementById(tn+'-pagination');if(!pe)return;
+    var tp=Math.ceil(ti/PAGE_SIZE)||1;if(currentPage[tn]>tp)currentPage[tn]=tp;
+    pe.innerHTML='<span style="font-size:0.85rem;color:var(--text-muted);font-weight:600;">'+ti+' records (Page '+currentPage[tn]+' of '+tp+')</span><div style="display:flex;gap:8px;"><button class="btn btn-outline" onclick="changePage(\''+tn+'\','+(currentPage[tn]-1)+')" '+(currentPage[tn]<=1?'disabled':'')+'><i data-lucide="chevron-left" style="width:14px;height:14px;"></i> Prev</button><button class="btn btn-outline" onclick="changePage(\''+tn+'\','+(currentPage[tn]+1)+')" '+(currentPage[tn]>=tp?'disabled':'')+'>Next <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></button></div>';
+    refreshIcons();
+}
 function changePage(tn,p){currentPage[tn]=p;if(tn==='customers')filterCustomerRecords();else if(tn==='cash')filterCashRecords();else if(tn==='banks')filterBanksRecords()}
 
 /* ===== CUSTOMERS ===== */
-function calculateCustomerDues(){var t=0;AppData.customers.forEach(function(r){r.paid=getTotalPaid(r);r.balance=safeNum(r.total)-r.paid;r.status=r.balance<=0?'PAID':'NOTPAID';if(r.status==='NOTPAID')t+=safeNum(r.balance)});var el=document.getElementById('cust-total-dues');if(el)el.innerText=fmt(t)}
-function renderCustomerTable(data){var tb=document.getElementById('cust-table-body'),isS=data!==undefined,rd=data||AppData.customers;tb.innerHTML='';if(rd.length===0){tb.innerHTML=genEmpty(isS);calculateCustomerDues();refreshIcons();renderPag('customers',0);return}var rev=rd.slice().reverse(),si=(currentPage.customers-1)*PAGE_SIZE,pd=rev.slice(si,si+PAGE_SIZE);pd.forEach(function(r){var paid=getTotalPaid(r),bal=safeNum(r.total)-paid,st=bal<=0?'PAID':'NOTPAID',sc=st==='PAID'?'status-paid':'status-notpaid',si2=st==='PAID'?'check-circle':'alert-circle',bc=bal>0?'#fca5a5':'var(--success-text)';var phCount=(r.paymentHistory||[]).length;var pb=st!=='PAID'?'<button class="action-btn" onclick="openAddPaymentModal(\''+r.id+'\')" style="border-color:var(--success);color:var(--success);"><i data-lucide="plus-circle" style="width:12px;height:12px;"></i> Pay</button>':'';tb.innerHTML+='<tr><td data-label="Date">'+(r.date||'-')+'</td><td data-label="Name"><strong>'+escH(r.name||'')+'</strong></td><td data-label="Contact">'+(r.contact||'-')+'</td><td data-label="Total">'+fmt(r.total)+'</td><td data-label="Paid" style="color:var(--success-text);font-weight:600;">'+fmt(paid)+(phCount>1?' <span style="font-size:0.65rem;opacity:0.6;">('+phCount+' payments)</span>':'')+'</td><td data-label="Balance" style="font-weight:700;color:'+bc+';">'+fmt(bal)+'</td><td data-label="Status"><span class="status-badge '+sc+'"><i data-lucide="'+si2+'" style="width:12px;height:12px;"></i> '+st+'</span></td><td data-label="Actions" class="action-btns"><button class="action-btn edit" onclick="editCustomerRecord(\''+r.id+'\')"><i data-lucide="pen-line" style="width:12px;height:12px;"></i></button>'+pb+'<button class="action-btn" onclick="openHistoryModal(\''+r.id+'\')" style="border-color:var(--primary);color:var(--primary);"><i data-lucide="history" style="width:12px;height:12px;"></i></button><button class="action-btn del" onclick="deleteCustomerRecord(\''+r.id+'\')"><i data-lucide="trash-2" style="width:12px;height:12px;"></i></button></td></tr>'});calculateCustomerDues();refreshIcons();renderPag('customers',rev.length)}
-function filterCustomerRecords(){var t=document.getElementById('cust-search').value.toLowerCase();if(!t)return renderCustomerTable(AppData.customers);renderCustomerTable(AppData.customers.filter(function(r){var sm=(r.name&&r.name.toLowerCase().indexOf(t)!==-1)||(r.contact&&r.contact.toLowerCase().indexOf(t)!==-1)||(r.date&&r.date.indexOf(t)!==-1)||(r.status&&r.status.toLowerCase().indexOf(t)!==-1);var pm=false;if(r.paymentHistory)pm=r.paymentHistory.some(function(p){return p.date.indexOf(t)!==-1||String(p.amount).indexOf(t)!==-1});return sm||pm}))}
+function calculateCustomerDues(){
+    var t=0;AppData.customers.forEach(function(r){r.paid=getTotalPaid(r);r.balance=safeNum(r.total)-r.paid;r.status=r.balance<=0?'PAID':'NOTPAID';if(r.status==='NOTPAID')t+=safeNum(r.balance)});
+    var el=document.getElementById('cust-total-dues');if(el)el.innerText=fmt(t);
+}
 
-function editCustomerRecord(did){var r=AppData.customers.find(function(x){return x.id===did});if(!r)return;document.getElementById('cust-date').value=r.date;document.getElementById('cust-name').value=r.name;document.getElementById('cust-contact').value=r.contact||'';document.getElementById('cust-total').value=r.total;document.getElementById('cust-paid').value=getTotalPaid(r);document.getElementById('cust-paid').disabled=true;document.getElementById('cust-paid-hint').classList.add('visible');editingCustomerId=did;var sb=document.getElementById('cust-submit-btn');sb.innerText='Update Customer';sb.style.background='linear-gradient(135deg,#8b5cf6,#6d28d9)';document.getElementById('cust-cancel-btn').classList.remove('hidden');document.getElementById('tab-customers').scrollIntoView({behavior:'smooth',block:'start'})}
-function cancelEditCustomerRecord(){editingCustomerId=null;document.getElementById('cust-date').value='';document.getElementById('cust-name').value='';document.getElementById('cust-contact').value='';document.getElementById('cust-total').value='';document.getElementById('cust-paid').value='0';document.getElementById('cust-paid').disabled=false;document.getElementById('cust-paid-hint').classList.remove('visible');var sb=document.getElementById('cust-submit-btn');sb.innerText='+ Add Customer';sb.style.background='';document.getElementById('cust-cancel-btn').classList.add('hidden')}
-function openAddPaymentModal(id){var r=AppData.customers.find(function(x){return x.id===id});if(!r)return;var rem=safeNum(r.total)-getTotalPaid(r);var root=document.getElementById('modal-root');root.innerHTML='<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card" style="max-width:450px;text-align:left;"><h3 style="text-align:center;margin-bottom:1rem;">Record Payment</h3><p style="color:var(--text-muted);text-align:center;margin-bottom:1.5rem;">Recording payment for <strong style="color:white;">'+escH(r.name)+'</strong><br>Remaining balance: <strong style="color:var(--primary);">'+fmt(rem)+' AED</strong></p><div class="form-group" style="margin-bottom:1rem;"><label>Payment Date</label><input type="date" id="pay-date" value="'+todayStr()+'"></div><div class="form-group" style="margin-bottom:1.5rem;"><label>Amount</label><input type="number" id="pay-amount" placeholder="0.00" step="0.01" max="'+rem+'"></div><div class="modal-actions" style="justify-content:center;"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="submitPayment(\''+id+'\')">Record Payment</button></div></div></div>';refreshIcons()}
-async function submitPayment(id){var date=document.getElementById('pay-date').value,amt=safeNum(document.getElementById('pay-amount').value);if(!date||amt<=0)return showToast('Enter valid date and amount.','error');var r=AppData.customers.find(function(x){return x.id===id});if(!r.paymentHistory)r.paymentHistory=[];r.paymentHistory.push({date:date,amount:amt});r.paid=getTotalPaid(r);r.balance=safeNum(r.total)-r.paid;r.status=r.balance<=0?'PAID':'NOTPAID';if(r.status==='PAID'&&!r.paidDate){r.paidDate=date;r.paidSyncedAt=new Date().toISOString()}if(r.status!=='PAID'){r.paidDate=r.paidDate||'';r.paidSyncedAt=r.paidSyncedAt||''}renderCustomerTable();recalculateAllFormulas();closeModal();try{await updateInCollection('customers',id,{paymentHistory:r.paymentHistory,paid:r.paid,balance:r.balance,status:r.status,paidDate:r.paidDate||null,paidSyncedAt:r.paidSyncedAt||null,userid:currentUser.uid});showToast('Payment recorded','success')}catch(e){r.paymentHistory.pop();r.paid=getTotalPaid(r);r.balance=safeNum(r.total)-r.paid;r.status=r.balance<=0?'PAID':'NOTPAID';renderCustomerTable();recalculateAllFormulas();showToast('Error: '+e.message,'error')}}
-function openHistoryModal(id){var r=AppData.customers.find(function(x){return x.id===id});if(!r)return;var root=document.getElementById('modal-root');var rows='';var ph=r.paymentHistory||[];if(ph.length>0){ph.slice().sort(function(a,b){return b.date.localeCompare(a.date)}).forEach(function(p,i){var label=ph.length===1?'Full payment':ordinalLabel(ph.length-i)+' installment';rows+='<tr><td style="padding:0.75rem 0.5rem;border-bottom:1px solid var(--border);"><div style="font-weight:600;">'+p.date+'</div><div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px;">'+label+'</div></td><td style="padding:0.75rem 0.5rem;border-bottom:1px solid var(--border);text-align:right;color:var(--success-text);font-weight:600;">'+fmt(p.amount)+' AED</td></tr>'})}else{rows='<tr><td colspan="2" style="text-align:center;padding:2rem 0;color:var(--text-muted);">No payment history.</td></tr>'}var tp=getTotalPaid(r),bal=safeNum(r.total)-tp;root.innerHTML='<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card" style="max-width:500px;text-align:left;"><h3 style="text-align:center;margin-bottom:1.5rem;">Payment History: '+escH(r.name)+'</h3><div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:0 1rem;margin-bottom:1.5rem;max-height:300px;overflow-y:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="padding:0.75rem 0.5rem;text-align:left;border-bottom:1px solid var(--border);">Date</th><th style="padding:0.75rem 0.5rem;text-align:right;border-bottom:1px solid var(--border);">Amount</th></tr></thead><tbody>'+rows+'</tbody></table></div><div style="background:rgba(59,130,246,0.1);padding:1.25rem;border-radius:var(--radius-sm);display:flex;justify-content:space-between;margin-bottom:1.5rem;border:1px solid rgba(59,130,246,0.2);"><div><span style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Paid</span><br><strong style="font-size:1.3rem;color:var(--success-text);">'+fmt(tp)+' AED</strong></div><div style="text-align:right;"><span style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Remaining</span><br><strong style="font-size:1.3rem;color:'+(bal>0?'#fca5a5':'var(--success-text)')+';">'+fmt(bal)+' AED</strong></div></div><div class="modal-actions" style="justify-content:center;"><button class="btn btn-primary" onclick="closeModal()">Close</button></div></div></div>'}
-function ordinalLabel(n){var s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
+function renderCustomerTable(data){
+    var tb=document.getElementById('cust-table-body'),isS=data!==undefined,rd=data||AppData.customers;
+    tb.innerHTML='';
+    if(rd.length===0){tb.innerHTML=genEmpty(isS);calculateCustomerDues();refreshIcons();renderPag('customers',0);return}
+    var rev=rd.slice().reverse(),si=(currentPage.customers-1)*PAGE_SIZE,pd=rev.slice(si,si+PAGE_SIZE);
+    pd.forEach(function(r){
+        var paid=getTotalPaid(r),bal=safeNum(r.total)-paid,st=bal<=0?'PAID':'NOTPAID',sc=st==='PAID'?'status-paid':'status-notpaid',si2=st==='PAID'?'check-circle':'alert-circle',bc=bal>0?'#fca5a5':'var(--success-text)';
+        var pb=st!=='PAID'?'<button class="action-btn" onclick="openAddPaymentModal(\''+r.id+'\')" style="border-color:var(--success);color:var(--success);"><i data-lucide="plus-circle" style="width:12px;height:12px;"></i> Pay</button>':'';
+        tb.innerHTML+='<tr><td data-label="Date">'+(r.date||'-')+'</td><td data-label="Name"><strong>'+escH(r.name||'')+'</strong></td><td data-label="Contact">'+(r.contact||'-')+'</td><td data-label="Total">'+fmt(r.total)+'</td><td data-label="Paid" style="color:var(--success-text);font-weight:600;">'+fmt(paid)+'</td><td data-label="Balance" style="font-weight:700;color:'+bc+';">'+fmt(bal)+'</td><td data-label="Status"><span class="status-badge '+sc+'"><i data-lucide="'+si2+'" style="width:12px;height:12px;"></i> '+st+'</span></td><td data-label="Actions" class="action-btns"><button class="action-btn edit" onclick="editCustomerRecord(\''+r.id+'\')"><i data-lucide="pen-line" style="width:12px;height:12px;"></i></button>'+pb+'<button class="action-btn" onclick="openHistoryModal(\''+r.id+'\')" style="border-color:var(--primary);color:var(--primary);"><i data-lucide="history" style="width:12px;height:12px;"></i></button><button class="action-btn del" onclick="deleteCustomerRecord(\''+r.id+'\')"><i data-lucide="trash-2" style="width:12px;height:12px;"></i></button></td></tr>';
+    });
+    calculateCustomerDues();refreshIcons();renderPag('customers',rev.length);
+}
 
-async function addCustomerRecord(){var date=document.getElementById('cust-date').value,name=document.getElementById('cust-name').value,contact=document.getElementById('cust-contact').value,total=safeNum(document.getElementById('cust-total').value);if(!date||!name||!total)return showToast('Fill Date, Name, and Total.','error');if(editingCustomerId&&!isTempId(editingCustomerId)){var r=AppData.customers.find(function(x){return x.id===editingCustomerId});if(!r){showToast('Record not found.','error');cancelEditCustomerRecord();return}var old=Object.assign({},r);var existingPH=r.paymentHistory||[];var existingPaid=getTotalPaid(r);var newBal=total-existingPaid;var newSt=newBal<=0?'PAID':'NOTPAID';var pd=r.paidDate||'',ps=r.paidSyncedAt||'';if(newSt==='PAID'&&existingPaid>0&&!pd){pd=date;ps=new Date().toISOString()}if(newSt!=='PAID'){pd='';ps=''}Object.assign(r,{date:date,name:name,contact:contact,total:total,paid:existingPaid,balance:newBal,status:newSt,paymentHistory:existingPH,paidDate:pd,paidSyncedAt:ps});renderCustomerTable();recalculateAllFormulas();try{await updateInCollection('customers',editingCustomerId,{date:date,name:name,contact:contact,total:total,paid:existingPaid,balance:newBal,status:newSt,paymentHistory:existingPH,paidDate:pd,paidSyncedAt:ps,userid:currentUser.uid});showToast('Customer updated — payment history preserved','success')}catch(e){Object.assign(r,old);renderCustomerTable();recalculateAllFormulas();showToast('Error: '+e.message,'error')}cancelEditCustomerRecord()}else{var paidAmt=safeNum(document.getElementById('cust-paid').value);var bal=total-paidAmt,st=bal<=0?'PAID':'NOTPAID',ph=[],pd2='',ps2='';if(paidAmt>0){ph.push({date:date,amount:paidAmt});if(st==='PAID'){pd2=date;ps2=new Date().toISOString()}}var tid='temp_'+Date.now(),rd={date:date,name:name,contact:contact,total:total,paid:paidAmt,paymentHistory:ph,balance:bal,status:st,paidDate:pd2,paidSyncedAt:ps2,createdAt:new Date().toISOString()};AppData.customers.push(Object.assign({id:tid},rd));AppData.customers.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});renderCustomerTable();recalculateAllFormulas();cancelEditCustomerRecord();try{var did=await saveToCollection('customers',rd);var rec=AppData.customers.find(function(x){return x.id===tid});if(rec)rec.id=did;showToast('Customer added','success')}catch(e){AppData.customers=AppData.customers.filter(function(x){return x.id!==tid});renderCustomerTable();recalculateAllFormulas();showToast('Error: '+e.message,'error')}}}
+function filterCustomerRecords(){
+    var t=document.getElementById('cust-search').value.toLowerCase();
+    if(!t)return renderCustomerTable(AppData.customers);
+    renderCustomerTable(AppData.customers.filter(function(r){var sm=(r.name&&r.name.toLowerCase().indexOf(t)!==-1)||(r.contact&&r.contact.toLowerCase().indexOf(t)!==-1)||(r.date&&r.date.indexOf(t)!==-1)||(r.status&&r.status.toLowerCase().indexOf(t)!==-1);var pm=false;if(r.paymentHistory)pm=r.paymentHistory.some(function(p){return p.date.indexOf(t)!==-1||String(p.amount).indexOf(t)!==-1});return sm||pm}));
+}
+
+function editCustomerRecord(did){
+    var r=AppData.customers.find(function(x){return x.id===did});if(!r)return;
+    document.getElementById('cust-date').value=r.date;document.getElementById('cust-name').value=r.name;document.getElementById('cust-contact').value=r.contact||'';document.getElementById('cust-total').value=r.total;document.getElementById('cust-paid').value=getTotalPaid(r);
+    editingCustomerId=did;var sb=document.getElementById('cust-submit-btn');sb.innerText='Update Customer';sb.style.background='linear-gradient(135deg,#8b5cf6,#6d28d9)';document.getElementById('cust-cancel-btn').classList.remove('hidden');
+    document.getElementById('tab-customers').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function cancelEditCustomerRecord(){editingCustomerId=null;document.getElementById('cust-date').value='';document.getElementById('cust-name').value='';document.getElementById('cust-contact').value='';document.getElementById('cust-total').value='';document.getElementById('cust-paid').value='0';var sb=document.getElementById('cust-submit-btn');sb.innerText='+ Add Customer';sb.style.background='';document.getElementById('cust-cancel-btn').classList.add('hidden')}
+
+function openAddPaymentModal(id){
+    var r=AppData.customers.find(function(x){return x.id===id});if(!r)return;var rem=safeNum(r.total)-getTotalPaid(r);
+    var root=document.getElementById('modal-root');
+    root.innerHTML='<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card" style="max-width:450px;text-align:left;"><h3 style="text-align:center;margin-bottom:1rem;">Record Payment</h3><p style="color:var(--text-muted);text-align:center;margin-bottom:1.5rem;">Recording payment for <strong style="color:white;">'+escH(r.name)+'</strong><br>Remaining balance: <strong style="color:var(--primary);">'+fmt(rem)+' AED</strong></p><div class="form-group" style="margin-bottom:1rem;"><label>Payment Date</label><input type="date" id="pay-date" value="'+new Date().toISOString().split('T')[0]+'"></div><div class="form-group" style="margin-bottom:1.5rem;"><label>Amount</label><input type="number" id="pay-amount" placeholder="0.00" step="0.01" max="'+rem+'"></div><div class="modal-actions" style="justify-content:center;"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="submitPayment(\''+id+'\')">Record Payment</button></div></div></div>';
+    refreshIcons();
+}
+
+async function submitPayment(id){
+    var date=document.getElementById('pay-date').value,amt=safeNum(document.getElementById('pay-amount').value);
+    if(!date||amt<=0)return showToast('Enter valid date and amount.','error');
+    var r=AppData.customers.find(function(x){return x.id===id});if(!r.paymentHistory)r.paymentHistory=[];
+    r.paymentHistory.push({date:date,amount:amt});r.paid=getTotalPaid(r);r.balance=safeNum(r.total)-r.paid;r.status=r.balance<=0?'PAID':'NOTPAID';
+    if(r.status==='PAID'&&!r.paidDate){r.paidDate=date;r.paidSyncedAt=new Date().toISOString()}
+    renderCustomerTable();recalculateAllFormulas();closeModal();
+    try{await updateInCollection('customers',id,{paymentHistory:r.paymentHistory,paid:r.paid,balance:r.balance,status:r.status,paidDate:r.paidDate||null,paidSyncedAt:r.paidSyncedAt||null,userid:currentUser.uid});showToast('Payment recorded','success')}
+    catch(e){r.paymentHistory.pop();r.paid=getTotalPaid(r);r.balance=safeNum(r.total)-r.paid;r.status=r.balance<=0?'PAID':'NOTPAID';renderCustomerTable();recalculateAllFormulas();showToast('Error: '+e.message,'error')}
+}
+
+function openHistoryModal(id){
+    var r=AppData.customers.find(function(x){return x.id===id});if(!r)return;var root=document.getElementById('modal-root');var rows='';
+    if(r.paymentHistory&&r.paymentHistory.length>0){r.paymentHistory.slice().sort(function(a,b){return b.date.localeCompare(a.date)}).forEach(function(p){rows+='<tr><td style="padding:0.75rem 0.5rem;border-bottom:1px solid var(--border);">'+p.date+'</td><td style="padding:0.75rem 0.5rem;border-bottom:1px solid var(--border);text-align:right;color:var(--success-text);font-weight:600;">'+fmt(p.amount)+' AED</td></tr>'})}
+    else{rows='<tr><td colspan="2" style="text-align:center;padding:2rem 0;color:var(--text-muted);">No payment history.</td></tr>'}
+    var tp=getTotalPaid(r),bal=safeNum(r.total)-tp;
+    root.innerHTML='<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card" style="max-width:500px;text-align:left;"><h3 style="text-align:center;margin-bottom:1.5rem;">Payment History: '+escH(r.name)+'</h3><div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:0 1rem;margin-bottom:1.5rem;max-height:250px;overflow-y:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="padding:0.75rem 0.5rem;text-align:left;border-bottom:1px solid var(--border);">Date</th><th style="padding:0.75rem 0.5rem;text-align:right;border-bottom:1px solid var(--border);">Amount</th></tr></thead><tbody>'+rows+'</tbody></table></div><div style="background:rgba(59,130,246,0.1);padding:1.25rem;border-radius:var(--radius-sm);display:flex;justify-content:space-between;margin-bottom:1.5rem;border:1px solid rgba(59,130,246,0.2);"><div><span style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Paid</span><br><strong style="font-size:1.3rem;color:var(--success-text);">'+fmt(tp)+' AED</strong></div><div style="text-align:right;"><span style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Remaining</span><br><strong style="font-size:1.3rem;color:'+(bal>0?'#fca5a5':'var(--success-text)')+';">'+fmt(bal)+' AED</strong></div></div><div class="modal-actions" style="justify-content:center;"><button class="btn btn-primary" onclick="closeModal()">Close</button></div></div></div>';
+}
+
+async function addCustomerRecord(){
+    var date=document.getElementById('cust-date').value,name=document.getElementById('cust-name').value,contact=document.getElementById('cust-contact').value,total=safeNum(document.getElementById('cust-total').value),paidAmtValue=safeNum(document.getElementById('cust-paid').value);
+    if(!date||!name||!total)return showToast('Fill Date, Name, and Total.','error');
+
+    if(editingCustomerId && !isTempId(editingCustomerId)){
+        var r=AppData.customers.find(function(x){return x.id===editingCustomerId});if(!r){showToast('Record not found.','error');cancelEditCustomerRecord();return}
+        var old=Object.assign({},r);
+        // Preserve payment history – ignore the paid amount field, recalc from history
+        var existingPh = (r.paymentHistory && r.paymentHistory.length > 0) ? r.paymentHistory.slice() : [];
+        var totalPaidFromHistory = existingPh.reduce(function(s,p){return s+safeNum(p.amount)},0);
+        var bal = total - totalPaidFromHistory;
+        var st = bal <= 0 ? 'PAID' : 'NOTPAID';
+        var pd = r.paidDate || (st === 'PAID' ? date : null);
+        var ps = r.paidSyncedAt || (st === 'PAID' ? new Date().toISOString() : null);
+        // Update object
+        Object.assign(r,{date:date,name:name,contact:contact,total:total,paid:totalPaidFromHistory,balance:bal,status:st,paymentHistory:existingPh,paidDate:pd,paidSyncedAt:ps});
+        renderCustomerTable();recalculateAllFormulas();
+        try{await updateInCollection('customers',editingCustomerId,{date:date,name:name,contact:contact,total:total,paid:totalPaidFromHistory,balance:bal,status:st,paymentHistory:existingPh,paidDate:pd,paidSyncedAt:ps,userid:currentUser.uid});showToast('Customer updated','success')}catch(e){Object.assign(r,old);renderCustomerTable();recalculateAllFormulas();showToast('Error: '+e.message,'error')}
+        cancelEditCustomerRecord();
+    }else{
+        // New customer
+        var bal = total - paidAmtValue, st = bal <= 0 ? 'PAID' : 'NOTPAID', ph = [], pd = '', ps = '';
+        if(paidAmtValue > 0){ph.push({date:date,amount:paidAmtValue});if(st==='PAID'){pd=date;ps=new Date().toISOString()}}
+        var tid='temp_'+Date.now(),rd={date:date,name:name,contact:contact,total:total,paid:paidAmtValue,paymentHistory:ph,balance:bal,status:st,paidDate:pd,paidSyncedAt:ps,createdAt:new Date().toISOString()};
+        AppData.customers.push(Object.assign({id:tid},rd));AppData.customers.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});
+        renderCustomerTable();recalculateAllFormulas();cancelEditCustomerRecord();
+        try{var did=await saveToCollection('customers',rd);var rec=AppData.customers.find(function(x){return x.id===tid});if(rec)rec.id=did;showToast('Customer added','success')}catch(e){AppData.customers=AppData.customers.filter(function(x){return x.id!==tid});renderCustomerTable();recalculateAllFormulas();showToast('Error: '+e.message,'error')}
+    }
+}
+
 function deleteCustomerRecord(did){showConfirm('Delete Record?','This action cannot be undone.',async function(){var bk=AppData.customers.slice();AppData.customers=AppData.customers.filter(function(x){return x.id!==did});renderCustomerTable();recalculateAllFormulas();try{await deleteFromCollection('customers',did);showToast('Record deleted','success')}catch(e){AppData.customers=bk;renderCustomerTable();recalculateAllFormulas();showToast('Delete failed: '+e.message,'error')}})}
 
 /* ===== CUSTOMER HISTORY SEARCH ===== */
-function handleCustomerHistorySearch(st){var cb=document.getElementById('btn-clear-cust-history'),ht=document.getElementById('ch-search-hint'),dv=document.getElementById('cust-default-view'),hv=document.getElementById('cust-history-view');if(st.trim().length>0){cb.classList.remove('hidden');ht.style.display='none'}else{cb.classList.add('hidden');ht.style.display='';dv.classList.remove('hidden');hv.classList.add('hidden');return}clearTimeout(custHistoryDebounceTimer);custHistoryDebounceTimer=setTimeout(function(){execCustHistSearch(st.trim())},300)}
-function execCustHistSearch(st){var dv=document.getElementById('cust-default-view'),hv=document.getElementById('cust-history-view');dv.classList.add('hidden');hv.classList.remove('hidden');var us=st.toUpperCase(),mr=AppData.customers.filter(function(r){return(r.name||'').trim().toUpperCase().indexOf(us)!==-1});mr.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});if(mr.length===0){hv.innerHTML='<div class="ch-no-results"><div class="empty-state-icon"><i data-lucide="search-x" style="width:48px;height:48px;"></i></div><div class="empty-state-text">No Results Found</div><p>No records found for "<strong>'+escH(st)+'</strong>".</p></div>';refreshIcons();return}var sT=0,sP=0;mr.forEach(function(r){sT+=safeNum(r.total);sP+=getTotalPaid(r)});var sO=sT-sP,izb=sO<=0,cn=mr[0].name,tr='';mr.forEach(function(r){var p=getTotalPaid(r),b=safeNum(r.total)-p,s=b<=0?'PAID':'NOT PAID',bc=b>0?'ch-balance-positive':'ch-balance-zero',sbc=b<=0?'status-paid':'status-notpaid',si=b<=0?'check-circle':'alert-circle';tr+='<tr><td data-label="Date" style="font-weight:600;white-space:nowrap;">'+(r.date||'-')+'</td><td data-label="Contact" style="color:var(--text-muted);">'+(r.contact||'-')+'</td><td data-label="Total Amount" style="font-weight:700;">'+fmt(r.total)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Paid Amount" style="color:var(--success-text);font-weight:700;">'+fmt(p)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Balance" class="'+bc+'">'+fmt(b)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Status"><span class="status-badge '+sbc+'"><i data-lucide="'+si+'" style="width:12px;height:12px;"></i> '+s+'</span></td></tr>'});hv.innerHTML='<div class="ch-header"><div class="ch-customer-badge"><i data-lucide="user-check"></i><span>'+escH(cn)+'</span></div><div class="ch-record-count">'+mr.length+' record'+(mr.length!==1?'s':'')+' found</div></div><div class="ch-summary-grid"><div class="ch-summary-card total-amounts"><div class="ch-label">Total Amounts</div><div class="ch-value">'+fmt(sT)+'<span class="ch-unit">AED</span></div></div><div class="ch-summary-card total-paid"><div class="ch-label">Total Paid</div><div class="ch-value">'+fmt(sP)+'<span class="ch-unit">AED</span></div></div><div class="ch-summary-card total-outstanding '+(izb?'zero-balance':'')+'"><div class="ch-label">Outstanding Balance</div><div class="ch-value">'+fmt(sO)+'<span class="ch-unit">AED</span></div></div></div><div class="ch-table-container"><div class="table-header"><span><i data-lucide="receipt" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px;"></i> Transaction History for '+escH(cn)+'</span></div><table><thead><tr><th>Date</th><th>Contact / Ref</th><th>Total Amount</th><th>Paid Amount</th><th>Balance</th><th>Status</th></tr></thead><tbody>'+tr+'</tbody></table></div>';refreshIcons()}
+function handleCustomerHistorySearch(st){
+    var cb=document.getElementById('btn-clear-cust-history'),ht=document.getElementById('ch-search-hint'),dv=document.getElementById('cust-default-view'),hv=document.getElementById('cust-history-view');
+    if(st.trim().length>0){cb.classList.remove('hidden');ht.style.display='none'}else{cb.classList.add('hidden');ht.style.display='';dv.classList.remove('hidden');hv.classList.add('hidden');return}
+    clearTimeout(custHistoryDebounceTimer);custHistoryDebounceTimer=setTimeout(function(){execCustHistSearch(st.trim())},300);
+}
+
+function execCustHistSearch(st){
+    var dv=document.getElementById('cust-default-view'),hv=document.getElementById('cust-history-view');
+    dv.classList.add('hidden');hv.classList.remove('hidden');
+    var us=st.toUpperCase(),mr=AppData.customers.filter(function(r){return(r.name||'').trim().toUpperCase().indexOf(us)!==-1});
+    mr.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});
+    if(mr.length===0){hv.innerHTML='<div class="ch-no-results"><div class="empty-state-icon"><i data-lucide="search-x" style="width:48px;height:48px;"></i></div><div class="empty-state-text">No Results Found</div><p>No records found for "<strong>'+escH(st)+'</strong>". Check spelling or try a partial name.</p></div>';refreshIcons();return}
+    var sT=0,sP=0;mr.forEach(function(r){sT+=safeNum(r.total);sP+=getTotalPaid(r)});var sO=sT-sP,izb=sO<=0,cn=mr[0].name,tr='';
+    mr.forEach(function(r){var p=getTotalPaid(r),b=safeNum(r.total)-p,s=b<=0?'PAID':'NOT PAID',bc=b>0?'ch-balance-positive':'ch-balance-zero',sbc=b<=0?'status-paid':'status-notpaid',si=b<=0?'check-circle':'alert-circle';tr+='<tr><td data-label="Date" style="font-weight:600;white-space:nowrap;">'+(r.date||'-')+'</td><td data-label="Contact" style="color:var(--text-muted);">'+(r.contact||'-')+'</td><td data-label="Total Amount" style="font-weight:700;">'+fmt(r.total)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Paid Amount" style="color:var(--success-text);font-weight:700;">'+fmt(p)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Balance" class="'+bc+'">'+fmt(b)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Status"><span class="status-badge '+sbc+'"><i data-lucide="'+si+'" style="width:12px;height:12px;"></i> '+s+'</span></td></tr>'});
+    hv.innerHTML='<div class="ch-header"><div class="ch-customer-badge"><i data-lucide="user-check"></i><span>'+escH(cn)+'</span></div><div class="ch-record-count">'+mr.length+' record'+(mr.length!==1?'s':'')+' found</div></div><div class="ch-summary-grid"><div class="ch-summary-card total-amounts"><div class="ch-label">Total Amounts</div><div class="ch-value">'+fmt(sT)+'<span class="ch-unit">AED</span></div></div><div class="ch-summary-card total-paid"><div class="ch-label">Total Paid</div><div class="ch-value">'+fmt(sP)+'<span class="ch-unit">AED</span></div></div><div class="ch-summary-card total-outstanding '+(izb?'zero-balance':'')+'"><div class="ch-label">Outstanding Balance</div><div class="ch-value">'+fmt(sO)+'<span class="ch-unit">AED</span></div></div></div><div class="ch-table-container"><div class="table-header"><span><i data-lucide="receipt" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px;"></i> Transaction History for '+escH(cn)+'</span></div><table><thead><tr><th>Date</th><th>Contact / Ref</th><th>Total Amount</th><th>Paid Amount</th><th>Balance</th><th>Status</th></tr></thead><tbody>'+tr+'</tbody></table></div>';
+    refreshIcons();
+}
+
 function clearCustomerHistorySearch(){var i=document.getElementById('cust-history-search-input');i.value='';handleCustomerHistorySearch('');i.focus()}
 
 /* ===== LEDGER TABLE (CASH & BANKS) ===== */
-function renderLedgerTable(tn,tid,efn,dfn,data){var tb=document.getElementById(tid),isS=data!==undefined,rd=data||AppData[tn];tb.innerHTML='';if(rd.length===0){tb.innerHTML=genEmpty(isS);refreshIcons();renderPag(tn,0);return}var rev=rd.slice().reverse(),si=(currentPage[tn]-1)*PAGE_SIZE,pd=rev.slice(si,si+PAGE_SIZE);pd.forEach(function(r){var bc=safeNum(r.balance)<0?'#fca5a5':'var(--success-text)';tb.innerHTML+='<tr><td data-label="Date">'+(r.date||'-')+'</td><td data-label="Particulars"><strong>'+escH(r.particulars||'')+'</strong></td><td data-label="Portal"><span class="status-badge" style="background:rgba(59,130,246,0.1);color:var(--primary);border:1px solid rgba(59,130,246,0.3);">'+escH(r.portal||'')+'</span></td><td data-label="In (+)" style="color:var(--success-text);font-weight:600;text-align:right;">'+(r.amountIn?fmt(r.amountIn):'-')+'</td><td data-label="Out (-)" style="color:#fca5a5;font-weight:600;text-align:right;">'+(r.amountOut?fmt(r.amountOut):'-')+'</td><td data-label="Balance" style="text-align:right;font-weight:700;color:'+bc+';">'+fmt(r.balance)+'</td><td data-label="Actions" class="action-btns"><button class="action-btn edit" onclick="'+efn+'(\''+r.id+'\')"><i data-lucide="edit" style="width:12px;height:12px;"></i></button><button class="action-btn del" onclick="'+dfn+'(\''+r.id+'\')"><i data-lucide="trash-2" style="width:12px;height:12px;"></i></button></td></tr>'});refreshIcons();renderPag(tn,rev.length)}
+function renderLedgerTable(tn,tid,efn,dfn,data){
+    var tb=document.getElementById(tid),isS=data!==undefined,rd=data||AppData[tn];tb.innerHTML='';
+    if(rd.length===0){tb.innerHTML=genEmpty(isS);refreshIcons();renderPag(tn,0);return}
+    var rev=rd.slice().reverse(),si=(currentPage[tn]-1)*PAGE_SIZE,pd=rev.slice(si,si+PAGE_SIZE);
+    pd.forEach(function(r){var bc=safeNum(r.balance)<0?'#fca5a5':'var(--success-text)';tb.innerHTML+='<tr><td data-label="Date">'+(r.date||'-')+'</td><td data-label="Particulars"><strong>'+escH(r.particulars||'')+'</strong></td><td data-label="Portal"><span class="status-badge" style="background:rgba(59,130,246,0.1);color:var(--primary);border:1px solid rgba(59,130,246,0.3);">'+escH(r.portal||'')+'</span></td><td data-label="In (+)" style="color:var(--success-text);font-weight:600;text-align:right;">'+(r.amountIn?fmt(r.amountIn):'-')+'</td><td data-label="Out (-)" style="color:#fca5a5;font-weight:600;text-align:right;">'+(r.amountOut?fmt(r.amountOut):'-')+'</td><td data-label="Balance" style="text-align:right;font-weight:700;color:'+bc+';">'+fmt(r.balance)+'</td><td data-label="Actions" class="action-btns"><button class="action-btn edit" onclick="'+efn+'(\''+r.id+'\')"><i data-lucide="edit" style="width:12px;height:12px;"></i></button><button class="action-btn del" onclick="'+dfn+'(\''+r.id+'\')"><i data-lucide="trash-2" style="width:12px;height:12px;"></i></button></td></tr>'});
+    refreshIcons();renderPag(tn,rev.length);
+}
 function filterLedgerRecs(tn,sid,tid,ef,df){var t=document.getElementById(sid).value.toLowerCase();if(!t)return renderLedgerTable(tn,tid,ef,df,AppData[tn]);renderLedgerTable(tn,tid,ef,df,AppData[tn].filter(function(r){return(r.particulars&&r.particulars.toLowerCase().indexOf(t)!==-1)||(r.portal&&r.portal.toLowerCase().indexOf(t)!==-1)||(r.date&&r.date.indexOf(t)!==-1)}))}
 
 /* ===== CASH ===== */
 function editCashRecord(did){var r=AppData.cash.find(function(x){return x.id===did});if(!r)return;document.getElementById('cash-date').value=r.date;document.getElementById('cash-particulars').value=r.particulars;document.getElementById('cash-portal').value=r.portal;document.getElementById('cash-in').value=r.amountIn||0;document.getElementById('cash-out').value=r.amountOut||0;editingCashRecordId=did;document.getElementById('cash-submit-btn').innerText='Update';document.getElementById('cash-cancel-btn').classList.remove('hidden')}
 function cancelEditCashRecord(){editingCashRecordId=null;document.getElementById('cash-date').value='';document.getElementById('cash-particulars').value='';document.getElementById('cash-portal').value='';document.getElementById('cash-in').value='0';document.getElementById('cash-out').value='0';document.getElementById('cash-submit-btn').innerText='+ Add Transaction';document.getElementById('cash-cancel-btn').classList.add('hidden')}
-async function addCashRecord(){var date=document.getElementById('cash-date').value,part=document.getElementById('cash-particulars').value,portal=document.getElementById('cash-portal').value.trim().toUpperCase(),ai=safeNum(document.getElementById('cash-in').value),ao=safeNum(document.getElementById('cash-out').value);if(!date||!part||!portal)return showToast('Fill all fields.','error');var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao,createdAt:new Date().toISOString()};if(editingCashRecordId&&!isTempId(editingCashRecordId)){var r=AppData.cash.find(function(x){return x.id===editingCashRecordId});if(!r){showToast('Record not found.','error');cancelEditCashRecord();return}var old=Object.assign({},r);Object.assign(r,rd);calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');renderCashTable();try{await updateInCollection('cash',editingCashRecordId,Object.assign({},rd,{userid:currentUser.uid}));await recalcSyncBalances('cash');showToast('Record updated','success')}catch(e){Object.assign(r,old);recalculateAllFormulas();renderCashTable();showToast('Update failed: '+e.message,'error')}cancelEditCashRecord()}else{var tid='temp_'+Date.now();rd.id=tid;rd.balance=0;AppData.cash.push(rd);AppData.cash.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');renderCashTable();cancelEditCashRecord();try{var did=await saveToCollection('cash',rd);var rec=AppData.cash.find(function(x){return x.id===tid});if(rec)rec.id=did;await recalcSyncBalances('cash');showToast('Transaction added','success')}catch(e){AppData.cash=AppData.cash.filter(function(x){return x.id!==tid});recalculateAllFormulas();renderCashTable();showToast('Add failed: '+e.message,'error')}}}
+
+async function addCashRecord(){
+    var date=document.getElementById('cash-date').value,part=document.getElementById('cash-particulars').value,portal=document.getElementById('cash-portal').value.trim().toUpperCase(),ai=safeNum(document.getElementById('cash-in').value),ao=safeNum(document.getElementById('cash-out').value);
+    if(!date||!part||!portal)return showToast('Fill all fields.','error');
+    var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao,createdAt:new Date().toISOString()};
+    if(editingCashRecordId&&!isTempId(editingCashRecordId)){
+        var r=AppData.cash.find(function(x){return x.id===editingCashRecordId});if(!r){showToast('Record not found.','error');cancelEditCashRecord();return}
+        var old=Object.assign({},r);Object.assign(r,rd);
+        calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');renderCashTable();
+        try{await updateInCollection('cash',editingCashRecordId,Object.assign({},rd,{userid:currentUser.uid}));await recalcSyncBalances('cash');showToast('Record updated','success')}catch(e){Object.assign(r,old);recalculateAllFormulas();renderCashTable();showToast('Update failed: '+e.message,'error')}
+        cancelEditCashRecord();
+    }else{
+        var tid='temp_'+Date.now();rd.id=tid;rd.balance=0;AppData.cash.push(rd);AppData.cash.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});
+        calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');renderCashTable();cancelEditCashRecord();
+        try{var did=await saveToCollection('cash',rd);var rec=AppData.cash.find(function(x){return x.id===tid});if(rec)rec.id=did;await recalcSyncBalances('cash');showToast('Transaction added','success')}catch(e){AppData.cash=AppData.cash.filter(function(x){return x.id!==tid});recalculateAllFormulas();renderCashTable();showToast('Add failed: '+e.message,'error')}
+    }
+}
+
 function deleteCashRecord(did){showConfirm('Delete Transaction?','This will alter subsequent balances.',async function(){var bk=AppData.cash.slice();AppData.cash=AppData.cash.filter(function(x){return x.id!==did});recalculateAllFormulas();renderCashTable();try{await deleteFromCollection('cash',did);await recalcSyncBalances('cash');showToast('Deleted','success')}catch(e){AppData.cash=bk;recalculateAllFormulas();renderCashTable();showToast('Delete failed: '+e.message,'error')}})}
+
 function renderCashTable(){renderLedgerTable('cash','cash-table-body','editCashRecord','deleteCashRecord')}
 function filterCashRecords(){filterLedgerRecs('cash','cash-search','cash-table-body','editCashRecord','deleteCashRecord')}
 
 /* ===== BANKS ===== */
 function editBanksRecord(did){var r=AppData.banks.find(function(x){return x.id===did});if(!r)return;document.getElementById('banks-date').value=r.date;document.getElementById('banks-particulars').value=r.particulars;document.getElementById('banks-portal').value=r.portal;document.getElementById('banks-in').value=r.amountIn||0;document.getElementById('banks-out').value=r.amountOut||0;editingBanksRecordId=did;document.getElementById('banks-submit-btn').innerText='Update';document.getElementById('banks-cancel-btn').classList.remove('hidden')}
 function cancelEditBanksRecord(){editingBanksRecordId=null;document.getElementById('banks-date').value='';document.getElementById('banks-particulars').value='';document.getElementById('banks-portal').value='';document.getElementById('banks-in').value='0';document.getElementById('banks-out').value='0';document.getElementById('banks-submit-btn').innerText='+ Add Transaction';document.getElementById('banks-cancel-btn').classList.add('hidden')}
-async function addBanksRecord(){var date=document.getElementById('banks-date').value,part=document.getElementById('banks-particulars').value,portal=document.getElementById('banks-portal').value.trim().toUpperCase(),ai=safeNum(document.getElementById('banks-in').value),ao=safeNum(document.getElementById('banks-out').value);if(!date||!part||!portal)return showToast('Fill all fields.','error');var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao,createdAt:new Date().toISOString()};if(editingBanksRecordId&&!isTempId(editingBanksRecordId)){var r=AppData.banks.find(function(x){return x.id===editingBanksRecordId});if(!r){showToast('Record not found.','error');cancelEditBanksRecord();return}var old=Object.assign({},r);Object.assign(r,rd);calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');renderBanksTable();try{await updateInCollection('banks',editingBanksRecordId,Object.assign({},rd,{userid:currentUser.uid}));await recalcSyncBalances('banks');showToast('Record updated','success')}catch(e){Object.assign(r,old);recalculateAllFormulas();renderBanksTable();showToast('Update failed: '+e.message,'error')}cancelEditBanksRecord()}else{var tid='temp_'+Date.now();rd.id=tid;rd.balance=0;AppData.banks.push(rd);AppData.banks.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');renderBanksTable();cancelEditBanksRecord();try{var did=await saveToCollection('banks',rd);var rec=AppData.banks.find(function(x){return x.id===tid});if(rec)rec.id=did;await recalcSyncBalances('banks');showToast('Transaction added','success')}catch(e){AppData.banks=AppData.banks.filter(function(x){return x.id!==tid});recalculateAllFormulas();renderBanksTable();showToast('Add failed: '+e.message,'error')}}}
+
+async function addBanksRecord(){
+    var date=document.getElementById('banks-date').value,part=document.getElementById('banks-particulars').value,portal=document.getElementById('banks-portal').value.trim().toUpperCase(),ai=safeNum(document.getElementById('banks-in').value),ao=safeNum(document.getElementById('banks-out').value);
+    if(!date||!part||!portal)return showToast('Fill all fields.','error');
+    var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao,createdAt:new Date().toISOString()};
+    if(editingBanksRecordId&&!isTempId(editingBanksRecordId)){
+        var r=AppData.banks.find(function(x){return x.id===editingBanksRecordId});if(!r){showToast('Record not found.','error');cancelEditBanksRecord();return}
+        var old=Object.assign({},r);Object.assign(r,rd);
+        calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');renderBanksTable();
+        try{await updateInCollection('banks',editingBanksRecordId,Object.assign({},rd,{userid:currentUser.uid}));await recalcSyncBalances('banks');showToast('Record updated','success')}catch(e){Object.assign(r,old);recalculateAllFormulas();renderBanksTable();showToast('Update failed: '+e.message,'error')}
+        cancelEditBanksRecord();
+    }else{
+        var tid='temp_'+Date.now();rd.id=tid;rd.balance=0;AppData.banks.push(rd);AppData.banks.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});
+        calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');renderBanksTable();cancelEditBanksRecord();
+        try{var did=await saveToCollection('banks',rd);var rec=AppData.banks.find(function(x){return x.id===tid});if(rec)rec.id=did;await recalcSyncBalances('banks');showToast('Transaction added','success')}catch(e){AppData.banks=AppData.banks.filter(function(x){return x.id!==tid});recalculateAllFormulas();renderBanksTable();showToast('Add failed: '+e.message,'error')}
+    }
+}
+
 function deleteBanksRecord(did){showConfirm('Delete Transaction?','This will alter subsequent balances.',async function(){var bk=AppData.banks.slice();AppData.banks=AppData.banks.filter(function(x){return x.id!==did});recalculateAllFormulas();renderBanksTable();try{await deleteFromCollection('banks',did);await recalcSyncBalances('banks');showToast('Deleted','success')}catch(e){AppData.banks=bk;recalculateAllFormulas();renderBanksTable();showToast('Delete failed: '+e.message,'error')}})}
+
 function renderBanksTable(){renderLedgerTable('banks','banks-table-body','editBanksRecord','deleteBanksRecord')}
 function filterBanksRecords(){filterLedgerRecs('banks','banks-search','banks-table-body','editBanksRecord','deleteBanksRecord')}
 
-/* ===== DAILY SHEET — DATE-FREE, DIRECT REPLICATION ===== */
+/* ===== DAILY (Simplified) ===== */
 function getLiveBal(tn){return AppData[tn].length>0?safeNum(AppData[tn][AppData[tn].length-1].balance):0}
 function getLiveCustDues(){var t=0;AppData.customers.forEach(function(r){if(r.status==='NOTPAID')t+=safeNum(r.balance)});return t}
-function getTodaysIn(tn){var today=todayStr();return AppData[tn].filter(function(r){return r.date===today}).reduce(function(s,r){return s+safeNum(r.amountIn)},0)}
 
-/* Called on every keystroke in daily inputs — instantly updates the Particulars table */
-function onDailyInputChange(){
-    dailyIsDirty=true;
-    updateSaveStatus('unsaved');
-    renderDailyTable();
-}
-
-function updateSaveStatus(state){
-    var el=document.getElementById('daily-save-status');
-    if(!el)return;
-    if(state==='saved'){el.innerText='All changes saved';el.className='daily-save-status visible saved'}
-    else if(state==='unsaved'){el.innerText='Unsaved changes';el.className='daily-save-status visible unsaved'}
-    else{el.className='daily-save-status'}
-}
-
-/* Load persisted daily values from Firestore (single document per user) */
-async function loadDailyValues(){
-    if(!currentUser)return;
-    try{
-        var doc=await db.collection('dailyState').doc(currentUser.uid).get();
-        if(doc.exists){
-            var d=doc.data();
-            document.getElementById('daily-g9').value=d.g9||0;
-            document.getElementById('daily-akbar').value=d.akbar||0;
-            document.getElementById('daily-via').value=d.via||0;
-            document.getElementById('daily-serene').value=d.serene||0;
-            document.getElementById('daily-alghazi').value=d.alghazi||0;
-            document.getElementById('daily-b2b').value=d.b2b||0;
-        }
-        dailyIsDirty=false;
-        updateSaveStatus('saved');
-        renderDailyTable();
-    }catch(e){console.error('Daily load error',e)}
-}
-
-/* Save current daily values to Firestore */
-async function saveDailyValues(){
-    if(!currentUser)return;
-    var g9=safeNum(document.getElementById('daily-g9').value),
-        ak=safeNum(document.getElementById('daily-akbar').value),
-        vi=safeNum(document.getElementById('daily-via').value),
-        se=safeNum(document.getElementById('daily-serene').value),
-        al=safeNum(document.getElementById('daily-alghazi').value),
-        b2=safeNum(document.getElementById('daily-b2b').value);
-    var data={g9:g9,akbar:ak,via:vi,serene:se,alghazi:al,b2b:b2,updatedAt:new Date().toISOString(),userid:currentUser.uid};
-    try{
-        await db.collection('dailyState').doc(currentUser.uid).set(data);
-        dailyIsDirty=false;
-        updateSaveStatus('saved');
-        showToast('Daily values saved','success');
-    }catch(e){showToast('Save failed: '+e.message,'error')}
-}
-
-/* Reset all daily inputs to zero */
-function resetDailyValues(){
-    showConfirm('Reset All Values?','This will set all manual entries to zero.',function(){
-        ['daily-g9','daily-akbar','daily-via','daily-serene','daily-alghazi','daily-b2b'].forEach(function(id){document.getElementById(id).value=0});
-        onDailyInputChange();
-        saveDailyValues();
-    });
-}
-
-/* Render the Particulars table — reads directly from form inputs + auto-calculated fields */
 function renderDailyTable(){
     var tb=document.getElementById('daily-table-body');tb.innerHTML='';
-    var g9=safeNum(document.getElementById('daily-g9').value),ak=safeNum(document.getElementById('daily-akbar').value),vi=safeNum(document.getElementById('daily-via').value),se=safeNum(document.getElementById('daily-serene').value),al=safeNum(document.getElementById('daily-alghazi').value),b2=safeNum(document.getElementById('daily-b2b').value);
-    var mt=g9+ak+vi+se+al+b2;
-    /* Auto-calculated values from other tabs — UNTOUCHED */
-    var cd=getLiveCustDues(),bb=getLiveBal('banks'),cb=getLiveBal('cash');
-    var aci=getTodaysIn('cash'),abi=getTodaysIn('banks'),tai=aci+abi,disc=tai-mt;
-    var gt=0;
-    /* Manual entries — directly replicated from form inputs */
-    var manualRows=[{n:'AIR ARABIA G9',a:g9},{n:'AKBAR PORTAL',a:ak},{n:'VIA',a:vi},{n:'SERENE AIR LINE',a:se},{n:'AL GHAZI TRAVEL',a:al},{n:'B2B',a:b2}];
-    /* Auto-filled rows — from other tabs, UNTOUCHED */
-    var autoRows=[{n:'ADIB NBD BANKS',a:bb,s:'Auto'},{n:'CUSTOMERS DUES',a:cd,s:'Auto'},{n:'CASH ON HAND',a:cb,s:'Auto'}];
-    manualRows.forEach(function(r){gt+=r.a;tb.innerHTML+='<tr><td data-label="Particular">'+r.n+'</td><td data-label="Amount">'+fmt(r.a)+'</td></tr>'});
-    autoRows.forEach(function(r){gt+=r.a;tb.innerHTML+='<tr class="row-auto-calc"><td data-label="Particular"><strong>'+r.n+'</strong> <span class="auto-badge badge-success">'+r.s+'</span></td><td data-label="Amount">'+fmt(r.a)+'</td></tr>'});
-    /* Reconciliation check — uses today's date automatically */
-    var rc=disc!==0?'row-discrepancy':'row-auto-calc',rb=disc!==0?'badge-danger':'badge-success',rt=disc!==0?'Discrepancy of '+fmt(disc)+' AED':'Reconciled';
-    tb.innerHTML+='<tr class="'+rc+'"><td data-label="Particular"><strong>RECONCILIATION CHECK</strong> <span class="auto-badge '+rb+'">'+rt+'</span><br><small style="font-size:0.7rem;color:var(--text-muted);">Manual: '+fmt(mt)+' vs Today In: '+fmt(tai)+'</small></td><td data-label="Amount">'+fmt(tai)+'</td></tr>';gt+=tai-mt;
-    var te=document.getElementById('daily-grand-total');te.innerText=fmt(gt)+' AED';te.style.color=gt<0?'#fca5a5':'#4ade80'
+    var g9 = safeNum(document.getElementById('daily-g9').value);
+    var ak = safeNum(document.getElementById('daily-akbar').value);
+    var vi = safeNum(document.getElementById('daily-via').value);
+    var se = safeNum(document.getElementById('daily-serene').value);
+    var al = safeNum(document.getElementById('daily-alghazi').value);
+    var b2 = safeNum(document.getElementById('daily-b2b').value);
+    var cd = getLiveCustDues(), bb = getLiveBal('banks'), cb = getLiveBal('cash');
+    var gt = 0;
+    var mr = [{n:'AIR ARABIA G9',a:g9},{n:'AKBAR PORTAL',a:ak},{n:'VIA',a:vi},{n:'SERENE AIR LINE',a:se},{n:'AL GHAZI TRAVEL',a:al},{n:'B2B',a:b2}];
+    var ar = [{n:'ADIB NBD BANKS',a:bb,s:'Auto'},{n:'CUSTOMERS DUES',a:cd,s:'Auto'},{n:'CASH ON HAND',a:cb,s:'Auto'}];
+    mr.forEach(function(r){gt+=r.a;tb.innerHTML+='<tr><td data-label="Particular">'+r.n+'</td><td data-label="Amount">'+fmt(r.a)+'</td></tr>'});
+    ar.forEach(function(r){gt+=r.a;tb.innerHTML+='<tr class="row-auto-calc"><td data-label="Particular"><strong>'+r.n+'</strong> <span class="auto-badge badge-success">'+r.s+'</span></td><td data-label="Amount">'+fmt(r.a)+'</td></tr>'});
+    var te=document.getElementById('daily-grand-total');if(te){te.innerText=fmt(gt)+' AED';te.style.color=gt<0?'#fca5a5':'#4ade80'}
+}
+
+async function saveDailySnapshot(){
+    var g9 = safeNum(document.getElementById('daily-g9').value);
+    var ak = safeNum(document.getElementById('daily-akbar').value);
+    var vi = safeNum(document.getElementById('daily-via').value);
+    var se = safeNum(document.getElementById('daily-serene').value);
+    var al = safeNum(document.getElementById('daily-alghazi').value);
+    var b2 = safeNum(document.getElementById('daily-b2b').value);
+    var manualData = {g9:g9,akbar:ak,via:vi,serene:se,alghazi:al,b2b:b2,updatedAt:new Date().toISOString(),userid:currentUser.uid};
+    try{
+        await db.collection('daily').doc('manual_entry').set(manualData);
+        // Update local AppData to reflect changes
+        var existing = AppData.daily.find(function(d){return d.id==='manual_entry'});
+        if(existing){
+            Object.assign(existing, manualData);
+        } else {
+            AppData.daily.push(Object.assign({id:'manual_entry'}, manualData));
+        }
+        renderDailyTable();
+        showToast('Daily sheet updated','success');
+    }catch(e){showToast('Update failed: '+e.message,'error')}
 }
 
 /* ===== PAID ===== */
-function renderPaidTable(){var tb=document.getElementById('paid-table-body');tb.innerHTML='';var pr=AppData.customers.filter(function(r){return r.status==='PAID'});var tc=0;if(pr.length===0){tb.innerHTML=genEmpty(false);refreshIcons()}else{pr.sort(function(a,b){return(b.paidSyncedAt||'').localeCompare(a.paidSyncedAt||'')});pr.forEach(function(r){tc+=safeNum(r.paid);tb.innerHTML+='<tr><td data-label="Paid Date">'+(r.paidDate||'N/A')+'</td><td data-label="Name">'+escH(r.name)+'</td><td data-label="Contact" style="color:var(--text-muted);">'+(r.contact||'-')+'</td><td data-label="Total" style="text-align:right;color:var(--text-muted);">'+fmt(r.total)+'</td><td data-label="Paid" style="text-align:right;font-weight:700;color:var(--success-text);">'+fmt(r.paid)+'</td><td data-label="Status" style="text-align:right;"><span class="badge-cleared"><i data-lucide="refresh-cw" style="width:10px;height:10px;"></i> Synced</span><br><small style="font-size:0.65rem;color:var(--text-muted);">'+(r.paidSyncedAt?new Date(r.paidSyncedAt).toLocaleTimeString():'')+'</small></td></tr>'});refreshIcons()}document.getElementById('paid-total-collected').innerText=fmt(tc)+' AED';document.getElementById('paid-grand-total').innerText=fmt(tc)+' AED'}
+function renderPaidTable(){
+    var tb=document.getElementById('paid-table-body');tb.innerHTML='';var pr=AppData.customers.filter(function(r){return r.status==='PAID'});var tc=0;
+    if(pr.length===0){tb.innerHTML=genEmpty(false);refreshIcons()}
+    else{pr.sort(function(a,b){return(b.paidSyncedAt||'').localeCompare(a.paidSyncedAt||'')});pr.forEach(function(r){tc+=safeNum(r.paid);tb.innerHTML+='<tr><td data-label="Paid Date">'+(r.paidDate||'N/A')+'</td><td data-label="Name">'+escH(r.name)+'</td><td data-label="Contact" style="color:var(--text-muted);">'+(r.contact||'-')+'</td><td data-label="Total" style="text-align:right;color:var(--text-muted);">'+fmt(r.total)+'</td><td data-label="Paid" style="text-align:right;font-weight:700;color:var(--success-text);">'+fmt(r.paid)+'</td><td data-label="Status" style="text-align:right;"><span class="badge-cleared"><i data-lucide="refresh-cw" style="width:10px;height:10px;"></i> Synced</span><br><small style="font-size:0.65rem;color:var(--text-muted);">'+(r.paidSyncedAt?new Date(r.paidSyncedAt).toLocaleTimeString():'')+'</small></td></tr>'});refreshIcons()}
+    document.getElementById('paid-total-collected').innerText=fmt(tc)+' AED';document.getElementById('paid-grand-total').innerText=fmt(tc)+' AED';
+}
 
 /* ===== DASHBOARD & CHARTS ===== */
-function initCharts(){var rc=document.getElementById('revenueChart');if(!rc)return;var rctx=rc.getContext('2d');var actx=document.getElementById('allocationChart').getContext('2d');Chart.defaults.color='#94a3b8';Chart.defaults.borderColor='rgba(148,163,184,0.1)';revenueChart=new Chart(rctx,{type:'line',data:{labels:[],datasets:[{label:'Revenue (In)',data:[],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4},{label:'Expenses (Out)',data:[],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',fill:true,tension:0.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true}}}});allocationChart=new Chart(actx,{type:'doughnut',data:{labels:['Banks','Cash'],datasets:[{data:[0,0],backgroundColor:['#3b82f6','#8b5cf6'],hoverBackgroundColor:['#2563eb','#7c3aed'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'75%',plugins:{legend:{position:'bottom'}}}})}
-function updateDashboard(){var tr=AppData.customers.reduce(function(s,c){return c.status==='NOTPAID'?s+safeNum(c.balance):s},0);var cb=getLiveBal('cash'),bb=getLiveBal('banks'),nl=cb+bb;var cm=new Date().toISOString().slice(0,7);var mr=AppData.customers.reduce(function(s,c){if(c.status==='PAID'&&c.paidDate&&c.paidDate.startsWith(cm))return s+safeNum(c.paid);return s},0);document.getElementById('kpi-receivables').innerText=fmt(tr)+' AED';document.getElementById('kpi-liquidity').innerText=fmt(nl)+' AED';document.getElementById('kpi-revenue').innerText=fmt(mr)+' AED';if(allocationChart){allocationChart.data.datasets[0].data=[Math.max(0,bb),Math.max(0,cb)];allocationChart.update()}if(revenueChart){var dm={};['cash','banks'].forEach(function(tn){AppData[tn].forEach(function(r){if(!dm[r.date])dm[r.date]={i:0,o:0};dm[r.date].i+=safeNum(r.amountIn);dm[r.date].o+=safeNum(r.amountOut)})});var sd=Object.keys(dm).sort().slice(-10);revenueChart.data.labels=sd;revenueChart.data.datasets[0].data=sd.map(function(d){return dm[d].i});revenueChart.data.datasets[1].data=sd.map(function(d){return dm[d].o});revenueChart.update()}renderActivityFeed()}
-function renderActivityFeed(){var fc=document.getElementById('activity-feed');var aa=[];['cash','banks'].forEach(function(tn){var nm={cash:'Cash',banks:'Banks'};AppData[tn].forEach(function(r){aa.push({date:r.date,module:nm[tn],desc:r.particulars,amountIn:r.amountIn,amountOut:r.amountOut,createdAt:r.createdAt||r.date})})});aa.sort(function(a,b){return(b.createdAt||'').localeCompare(a.createdAt||'')});var r5=aa.slice(0,5);if(r5.length===0){fc.innerHTML='<div class="empty-state">No recent activity.</div>';return}fc.innerHTML=r5.map(function(a){var isO=safeNum(a.amountOut)>0,amt=isO?'- '+fmt(a.amountOut)+' AED':'+ '+fmt(a.amountIn)+' AED',ac=isO?'#fca5a5':'var(--success-text)',ic=isO?'arrow-up-right':'arrow-down-left';return '<div class="activity-item '+(isO?'out':'in')+'"><div style="flex-shrink:0;"><i data-lucide="'+ic+'" style="width:16px;height:16px;"></i></div><div class="activity-details"><div class="activity-title">'+escH(a.desc)+'</div><div class="activity-meta">'+a.module+' - '+a.date+'</div></div><div class="activity-amount" style="color:'+ac+';">'+amt+'</div></div>'}).join('');refreshIcons()}
+function initCharts(){
+    var rc=document.getElementById('revenueChart');if(!rc)return;var rctx=rc.getContext('2d');var actx=document.getElementById('allocationChart').getContext('2d');
+    Chart.defaults.color='#94a3b8';Chart.defaults.borderColor='rgba(148,163,184,0.1)';
+    revenueChart=new Chart(rctx,{type:'line',data:{labels:[],datasets:[{label:'Revenue (In)',data:[],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4},{label:'Expenses (Out)',data:[],borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',fill:true,tension:0.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true}}}});
+    allocationChart=new Chart(actx,{type:'doughnut',data:{labels:['Banks','Cash'],datasets:[{data:[0,0],backgroundColor:['#3b82f6','#8b5cf6'],hoverBackgroundColor:['#2563eb','#7c3aed'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'75%',plugins:{legend:{position:'bottom'}}}});
+}
+
+function updateDashboard(){
+    var tr=AppData.customers.reduce(function(s,c){return c.status==='NOTPAID'?s+safeNum(c.balance):s},0);
+    var cb=getLiveBal('cash'),bb=getLiveBal('banks'),nl=cb+bb;
+    var cm=new Date().toISOString().slice(0,7);
+    var mr=AppData.customers.reduce(function(s,c){if(c.status==='PAID'&&c.paidDate&&c.paidDate.startsWith(cm))return s+safeNum(c.paid);return s},0);
+    document.getElementById('kpi-receivables').innerText=fmt(tr)+' AED';document.getElementById('kpi-liquidity').innerText=fmt(nl)+' AED';document.getElementById('kpi-revenue').innerText=fmt(mr)+' AED';
+    if(allocationChart){allocationChart.data.datasets[0].data=[Math.max(0,bb),Math.max(0,cb)];allocationChart.update()}
+    if(revenueChart){var dm={};['cash','banks'].forEach(function(tn){AppData[tn].forEach(function(r){if(!dm[r.date])dm[r.date]={i:0,o:0};dm[r.date].i+=safeNum(r.amountIn);dm[r.date].o+=safeNum(r.amountOut)})});var sd=Object.keys(dm).sort().slice(-10);revenueChart.data.labels=sd;revenueChart.data.datasets[0].data=sd.map(function(d){return dm[d].i});revenueChart.data.datasets[1].data=sd.map(function(d){return dm[d].o});revenueChart.update()}
+    renderActivityFeed();
+}
+
+function renderActivityFeed(){
+    var fc=document.getElementById('activity-feed');var aa=[];
+    ['cash','banks'].forEach(function(tn){var nm={cash:'Cash',banks:'Banks'};AppData[tn].forEach(function(r){aa.push({date:r.date,module:nm[tn],desc:r.particulars,amountIn:r.amountIn,amountOut:r.amountOut,createdAt:r.createdAt||r.date})})});
+    aa.sort(function(a,b){return(b.createdAt||'').localeCompare(a.createdAt||'')});var r5=aa.slice(0,5);
+    if(r5.length===0){fc.innerHTML='<div class="empty-state">No recent activity.</div>';return}
+    fc.innerHTML=r5.map(function(a){var isO=safeNum(a.amountOut)>0,amt=isO?'- '+fmt(a.amountOut)+' AED':'+ '+fmt(a.amountIn)+' AED',ac=isO?'#fca5a5':'var(--success-text)',ic=isO?'arrow-up-right':'arrow-down-left';return '<div class="activity-item '+(isO?'out':'in')+'"><div style="flex-shrink:0;"><i data-lucide="'+ic+'" style="width:16px;height:16px;"></i></div><div class="activity-details"><div class="activity-title">'+escH(a.desc)+'</div><div class="activity-meta">'+a.module+' - '+a.date+'</div></div><div class="activity-amount" style="color:'+ac+';">'+amt+'</div></div>'}).join('');
+    refreshIcons();
+}
 
 /* ===== EXCEL ===== */
-function exportToExcel(){var wb=XLSX.utils.book_new();[{key:'customers',name:'Customers'},{key:'cash',name:'Cash'},{key:'banks',name:'Banks'}].forEach(function(cfg){var cd=AppData[cfg.key].map(function(item){var ci=Object.assign({},item);delete ci.id;delete ci.userid;delete ci.createdAt;if(ci.paymentHistory)ci.paymentHistory=JSON.stringify(ci.paymentHistory);return ci});var ws=XLSX.utils.json_to_sheet(cd);XLSX.utils.book_append_sheet(wb,ws,cfg.name)});XLSX.writeFile(wb,'FinTracker_Pro_Backup_'+todayStr()+'.xlsx')}
-async function importFromExcel(event){var file=event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=async function(e){showConfirm('Restore Data?','This will ADD data from the uploaded Excel file.',async function(){try{var data=new Uint8Array(e.target.result),wb=XLSX.read(data,{type:'array'}),sm={'Customers':'customers','Cash':'cash','Banks':'banks'};for(var sn of wb.SheetNames){var cn=sm[sn];if(!cn)continue;var ws=wb.Sheets[sn],recs=XLSX.utils.sheet_to_json(ws);for(var rec of recs){if(cn==='customers'){rec.total=safeNum(rec.total);rec.paid=safeNum(rec.paid);rec.balance=safeNum(rec.balance);if(typeof rec.paymentHistory==='string'){try{rec.paymentHistory=JSON.parse(rec.paymentHistory)}catch(ex){rec.paymentHistory=[]}}if(!rec.paymentHistory||!Array.isArray(rec.paymentHistory))rec.paymentHistory=[];if(rec.paid>0&&rec.paymentHistory.length===0)rec.paymentHistory=[{date:rec.paidDate||rec.date,amount:rec.paid}];rec.paid=rec.paymentHistory.reduce(function(s,p){return s+safeNum(p.amount)},0);rec.balance=rec.total-rec.paid;rec.status=rec.balance<=0?'PAID':'NOTPAID'}if(cn==='cash'||cn==='banks'){rec.amountIn=safeNum(rec.amountIn);rec.amountOut=safeNum(rec.amountOut)}await saveToCollection(cn,rec)}}await loadAllCollections();showToast('Data restored successfully','success')}catch(e2){showToast('Import failed: '+e2.message,'error')}});reader.readAsArrayBuffer(file);event.target.value=''}
+function exportToExcel(){
+    var wb=XLSX.utils.book_new();
+    [{key:'customers',name:'Customers'},{key:'cash',name:'Cash'},{key:'banks',name:'Banks'},{key:'daily',name:'Daily'}].forEach(function(cfg){
+        var cd=AppData[cfg.key].map(function(item){var ci=Object.assign({},item);delete ci.id;delete ci.userid;delete ci.createdAt;if(ci.paymentHistory)ci.paymentHistory=JSON.stringify(ci.paymentHistory);return ci});
+        var ws=XLSX.utils.json_to_sheet(cd);XLSX.utils.book_append_sheet(wb,ws,cfg.name);
+    });
+    XLSX.writeFile(wb,'FinTracker_Pro_Backup_'+new Date().toISOString().split('T')[0]+'.xlsx');
+}
+
+async function importFromExcel(event){
+    var file=event.target.files[0];if(!file)return;var reader=new FileReader();
+    reader.onload=async function(e){
+        showConfirm('Restore Data?','This will ADD data from the uploaded Excel file into your account.',async function(){
+            try{
+                var data=new Uint8Array(e.target.result),wb=XLSX.read(data,{type:'array'}),sm={'Customers':'customers','Cash':'cash','Banks':'banks','Daily':'daily'};
+                for(var sn of wb.SheetNames){var cn=sm[sn];if(!cn)continue;var ws=wb.Sheets[sn],recs=XLSX.utils.sheet_to_json(ws);
+                for(var rec of recs){
+                    if(cn==='customers'){rec.total=safeNum(rec.total);rec.paid=safeNum(rec.paid);rec.balance=safeNum(rec.balance);if(typeof rec.paymentHistory==='string'){try{rec.paymentHistory=JSON.parse(rec.paymentHistory)}catch(ex){rec.paymentHistory=[]}}if(!rec.paymentHistory||!Array.isArray(rec.paymentHistory))rec.paymentHistory=[];if(rec.paid>0&&rec.paymentHistory.length===0)rec.paymentHistory=[{date:rec.paidDate||rec.date,amount:rec.paid}];rec.paid=rec.paymentHistory.reduce(function(s,p){return s+safeNum(p.amount)},0);rec.balance=rec.total-rec.paid;rec.status=rec.balance<=0?'PAID':'NOTPAID'}
+                    if(cn==='cash'||cn==='banks'){rec.amountIn=safeNum(rec.amountIn);rec.amountOut=safeNum(rec.amountOut)}
+                    if(cn==='daily'){rec.g9=safeNum(rec.g9);rec.akbar=safeNum(rec.akbar);rec.via=safeNum(rec.via);rec.serene=safeNum(rec.serene);rec.alghazi=safeNum(rec.alghazi);rec.b2b=safeNum(rec.b2b)}
+                    await saveToCollection(cn,rec);
+                }}
+                await loadAllCollections();showToast('Data restored successfully','success');
+            }catch(e2){showToast('Import failed: '+e2.message,'error')}
+        });
+    };
+    reader.readAsArrayBuffer(file);event.target.value='';
+}
 
 /* ===== INIT ===== */
 refreshIcons();
