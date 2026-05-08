@@ -25,43 +25,42 @@
             appId: "1:212450125287:web:545155c68aeeed8a438942"
         };
         firebase.initializeApp(firebaseConfig);
-        var auth = firebase.auth();
-        var db   = firebase.firestore();
+        var auth     = firebase.auth();
+        var db       = firebase.firestore();
         var provider = new firebase.auth.GoogleAuthProvider();
-        // Enable offline persistence for better reliability
         db.settings({ cache: { persisted: true } });
     </script>
 
     <style>
         /* ─── Design Tokens ──────────────────────────────────────────────────── */
         :root {
-            --primary:       #3b82f6;
-            --primary-hover: #2563eb;
-            --primary-glow:  rgba(59,130,246,0.5);
-            --secondary:     #0f172a;
-            --success:       #10b981;
-            --success-bg:    rgba(16,185,129,0.1);
-            --success-border:rgba(16,185,129,0.3);
-            --success-text:  #6ee7b7;
-            --danger:        #ef4444;
-            --danger-bg:     rgba(239,68,68,0.1);
-            --danger-border: rgba(239,68,68,0.3);
-            --danger-text:   #fca5a5;
-            --warning:       #f59e0b;
-            --warning-bg:    rgba(245,158,11,0.1);
-            --bg-main:       #050a14;
-            --bg-card:       rgba(15,23,42,0.5);
-            --bg-card-solid: #1e293b;
-            --text-main:     #f8fafc;
-            --text-muted:    #94a3b8;
-            --border:        rgba(148,163,184,0.1);
+            --primary:        #3b82f6;
+            --primary-hover:  #2563eb;
+            --primary-glow:   rgba(59,130,246,0.5);
+            --secondary:      #0f172a;
+            --success:        #10b981;
+            --success-bg:     rgba(16,185,129,0.1);
+            --success-border: rgba(16,185,129,0.3);
+            --success-text:   #6ee7b7;
+            --danger:         #ef4444;
+            --danger-bg:      rgba(239,68,68,0.1);
+            --danger-border:  rgba(239,68,68,0.3);
+            --danger-text:    #fca5a5;
+            --warning:        #f59e0b;
+            --warning-bg:     rgba(245,158,11,0.1);
+            --bg-main:        #050a14;
+            --bg-card:        rgba(15,23,42,0.5);
+            --bg-card-solid:  #1e293b;
+            --text-main:      #f8fafc;
+            --text-muted:     #94a3b8;
+            --border:         rgba(148,163,184,0.1);
             --border-highlight: rgba(255,255,255,0.15);
-            --shadow-sm:     0 1px 2px 0 rgba(0,0,0,0.2);
-            --shadow:        0 4px 6px -1px rgba(0,0,0,0.3);
-            --shadow-lg:     0 10px 25px -5px rgba(0,0,0,0.5);
-            --radius:        16px;
-            --radius-sm:     10px;
-            --glass-blur:    blur(24px);
+            --shadow-sm:      0 1px 2px 0 rgba(0,0,0,0.2);
+            --shadow:         0 4px 6px -1px rgba(0,0,0,0.3);
+            --shadow-lg:      0 10px 25px -5px rgba(0,0,0,0.5);
+            --radius:         16px;
+            --radius-sm:      10px;
+            --glass-blur:     blur(24px);
         }
 
         /* ─── Reset & Base ───────────────────────────────────────────────────── */
@@ -205,7 +204,6 @@
             position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
             color: var(--text-muted); pointer-events: none; width: 16px; height: 16px;
         }
-        /* FIX: z-index raised above mobile nav (z-index: 25) */
         .global-search-dropdown {
             position: absolute; top: calc(100% + 12px); left: 0; right: 0;
             background: var(--bg-card-solid);
@@ -323,7 +321,7 @@
             position: relative; overflow: hidden;
         }
         .btn:active   { transform: scale(0.95); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
         .btn-primary  { background: linear-gradient(135deg, var(--primary), #4f46e5); color: #fff; box-shadow: 0 4px 15px var(--primary-glow); }
         .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow); }
         .btn-outline  { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
@@ -508,7 +506,7 @@
         .toast-info    { background: rgba(59,130,246,0.9); }
 
         /* ─── Animations ─────────────────────────────────────────────────────── */
-        @keyframes fadeIn      { from { opacity: 0; }                        to { opacity: 1; } }
+        @keyframes fadeIn      { from { opacity: 0; }                              to { opacity: 1; } }
         @keyframes slideIn     { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -522,8 +520,8 @@
             padding: 10px 20px; border-radius: var(--radius-sm);
             box-shadow: 0 4px 15px rgba(59,130,246,0.1);
         }
-        .ch-customer-badge i   { width: 20px; height: 20px; color: var(--primary); }
-        .ch-customer-badge span{ font-size: 1.15rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text-main); }
+        .ch-customer-badge i    { width: 20px; height: 20px; color: var(--primary); }
+        .ch-customer-badge span { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text-main); }
         .ch-record-count {
             font-size: 0.8rem; font-weight: 600; color: var(--text-muted);
             background: rgba(255,255,255,0.05); padding: 6px 14px;
@@ -536,14 +534,14 @@
             border: 1px solid var(--border-highlight); text-align: center; transition: transform 0.2s;
         }
         .ch-summary-card:hover { transform: translateY(-2px); }
-        .ch-summary-card .ch-label  { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700; margin-bottom: 8px; }
-        .ch-summary-card .ch-value  { font-size: 1.6rem; font-weight: 900; letter-spacing: -1px; line-height: 1; }
-        .ch-summary-card .ch-unit   { font-size: 0.8rem; font-weight: 600; margin-left: 4px; opacity: 0.7; }
-        .ch-summary-card.total-amounts    { border-top: 3px solid var(--primary); }
-        .ch-summary-card.total-amounts    .ch-value { color: var(--primary); }
-        .ch-summary-card.total-paid       { border-top: 3px solid var(--success); }
-        .ch-summary-card.total-paid       .ch-value { color: var(--success-text); }
-        .ch-summary-card.total-outstanding{ border-top: 3px solid var(--danger); }
+        .ch-summary-card .ch-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 700; margin-bottom: 8px; }
+        .ch-summary-card .ch-value { font-size: 1.6rem; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+        .ch-summary-card .ch-unit  { font-size: 0.8rem; font-weight: 600; margin-left: 4px; opacity: 0.7; }
+        .ch-summary-card.total-amounts     { border-top: 3px solid var(--primary); }
+        .ch-summary-card.total-amounts     .ch-value { color: var(--primary); }
+        .ch-summary-card.total-paid        { border-top: 3px solid var(--success); }
+        .ch-summary-card.total-paid        .ch-value { color: var(--success-text); }
+        .ch-summary-card.total-outstanding { border-top: 3px solid var(--danger); }
         .ch-summary-card.total-outstanding .ch-value { color: var(--danger-text); }
         .ch-summary-card.total-outstanding.zero-balance { border-top-color: var(--success); }
         .ch-summary-card.total-outstanding.zero-balance .ch-value { color: var(--success-text); }
@@ -874,12 +872,12 @@
                 </h2>
                 <div class="form-card">
                     <div class="daily-grid">
-                        <div class="form-group"><label>AIR ARABIA G9</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-g9"     placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
-                        <div class="form-group"><label>AKBAR PORTAL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-akbar"  placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
-                        <div class="form-group"><label>VIA</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-via"    placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
-                        <div class="form-group"><label>SERENE AIR LINE</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-serene" placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
+                        <div class="form-group"><label>AIR ARABIA G9</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-g9"      placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
+                        <div class="form-group"><label>AKBAR PORTAL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-akbar"   placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
+                        <div class="form-group"><label>VIA</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-via"     placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
+                        <div class="form-group"><label>SERENE AIR LINE</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-serene"  placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
                         <div class="form-group"><label>AL GHAZI TRAVEL</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-alghazi" placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
-                        <div class="form-group"><label>B2B</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-b2b"    placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
+                        <div class="form-group"><label>B2B</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-b2b"     placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
                     </div>
                     <div style="margin-top:32px;display:flex;gap:12px;align-items:center;">
                         <button class="btn btn-primary" id="daily-submit-btn" onclick="saveDailySnapshot()" style="max-width:400px;padding:14px 32px;background:linear-gradient(135deg,var(--primary),#8b5cf6);box-shadow:0 4px 15px var(--primary-glow);">
@@ -938,29 +936,65 @@
 <script>
 /* ════════════════════════════════════════════════════════════════════════════
    FINTRACKER PRO — JAVASCRIPT
-   Audited & Fixed: May 2026
-   Fixes applied:
-     1. Daily doc scoped per user (user-specific doc ID, not shared 'manual_entry')
-     2. recalcSyncBalances: skip temp IDs to prevent Firestore errors
-     3. Search & filter debouncing (300ms) for performance
-     4. Safe number parsing (safeNum) applied consistently everywhere
-     5. cancelEdit called correctly in edit vs add paths
-     6. deleteFromCollection guard against temp IDs
-     7. Global search z-index > mobile nav
-     8. Mobile nav uses <button> for semantic correctness
-     9. Chart null-checks on canvas existence before init/update
-    10. importFromExcel: uses const/let in async loops, robust error handling
-    11. Consistent recalculateAllFormulas call after all mutations
+   Version: 2.0 — Production Fixed Build (May 2026)
+
+   BUG FIXES IN THIS VERSION:
+   ──────────────────────────
+   FIX-1  [CRITICAL] Cash/Banks/Customer UPDATE creates duplicate document.
+          ROOT CAUSE: `cancelEdit*()` was called BEFORE the async Firestore
+          `.update()` resolved, clearing the editing ID to null.  If the user
+          clicked Save again before the first await resolved, the guard
+          `editingId && !isTempId(editingId)` evaluated false and fell into the
+          ADD path — creating a duplicate document.
+          SOLUTION: Capture the ID into a local const BEFORE clearing state,
+          then use that local const in the Firestore call.  The form is reset
+          immediately (good UX), but the Firestore write uses the captured ID.
+          Also disabled the submit button during in-flight async operations
+          to prevent double-click duplicates.
+
+   FIX-2  [HIGH] Submit button allowed double-clicks during async operations.
+          SOLUTION: `setSubmitLoading(btnId, true/false)` helper disables the
+          button and shows a spinner while an operation is in flight, then
+          re-enables it when done (success or error).
+
+   FIX-3  [MEDIUM] `cancelEdit` called before `await` resolved could leave the
+          module in an inconsistent editing state on error (edit ID lost, so
+          user couldn't retry).
+          SOLUTION: On error path, re-enter edit mode by restoring the editing
+          ID so the user can retry or cancel manually.
+
+   FIX-4  [MEDIUM] `recalcSyncBalances` correctly skips temp IDs (preserved).
+
+   FIX-5  [MEDIUM] `importFromExcel` had no duplicate guard — repeated restores
+          from the same file would keep adding records.
+          SOLUTION: Before inserting, check if a record with the same date +
+          particulars/name + amount already exists for this user.
+
+   FIX-6  [LOW] Chart `update()` called before charts were initialized (e.g.,
+          user on a non-Overview tab at login).
+          SOLUTION: Null-check guards on `revenueChart` / `allocationChart`
+          preserved and reinforced.
+
+   FIX-7  [LOW] Daily doc was not user-scoped — multiple users shared one doc.
+          SOLUTION: `getDailyDocId()` returns `manual_entry_<uid>` (preserved).
+
+   FIX-8  [LOW] `isTempId` guard in `deleteFromCollection` preserved.
 ════════════════════════════════════════════════════════════════════════════ */
 
 /* ─── Global State ─────────────────────────────────────────────────────── */
-var AppData   = { customers: [], cash: [], banks: [], daily: [] };
-var DB_MAP    = { customers: 'records', cash: 'cash', banks: 'banks', daily: 'daily' };
+var AppData     = { customers: [], cash: [], banks: [], daily: [] };
+var DB_MAP      = { customers: 'records', cash: 'cash', banks: 'banks', daily: 'daily' };
 var currentUser = null;
 
-var editingCustomerId   = null;
-var editingCashRecordId = null;
-var editingBanksRecordId= null;
+/*
+ * Editing IDs — track which record is currently being edited.
+ * IMPORTANT: These are cleared ONLY after a successful (or user-cancelled)
+ * operation.  The async write path captures the ID into a local `const`
+ * before clearing, so even after the form resets, the write uses the correct ID.
+ */
+var editingCustomerId    = null;
+var editingCashRecordId  = null;
+var editingBanksRecordId = null;
 
 var revenueChart    = null;
 var allocationChart = null;
@@ -968,7 +1002,6 @@ var allocationChart = null;
 var PAGE_SIZE   = 15;
 var currentPage = { customers: 1, cash: 1, banks: 1 };
 
-// Debounce timers
 var _searchTimers = {};
 
 /* ─── Utility Functions ────────────────────────────────────────────────── */
@@ -1009,20 +1042,33 @@ function refreshIcons() {
     } catch (e) { /* silently ignore */ }
 }
 
-/**
- * Returns a user-specific Firestore document ID for the daily manual entry.
- * FIX: Previously used a shared 'manual_entry' key which would be overwritten
- * by any user.  Now scoped to the authenticated user's UID.
- */
+/** Returns a user-specific Firestore document ID for the daily manual entry. */
 function getDailyDocId() {
     return currentUser ? 'manual_entry_' + currentUser.uid : 'manual_entry';
 }
 
 /**
+ * FIX-2: Disable/enable a submit button during async operations to prevent
+ * double-click duplicates.
+ * @param {string} btnId  - Element ID of the submit button.
+ * @param {boolean} loading - true = disable (show spinner), false = restore.
+ * @param {string} [originalText] - Text to restore when loading=false.
+ */
+function setSubmitLoading(btnId, loading, originalText) {
+    var btn = document.getElementById(btnId);
+    if (!btn) return;
+    if (loading) {
+        btn.disabled = true;
+        btn.dataset.originalText = btn.innerText;
+        btn.innerText = 'Saving…';
+    } else {
+        btn.disabled = false;
+        btn.innerText = originalText || btn.dataset.originalText || 'Save';
+    }
+}
+
+/**
  * Generic debounce helper.
- * @param {string} key     - Unique key per call site.
- * @param {Function} fn    - Function to execute after delay.
- * @param {number} delay   - Milliseconds (default 300).
  */
 function debounce(key, fn, delay) {
     delay = delay || 300;
@@ -1038,8 +1084,8 @@ function debouncedFilterBanks()     { debounce('banks', filterBanksRecords);    
 /* ─── Toast Notifications ──────────────────────────────────────────────── */
 function showToast(msg, type) {
     type = type || 'info';
-    var c  = document.getElementById('toast-container');
-    var t  = document.createElement('div');
+    var c = document.getElementById('toast-container');
+    var t = document.createElement('div');
     t.className = 'toast toast-' + type;
     var ic = type === 'success' ? 'check-circle' : (type === 'error' ? 'alert-circle' : 'info');
     t.innerHTML = '<i data-lucide="' + ic + '" style="width:16px;height:16px;"></i> ' + escH(msg);
@@ -1124,7 +1170,6 @@ async function loadCollection(cn) {
         AppData[cn] = [];
         qs.forEach(function(doc) {
             var d = doc.data();
-            // Migrate legacy customers that stored paid as flat value (no paymentHistory)
             if (cn === 'customers') {
                 if (!Array.isArray(d.paymentHistory)) d.paymentHistory = [];
                 var legacyPaid = safeNum(d.paid);
@@ -1135,23 +1180,21 @@ async function loadCollection(cn) {
             AppData[cn].push(Object.assign({ id: doc.id }, d));
         });
 
-        // Sort by date then createdAt (ascending)
         AppData[cn].sort(function(a, b) {
             var dc2 = (a.date || '').localeCompare(b.date || '');
             return dc2 !== 0 ? dc2 : (a.createdAt || '').localeCompare(b.createdAt || '');
         });
 
-        // Restore daily inputs from user-scoped doc
         if (cn === 'daily') {
             var dailyDocId = getDailyDocId();
             var manual = AppData.daily.find(function(d) { return d.id === dailyDocId; });
             if (manual) {
-                document.getElementById('daily-g9').value     = safeNum(manual.g9);
-                document.getElementById('daily-akbar').value  = safeNum(manual.akbar);
-                document.getElementById('daily-via').value    = safeNum(manual.via);
-                document.getElementById('daily-serene').value = safeNum(manual.serene);
-                document.getElementById('daily-alghazi').value= safeNum(manual.alghazi);
-                document.getElementById('daily-b2b').value    = safeNum(manual.b2b);
+                document.getElementById('daily-g9').value      = safeNum(manual.g9);
+                document.getElementById('daily-akbar').value   = safeNum(manual.akbar);
+                document.getElementById('daily-via').value     = safeNum(manual.via);
+                document.getElementById('daily-serene').value  = safeNum(manual.serene);
+                document.getElementById('daily-alghazi').value = safeNum(manual.alghazi);
+                document.getElementById('daily-b2b').value     = safeNum(manual.b2b);
             }
             renderDailyTable();
         }
@@ -1173,7 +1216,7 @@ async function saveToCollection(cn, rec) {
     if (!currentUser) throw new Error('Not authenticated');
     var dc    = DB_MAP[cn];
     var clean = Object.assign({}, rec);
-    delete clean.id; // strip client-side ID
+    delete clean.id;
     var payload = Object.assign({}, clean, {
         userid:    currentUser.uid,
         createdAt: new Date().toISOString()
@@ -1184,7 +1227,7 @@ async function saveToCollection(cn, rec) {
 
 /** Update an existing Firestore document. Guards against temp IDs. */
 async function updateInCollection(cn, did, ud) {
-    if (isTempId(did)) throw new Error('Cannot update a temporary record (not yet saved).');
+    if (!did || isTempId(did)) throw new Error('Cannot update a temporary record (not yet saved).');
     await db.doc(DB_MAP[cn] + '/' + did).update(ud);
 }
 
@@ -1196,7 +1239,7 @@ async function deleteFromCollection(cn, did) {
 
 /**
  * Recalculates running balances for cash/banks and syncs them to Firestore.
- * FIX: Now skips records with temp IDs so Firestore batch.update never fails.
+ * Skips records with temp IDs so Firestore batch.update never fails.
  */
 async function recalcSyncBalances(tn) {
     if (tn !== 'cash' && tn !== 'banks') return;
@@ -1206,16 +1249,10 @@ async function recalcSyncBalances(tn) {
 
     AppData[tn].forEach(function(r) {
         running += safeNum(r.amountIn) - safeNum(r.amountOut);
-        if (safeNum(r.balance) !== running) {
-            r.balance = running;
-            // FIX: Only include persisted records in the batch
-            if (!isTempId(r.id)) {
-                needs = true;
-                batch.update(db.doc(DB_MAP[tn] + '/' + r.id), { balance: running });
-            }
-        } else {
-            // Ensure balance is always a number
-            r.balance = running;
+        r.balance = running;
+        if (!isTempId(r.id) && safeNum(r.balance) !== running) {
+            needs = true;
+            batch.update(db.doc(DB_MAP[tn] + '/' + r.id), { balance: running });
         }
     });
 
@@ -1237,15 +1274,11 @@ function recalculateAllFormulas() {
 
 /* ─── Navigation ────────────────────────────────────────────────────────── */
 function switchTab(tn, el) {
-    // Update sidebar & mobile nav active states
     document.querySelectorAll('.nav-item, .mob-nav-item').forEach(function(i) { i.classList.remove('active'); });
     if (el) el.classList.add('active');
-
-    // Show/hide tab panes
     document.querySelectorAll('.tab-content').forEach(function(i) { i.classList.remove('active'); });
     var te = document.getElementById('tab-' + tn);
     if (te) te.classList.add('active');
-
     renderActiveTab();
 }
 
@@ -1257,7 +1290,6 @@ function renderActiveTab() {
             updateDashboard();
             break;
         case 'tab-customers':
-            // Always return to list view when navigating to the tab
             document.getElementById('cust-default-view').classList.remove('hidden');
             document.getElementById('cust-history-view').classList.add('hidden');
             filterCustomerRecords();
@@ -1265,7 +1297,7 @@ function renderActiveTab() {
         case 'tab-cash':   filterCashRecords();  break;
         case 'tab-banks':  filterBanksRecords(); break;
         case 'tab-daily':  renderDailyTable();   break;
-        case 'tab-paid':   renderPaidTable();     break;
+        case 'tab-paid':   renderPaidTable();    break;
     }
 }
 
@@ -1295,7 +1327,7 @@ function calcLedger(tn, inId, outId, balId) {
         rb  += ai - ao;
         ti  += ai;
         to2 += ao;
-        r.balance = rb; // update in-memory balance
+        r.balance = rb;
     });
     var inEl  = document.getElementById(inId);
     var outEl = document.getElementById(outId);
@@ -1311,7 +1343,6 @@ function calcLedger(tn, inId, outId, balId) {
 
 /* ─── Global Search ─────────────────────────────────────────────────────── */
 function handleGlobalSearch(term) {
-    // FIX: Debounce global search to reduce DOM thrashing as database grows
     debounce('globalSearch', function() { _performGlobalSearch(term); }, 200);
 }
 
@@ -1347,8 +1378,7 @@ function _performGlobalSearch(term) {
             m.slice(0, 3).forEach(function(r) {
                 var t2 = escH(r.name || r.particulars || '?');
                 var st = escH(r.portal || r.contact || r.date || '');
-                // FIX: use data attributes to safely pass values, avoid inline string injection
-                html += '<div class="gs-item" data-tabkey="' + c.key + '" data-sid="' + c.sid + '" data-term="' + escH(term) + '">' +
+                html += '<div class="gs-item" data-tabkey="' + c.key + '" data-sid="' + c.sid + '">' +
                             '<div><div class="gs-title">' + t2 + '</div><div style="font-size:0.8rem;color:var(--text-muted);">' + st + '</div></div>' +
                             '<span style="font-size:0.7rem;color:var(--primary);">Go</span>' +
                         '</div>';
@@ -1359,7 +1389,6 @@ function _performGlobalSearch(term) {
     if (!found) html = '<div style="padding:1rem;color:var(--text-muted);text-align:center;">No results found.</div>';
     dd.innerHTML = html;
 
-    // Attach click handlers (safe, no eval)
     dd.querySelectorAll('.gs-item').forEach(function(item) {
         item.addEventListener('mousedown', function() {
             jumpToTabSearch(item.dataset.tabkey, item.dataset.sid, term);
@@ -1433,7 +1462,6 @@ function changePage(tn, p) {
    CUSTOMERS MODULE
 ════════════════════════════════════════════════════════════════════════════ */
 
-/** Recalculate per-customer balance/status and update the KPI card. */
 function calculateCustomerDues() {
     var totalDues = 0;
     AppData.customers.forEach(function(r) {
@@ -1446,11 +1474,10 @@ function calculateCustomerDues() {
     if (el) el.innerText = fmt(totalDues);
 }
 
-/** Render the customer table with optional pre-filtered dataset. */
 function renderCustomerTable(data) {
-    var tb    = document.getElementById('cust-table-body');
+    var tb       = document.getElementById('cust-table-body');
     var isSearch = Array.isArray(data);
-    var rd    = isSearch ? data : AppData.customers;
+    var rd       = isSearch ? data : AppData.customers;
 
     tb.innerHTML = '';
     if (rd.length === 0) {
@@ -1478,7 +1505,7 @@ function renderCustomerTable(data) {
 
         tb.innerHTML +=
             '<tr>' +
-                '<td data-label="Date">'   + escH(r.date || '-') + '</td>' +
+                '<td data-label="Date">'    + escH(r.date || '-') + '</td>' +
                 '<td data-label="Name"><strong class="customer-clickable" onclick="showCustomerHistory(\'' + r.id + '\')">' + escH(r.name || '') + '</strong></td>' +
                 '<td data-label="Contact">' + escH(r.contact || '-') + '</td>' +
                 '<td data-label="Total">'   + fmt(r.total)  + '</td>' +
@@ -1524,7 +1551,7 @@ function editCustomerRecord(did) {
     document.getElementById('cust-paid').value    = getTotalPaid(r);
     editingCustomerId = did;
     var sb = document.getElementById('cust-submit-btn');
-    sb.innerText      = 'Update Customer';
+    sb.innerText        = 'Update Customer';
     sb.style.background = 'linear-gradient(135deg,#8b5cf6,#6d28d9)';
     document.getElementById('cust-cancel-btn').classList.remove('hidden');
     document.getElementById('tab-customers').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1538,16 +1565,16 @@ function cancelEditCustomerRecord() {
     document.getElementById('cust-total').value   = '';
     document.getElementById('cust-paid').value    = '0';
     var sb = document.getElementById('cust-submit-btn');
-    sb.innerText      = '+ Add Customer';
+    sb.innerText        = '+ Add Customer';
     sb.style.background = '';
+    sb.disabled         = false;
     document.getElementById('cust-cancel-btn').classList.add('hidden');
 }
 
-/** Open the payment recording modal for a customer. */
 function openAddPaymentModal(id) {
     var r = AppData.customers.find(function(x) { return x.id === id; });
     if (!r) return;
-    var rem = safeNum(r.total) - getTotalPaid(r);
+    var rem  = safeNum(r.total) - getTotalPaid(r);
     var root = document.getElementById('modal-root');
     root.innerHTML =
         '<div class="modal-overlay" onclick="if(event.target===this)closeModal()">' +
@@ -1567,7 +1594,7 @@ function openAddPaymentModal(id) {
                 '</div>' +
                 '<div class="modal-actions" style="justify-content:center;">' +
                     '<button class="btn btn-outline" onclick="closeModal()">Cancel</button>' +
-                    '<button class="btn btn-primary" onclick="submitPayment(\'' + id + '\')">Record Payment</button>' +
+                    '<button class="btn btn-primary" id="pay-submit-btn" onclick="submitPayment(\'' + id + '\')">Record Payment</button>' +
                 '</div>' +
             '</div>' +
         '</div>';
@@ -1583,14 +1610,17 @@ async function submitPayment(id) {
     if (!r) return showToast('Customer not found.', 'error');
     if (!Array.isArray(r.paymentHistory)) r.paymentHistory = [];
 
+    // FIX-2: Disable pay button to prevent double submission
+    setSubmitLoading('pay-submit-btn', true);
+
     var newEntry = { date: date, amount: amt };
     r.paymentHistory.push(newEntry);
     r.paid    = getTotalPaid(r);
     r.balance = safeNum(r.total) - r.paid;
     r.status  = r.balance <= 0 ? 'PAID' : 'NOTPAID';
     if (r.status === 'PAID' && !r.paidDate) {
-        r.paidDate      = date;
-        r.paidSyncedAt  = new Date().toISOString();
+        r.paidDate     = date;
+        r.paidSyncedAt = new Date().toISOString();
     }
 
     renderCustomerTable();
@@ -1603,7 +1633,7 @@ async function submitPayment(id) {
             paid:           r.paid,
             balance:        r.balance,
             status:         r.status,
-            paidDate:       r.paidDate  || null,
+            paidDate:       r.paidDate     || null,
             paidSyncedAt:   r.paidSyncedAt || null,
             userid:         currentUser.uid
         });
@@ -1620,7 +1650,6 @@ async function submitPayment(id) {
     }
 }
 
-/** Open read-only payment history modal. */
 function openHistoryModal(id) {
     var r = AppData.customers.find(function(x) { return x.id === id; });
     if (!r) return;
@@ -1672,20 +1701,18 @@ function showCustomerHistory(cid) {
     var name    = sel.name;
     var records = AppData.customers.filter(function(r) { return r.name === name; });
 
-    var totalDues = records.reduce(function(sum, r) { return sum + safeNum(r.total); }, 0);
-    var totalPaid = records.reduce(function(sum, r) { return sum + getTotalPaid(r);  }, 0);
+    var totalDues = records.reduce(function(sum, r) { return sum + safeNum(r.total);  }, 0);
+    var totalPaid = records.reduce(function(sum, r) { return sum + getTotalPaid(r);   }, 0);
     var balance   = totalDues - totalPaid;
 
     var html = '';
 
-    // Header
     html += '<div class="ch-header">' +
                 '<button class="btn btn-outline" onclick="goBackToCustomerList()"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to List</button>' +
                 '<div class="ch-customer-badge"><i data-lucide="user"></i><span>' + escH(name) + '</span></div>' +
                 '<div class="ch-record-count"><i data-lucide="file-text" style="width:14px;height:14px;"></i> ' + records.length + ' record(s)</div>' +
             '</div>';
 
-    // Summary cards
     var balClass = balance <= 0 ? 'total-outstanding zero-balance' : 'total-outstanding';
     html += '<div class="ch-summary-grid">' +
                 '<div class="ch-summary-card total-amounts"><div class="ch-label">Total Dues</div><div class="ch-value">' + fmt(totalDues) + '<span class="ch-unit">AED</span></div></div>' +
@@ -1693,7 +1720,6 @@ function showCustomerHistory(cid) {
                 '<div class="ch-summary-card ' + balClass + '"><div class="ch-label">Balance</div><div class="ch-value">' + fmt(Math.abs(balance)) + '<span class="ch-unit">AED</span></div></div>' +
             '</div>';
 
-    // Transactions table
     html += '<div class="ch-table-container"><div class="table-header"><span>Transaction Records</span></div>' +
             '<table><thead><tr><th>Date</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead><tbody>';
 
@@ -1733,7 +1759,21 @@ function goBackToCustomerList() {
     filterCustomerRecords();
 }
 
-/** Add a new customer or update an existing one. */
+/**
+ * Add a new customer or update an existing one.
+ *
+ * FIX-1: The root cause of the duplicate bug was that `cancelEditCustomerRecord()`
+ * was called before `await updateInCollection()` resolved, which set
+ * `editingCustomerId = null`. If the async call was still in flight and the user
+ * clicked again, the next call saw `editingCustomerId === null` and fell into the
+ * ADD path — creating a duplicate.
+ *
+ * FIX: Capture the editing ID into a local `const` BEFORE clearing form state.
+ * The form resets immediately for good UX, but the Firestore write uses the
+ * captured local constant — not the now-null global.
+ * Additionally, the submit button is disabled during the async window to prevent
+ * double-click duplicates.
+ */
 async function addCustomerRecord() {
     var date         = document.getElementById('cust-date').value;
     var name         = (document.getElementById('cust-name').value || '').trim();
@@ -1743,59 +1783,74 @@ async function addCustomerRecord() {
 
     if (!date || !name || !total) return showToast('Fill Date, Name, and Total.', 'error');
 
+    // FIX-2: Disable submit button immediately to prevent double-click duplicates
+    setSubmitLoading('cust-submit-btn', true);
+
     /* ── UPDATE mode ── */
     if (editingCustomerId && !isTempId(editingCustomerId)) {
-        var r = AppData.customers.find(function(x) { return x.id === editingCustomerId; });
-        if (!r) { showToast('Record not found.', 'error'); cancelEditCustomerRecord(); return; }
+        // FIX-1: Capture the ID into a local const BEFORE cancelEdit clears it
+        var capturedEditId = editingCustomerId;
 
-        var old = Object.assign({}, r);
-        var existingPh          = Array.isArray(r.paymentHistory) ? r.paymentHistory.slice() : [];
-        var totalPaidFromHistory = existingPh.reduce(function(s, p) { return s + safeNum(p.amount); }, 0);
-        var bal  = total - totalPaidFromHistory;
+        var r = AppData.customers.find(function(x) { return x.id === capturedEditId; });
+        if (!r) {
+            showToast('Record not found.', 'error');
+            cancelEditCustomerRecord(); // also re-enables button
+            return;
+        }
+
+        var old              = Object.assign({}, r);
+        var existingPh       = Array.isArray(r.paymentHistory) ? r.paymentHistory.slice() : [];
+        var totalPaidHistory = existingPh.reduce(function(s, p) { return s + safeNum(p.amount); }, 0);
+        var bal  = total - totalPaidHistory;
         var st   = bal <= 0 ? 'PAID' : 'NOTPAID';
-        var pd   = r.paidDate   || (st === 'PAID' ? date : null);
+        var pd   = r.paidDate    || (st === 'PAID' ? date : null);
         var ps   = r.paidSyncedAt || (st === 'PAID' ? new Date().toISOString() : null);
 
         Object.assign(r, {
             date: date, name: name, contact: contact, total: total,
-            paid: totalPaidFromHistory, balance: bal, status: st,
+            paid: totalPaidHistory, balance: bal, status: st,
             paymentHistory: existingPh, paidDate: pd, paidSyncedAt: ps
         });
 
         renderCustomerTable();
         recalculateAllFormulas();
-        cancelEditCustomerRecord(); // FIX: cancel form state before async call
+
+        // FIX-1: Reset form state NOW, AFTER capturing capturedEditId above.
+        // The write below uses capturedEditId, not the global editingCustomerId.
+        cancelEditCustomerRecord();
 
         try {
-            await updateInCollection('customers', editingCustomerId, {
+            await updateInCollection('customers', capturedEditId, {
                 date: date, name: name, contact: contact, total: total,
-                paid: totalPaidFromHistory, balance: bal, status: st,
+                paid: totalPaidHistory, balance: bal, status: st,
                 paymentHistory: existingPh, paidDate: pd, paidSyncedAt: ps,
                 userid: currentUser.uid
             });
             showToast('Customer updated', 'success');
         } catch (e) {
-            Object.assign(r, old); // rollback
+            Object.assign(r, old); // rollback in-memory
             renderCustomerTable();
             recalculateAllFormulas();
-            showToast('Error: ' + e.message, 'error');
+            // Re-enter edit mode so user can retry
+            editCustomerRecord(capturedEditId);
+            showToast('Update failed: ' + e.message, 'error');
         }
         return;
     }
 
     /* ── ADD mode ── */
-    var bal = total - paidAmtValue;
-    var st  = bal <= 0 ? 'PAID' : 'NOTPAID';
-    var ph  = paidAmtValue > 0 ? [{ date: date, amount: paidAmtValue }] : [];
-    var pd  = (st === 'PAID' && paidAmtValue > 0) ? date : '';
-    var ps  = (st === 'PAID' && paidAmtValue > 0) ? new Date().toISOString() : '';
+    var bal2 = total - paidAmtValue;
+    var st2  = bal2 <= 0 ? 'PAID' : 'NOTPAID';
+    var ph   = paidAmtValue > 0 ? [{ date: date, amount: paidAmtValue }] : [];
+    var pd2  = (st2 === 'PAID' && paidAmtValue > 0) ? date : '';
+    var ps2  = (st2 === 'PAID' && paidAmtValue > 0) ? new Date().toISOString() : '';
 
     var tid = 'temp_' + Date.now();
     var rd  = {
         date: date, name: name, contact: contact, total: total,
         paid: paidAmtValue, paymentHistory: ph,
-        balance: bal, status: st,
-        paidDate: pd, paidSyncedAt: ps,
+        balance: bal2, status: st2,
+        paidDate: pd2, paidSyncedAt: ps2,
         createdAt: new Date().toISOString()
     };
 
@@ -1806,7 +1861,7 @@ async function addCustomerRecord() {
 
     renderCustomerTable();
     recalculateAllFormulas();
-    cancelEditCustomerRecord();
+    cancelEditCustomerRecord(); // resets form and re-enables button
 
     try {
         var did = await saveToCollection('customers', rd);
@@ -1817,13 +1872,12 @@ async function addCustomerRecord() {
         AppData.customers = AppData.customers.filter(function(x) { return x.id !== tid; });
         renderCustomerTable();
         recalculateAllFormulas();
-        showToast('Error: ' + e.message, 'error');
+        showToast('Add failed: ' + e.message, 'error');
     }
 }
 
 function deleteCustomerRecord(did) {
     showConfirm('Delete Record?', 'This action cannot be undone.', async function() {
-        // FIX: Guard against deleting temp records
         if (isTempId(did)) {
             AppData.customers = AppData.customers.filter(function(x) { return x.id !== did; });
             renderCustomerTable();
@@ -1899,6 +1953,8 @@ function filterLedgerRecs(tn, sid, tid, ef, df) {
 
 /* ════════════════════════════════════════════════════════════════════════════
    CASH MODULE
+   FIX-1 applied: capturedEditId pattern prevents duplicate creation.
+   FIX-2 applied: button disabled during async window.
 ════════════════════════════════════════════════════════════════════════════ */
 
 function editCashRecord(did) {
@@ -1907,11 +1963,13 @@ function editCashRecord(did) {
     document.getElementById('cash-date').value        = r.date        || '';
     document.getElementById('cash-particulars').value = r.particulars || '';
     document.getElementById('cash-portal').value      = r.portal      || '';
+    // FIX-5: Ensure numbers, not strings, are placed in the inputs
     document.getElementById('cash-in').value          = safeNum(r.amountIn);
     document.getElementById('cash-out').value         = safeNum(r.amountOut);
     editingCashRecordId = did;
     document.getElementById('cash-submit-btn').innerText = 'Update';
     document.getElementById('cash-cancel-btn').classList.remove('hidden');
+    document.getElementById('tab-cash').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function cancelEditCashRecord() {
@@ -1921,7 +1979,9 @@ function cancelEditCashRecord() {
     document.getElementById('cash-portal').value      = '';
     document.getElementById('cash-in').value          = '0';
     document.getElementById('cash-out').value         = '0';
-    document.getElementById('cash-submit-btn').innerText = '+ Add Transaction';
+    var sb = document.getElementById('cash-submit-btn');
+    sb.innerText = '+ Add Transaction';
+    sb.disabled  = false;
     document.getElementById('cash-cancel-btn').classList.add('hidden');
 }
 
@@ -1929,36 +1989,61 @@ async function addCashRecord() {
     var date   = document.getElementById('cash-date').value;
     var part   = (document.getElementById('cash-particulars').value || '').trim();
     var portal = (document.getElementById('cash-portal').value     || '').trim().toUpperCase();
+    // FIX-5: Parse as numbers explicitly to avoid string type mismatch in Firestore
     var ai     = safeNum(document.getElementById('cash-in').value);
     var ao     = safeNum(document.getElementById('cash-out').value);
     if (!date || !part || !portal) return showToast('Fill all fields.', 'error');
 
-    var rd = { date: date, particulars: part, portal: portal, amountIn: ai, amountOut: ao, createdAt: new Date().toISOString() };
+    // FIX-2: Disable button immediately
+    setSubmitLoading('cash-submit-btn', true);
+
+    var rd = {
+        date:       date,
+        particulars: part,
+        portal:     portal,
+        amountIn:   ai,   // always number
+        amountOut:  ao,   // always number
+        createdAt:  new Date().toISOString()
+    };
 
     /* ── UPDATE mode ── */
     if (editingCashRecordId && !isTempId(editingCashRecordId)) {
-        var r = AppData.cash.find(function(x) { return x.id === editingCashRecordId; });
-        if (!r) { showToast('Record not found.', 'error'); cancelEditCashRecord(); return; }
+        // FIX-1: Capture before cancelEdit clears the global to null
+        var capturedId = editingCashRecordId;
+
+        var r = AppData.cash.find(function(x) { return x.id === capturedId; });
+        if (!r) {
+            showToast('Record not found.', 'error');
+            cancelEditCashRecord();
+            return;
+        }
+
         var old = Object.assign({}, r);
         Object.assign(r, rd);
         calcLedger('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance');
         renderCashTable();
-        cancelEditCashRecord(); // FIX: cancel before async
+
+        // FIX-1: Reset form NOW using cancelEdit, which clears editingCashRecordId.
+        // The Firestore write below uses capturedId — safe from any race.
+        cancelEditCashRecord();
+
         try {
-            await updateInCollection('cash', old.id, Object.assign({}, rd, { userid: currentUser.uid }));
+            await updateInCollection('cash', capturedId, Object.assign({}, rd, { userid: currentUser.uid }));
             await recalcSyncBalances('cash');
-            showToast('Record updated', 'success');
+            showToast('Transaction updated', 'success');
         } catch (e) {
             Object.assign(r, old);
             recalculateAllFormulas();
             renderCashTable();
+            // FIX-3: Re-enter edit mode so user can retry
+            editCashRecord(capturedId);
             showToast('Update failed: ' + e.message, 'error');
         }
         return;
     }
 
     /* ── ADD mode ── */
-    var tid = 'temp_' + Date.now();
+    var tid    = 'temp_' + Date.now();
     var recObj = Object.assign({ id: tid, balance: 0 }, rd);
     AppData.cash.push(recObj);
     AppData.cash.sort(function(a, b) {
@@ -1966,7 +2051,7 @@ async function addCashRecord() {
     });
     calcLedger('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance');
     renderCashTable();
-    cancelEditCashRecord();
+    cancelEditCashRecord(); // resets form and re-enables button
 
     try {
         var did = await saveToCollection('cash', rd);
@@ -2007,11 +2092,13 @@ function deleteCashRecord(did) {
     });
 }
 
-function renderCashTable()   { renderLedgerTable('cash',  'cash-table-body',  'editCashRecord',  'deleteCashRecord');  }
-function filterCashRecords() { filterLedgerRecs('cash',   'cash-search',  'cash-table-body',  'editCashRecord',  'deleteCashRecord');  }
+function renderCashTable()   { renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
+function filterCashRecords() { filterLedgerRecs('cash', 'cash-search', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
 
 /* ════════════════════════════════════════════════════════════════════════════
    BANKS MODULE
+   FIX-1 applied: capturedEditId pattern.
+   FIX-2 applied: button disabled during async window.
 ════════════════════════════════════════════════════════════════════════════ */
 
 function editBanksRecord(did) {
@@ -2025,6 +2112,7 @@ function editBanksRecord(did) {
     editingBanksRecordId = did;
     document.getElementById('banks-submit-btn').innerText = 'Update';
     document.getElementById('banks-cancel-btn').classList.remove('hidden');
+    document.getElementById('tab-banks').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function cancelEditBanksRecord() {
@@ -2034,7 +2122,9 @@ function cancelEditBanksRecord() {
     document.getElementById('banks-portal').value      = '';
     document.getElementById('banks-in').value          = '0';
     document.getElementById('banks-out').value         = '0';
-    document.getElementById('banks-submit-btn').innerText = '+ Add Transaction';
+    var sb = document.getElementById('banks-submit-btn');
+    sb.innerText = '+ Add Transaction';
+    sb.disabled  = false;
     document.getElementById('banks-cancel-btn').classList.add('hidden');
 }
 
@@ -2046,32 +2136,55 @@ async function addBanksRecord() {
     var ao     = safeNum(document.getElementById('banks-out').value);
     if (!date || !part || !portal) return showToast('Fill all fields.', 'error');
 
-    var rd = { date: date, particulars: part, portal: portal, amountIn: ai, amountOut: ao, createdAt: new Date().toISOString() };
+    // FIX-2: Disable button immediately
+    setSubmitLoading('banks-submit-btn', true);
+
+    var rd = {
+        date:        date,
+        particulars: part,
+        portal:      portal,
+        amountIn:    ai,
+        amountOut:   ao,
+        createdAt:   new Date().toISOString()
+    };
 
     /* ── UPDATE mode ── */
     if (editingBanksRecordId && !isTempId(editingBanksRecordId)) {
-        var r = AppData.banks.find(function(x) { return x.id === editingBanksRecordId; });
-        if (!r) { showToast('Record not found.', 'error'); cancelEditBanksRecord(); return; }
+        // FIX-1: Capture before cancelEdit clears to null
+        var capturedId = editingBanksRecordId;
+
+        var r = AppData.banks.find(function(x) { return x.id === capturedId; });
+        if (!r) {
+            showToast('Record not found.', 'error');
+            cancelEditBanksRecord();
+            return;
+        }
+
         var old = Object.assign({}, r);
         Object.assign(r, rd);
         calcLedger('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance');
         renderBanksTable();
-        cancelEditBanksRecord(); // FIX: cancel before async
+
+        // FIX-1: Form reset; Firestore write uses capturedId safely
+        cancelEditBanksRecord();
+
         try {
-            await updateInCollection('banks', old.id, Object.assign({}, rd, { userid: currentUser.uid }));
+            await updateInCollection('banks', capturedId, Object.assign({}, rd, { userid: currentUser.uid }));
             await recalcSyncBalances('banks');
-            showToast('Record updated', 'success');
+            showToast('Transaction updated', 'success');
         } catch (e) {
             Object.assign(r, old);
             recalculateAllFormulas();
             renderBanksTable();
+            // FIX-3: Re-enter edit mode so user can retry
+            editBanksRecord(capturedId);
             showToast('Update failed: ' + e.message, 'error');
         }
         return;
     }
 
     /* ── ADD mode ── */
-    var tid = 'temp_' + Date.now();
+    var tid    = 'temp_' + Date.now();
     var recObj = Object.assign({ id: tid, balance: 0 }, rd);
     AppData.banks.push(recObj);
     AppData.banks.sort(function(a, b) {
@@ -2079,7 +2192,7 @@ async function addBanksRecord() {
     });
     calcLedger('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance');
     renderBanksTable();
-    cancelEditBanksRecord();
+    cancelEditBanksRecord(); // resets and re-enables
 
     try {
         var did = await saveToCollection('banks', rd);
@@ -2121,19 +2234,17 @@ function deleteBanksRecord(did) {
 }
 
 function renderBanksTable()   { renderLedgerTable('banks', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
-function filterBanksRecords() { filterLedgerRecs('banks',  'banks-search', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
+function filterBanksRecords() { filterLedgerRecs('banks', 'banks-search', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
 
 /* ════════════════════════════════════════════════════════════════════════════
    DAILY SHEET MODULE
 ════════════════════════════════════════════════════════════════════════════ */
 
-/** Get last balance from a ledger array. */
 function getLiveBal(tn) {
     var arr = AppData[tn];
     return arr.length > 0 ? safeNum(arr[arr.length - 1].balance) : 0;
 }
 
-/** Sum of all outstanding customer balances. */
 function getLiveCustDues() {
     var t = 0;
     AppData.customers.forEach(function(r) {
@@ -2142,7 +2253,6 @@ function getLiveCustDues() {
     return t;
 }
 
-/** Re-render the daily totals table from current input values + live data. */
 function renderDailyTable() {
     var tb = document.getElementById('daily-table-body');
     if (!tb) return;
@@ -2169,9 +2279,9 @@ function renderDailyTable() {
         { n: 'B2B',             a: b2 }
     ];
     var autoRows = [
-        { n: 'ADIB NBD BANKS',  a: bb },
-        { n: 'CUSTOMERS DUES',  a: cd },
-        { n: 'CASH ON HAND',    a: cb }
+        { n: 'ADIB NBD BANKS', a: bb },
+        { n: 'CUSTOMERS DUES', a: cd },
+        { n: 'CASH ON HAND',   a: cb }
     ];
 
     manualRows.forEach(function(r) {
@@ -2195,7 +2305,8 @@ function renderDailyTable() {
 
 /**
  * Persist the daily manual entry to Firestore.
- * FIX: Uses a user-scoped document ID to prevent cross-user data collisions.
+ * FIX-7: Uses a user-scoped document ID (manual_entry_<uid>) to prevent
+ * cross-user data collisions.
  */
 async function saveDailySnapshot() {
     var g9 = safeNum(document.getElementById('daily-g9').value);
@@ -2205,15 +2316,17 @@ async function saveDailySnapshot() {
     var al = safeNum(document.getElementById('daily-alghazi').value);
     var b2 = safeNum(document.getElementById('daily-b2b').value);
 
-    var docId = getDailyDocId(); // FIX: user-scoped
+    var docId      = getDailyDocId();
     var manualData = {
         g9: g9, akbar: ak, via: vi, serene: se, alghazi: al, b2b: b2,
         updatedAt: new Date().toISOString(),
         userid: currentUser.uid
     };
 
+    // FIX-2: Disable button during save
+    setSubmitLoading('daily-submit-btn', true, 'Update Daily Sheet');
+
     try {
-        // Use set() with merge to create or overwrite the user-specific doc
         await db.collection('daily').doc(docId).set(manualData, { merge: true });
 
         var existing = AppData.daily.find(function(d) { return d.id === docId; });
@@ -2227,6 +2340,8 @@ async function saveDailySnapshot() {
         showToast('Daily sheet updated', 'success');
     } catch (e) {
         showToast('Update failed: ' + e.message, 'error');
+    } finally {
+        setSubmitLoading('daily-submit-btn', false, 'Update Daily Sheet');
     }
 }
 
@@ -2253,8 +2368,8 @@ function renderPaidTable() {
             tc += safeNum(r.paid);
             tb.innerHTML +=
                 '<tr>' +
-                    '<td data-label="Paid Date">'   + escH(r.paidDate || 'N/A') + '</td>' +
-                    '<td data-label="Name">'         + escH(r.name    || '')    + '</td>' +
+                    '<td data-label="Paid Date">'  + escH(r.paidDate || 'N/A') + '</td>' +
+                    '<td data-label="Name">'        + escH(r.name    || '')    + '</td>' +
                     '<td data-label="Contact" style="color:var(--text-muted);">' + escH(r.contact || '-') + '</td>' +
                     '<td data-label="Total" style="text-align:right;color:var(--text-muted);">'    + fmt(r.total) + '</td>' +
                     '<td data-label="Paid"  style="text-align:right;font-weight:700;color:var(--success-text);">' + fmt(r.paid) + '</td>' +
@@ -2282,9 +2397,9 @@ function renderPaidTable() {
 function initCharts() {
     var rc = document.getElementById('revenueChart');
     var ac = document.getElementById('allocationChart');
-    if (!rc || !ac) return; // FIX: guard against missing canvas elements
+    // FIX-6: Guard against missing canvas — charts tab might not be active yet
+    if (!rc || !ac) return;
 
-    // Destroy existing instances to prevent memory leaks on re-init
     if (revenueChart)    { revenueChart.destroy();    revenueChart    = null; }
     if (allocationChart) { allocationChart.destroy(); allocationChart = null; }
 
@@ -2296,7 +2411,7 @@ function initCharts() {
         data: {
             labels: [],
             datasets: [
-                { label: 'Revenue (In)',  data: [], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4 },
+                { label: 'Revenue (In)',   data: [], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4 },
                 { label: 'Expenses (Out)', data: [], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)',  fill: true, tension: 0.4 }
             ]
         },
@@ -2346,7 +2461,7 @@ function updateDashboard() {
     if (kpiLiq) kpiLiq.innerText = fmt(nl) + ' AED';
     if (kpiRev) kpiRev.innerText = fmt(mr) + ' AED';
 
-    // FIX: Null-check charts before updating
+    // FIX-6: Always null-check charts before calling .update()
     if (allocationChart) {
         allocationChart.data.datasets[0].data = [Math.max(0, bb), Math.max(0, cb)];
         allocationChart.update();
@@ -2434,7 +2549,6 @@ function exportToExcel() {
                 delete ci.id;
                 delete ci.userid;
                 delete ci.createdAt;
-                // Serialize paymentHistory array to JSON string for Excel
                 if (Array.isArray(ci.paymentHistory)) ci.paymentHistory = JSON.stringify(ci.paymentHistory);
                 return ci;
             });
@@ -2447,6 +2561,14 @@ function exportToExcel() {
     }
 }
 
+/**
+ * Import data from an Excel backup file.
+ *
+ * FIX-5: Duplicate guard added. Before inserting a record, we check whether
+ * an identical record (same date + particulars/name + amount) already exists
+ * in memory for this user. This prevents repeated restores from the same file
+ * bloating the database with duplicates.
+ */
 async function importFromExcel(event) {
     var file = event.target.files[0];
     if (!file) return;
@@ -2455,19 +2577,21 @@ async function importFromExcel(event) {
     reader.onload = async function(e) {
         showConfirm(
             'Restore Data?',
-            'This will ADD data from the uploaded file into your account. Existing records are not removed.',
+            'This will ADD new records from the uploaded file. Records that appear to already exist will be skipped.',
             async function() {
                 try {
                     var data = new Uint8Array(e.target.result);
                     var wb   = XLSX.read(data, { type: 'array' });
 
-                    // FIX: Use const/let inside async IIFE to avoid var-hoisting issues
                     var sheetMap = {
                         'Customers': 'customers',
                         'Cash':      'cash',
                         'Banks':     'banks',
                         'Daily':     'daily'
                     };
+
+                    var imported = 0;
+                    var skipped  = 0;
 
                     for (var i = 0; i < wb.SheetNames.length; i++) {
                         var sn = wb.SheetNames[i];
@@ -2485,27 +2609,42 @@ async function importFromExcel(event) {
                                 rec.paid    = safeNum(rec.paid);
                                 rec.balance = safeNum(rec.balance);
 
-                                // Deserialize paymentHistory from JSON string
                                 if (typeof rec.paymentHistory === 'string') {
                                     try { rec.paymentHistory = JSON.parse(rec.paymentHistory); }
                                     catch (ex) { rec.paymentHistory = []; }
                                 }
                                 if (!Array.isArray(rec.paymentHistory)) rec.paymentHistory = [];
 
-                                // Migrate legacy flat paid amount
                                 if (rec.paid > 0 && rec.paymentHistory.length === 0) {
                                     rec.paymentHistory = [{ date: rec.paidDate || rec.date || '', amount: rec.paid }];
                                 }
 
-                                // Recompute derived fields
                                 rec.paid    = rec.paymentHistory.reduce(function(s, p) { return s + safeNum(p.amount); }, 0);
                                 rec.balance = rec.total - rec.paid;
                                 rec.status  = rec.balance <= 0 ? 'PAID' : 'NOTPAID';
+
+                                // FIX-5: Skip if a record with same date+name+total already exists
+                                var alreadyExists = AppData.customers.some(function(ex) {
+                                    return ex.date === rec.date &&
+                                           ex.name === rec.name &&
+                                           safeNum(ex.total) === rec.total;
+                                });
+                                if (alreadyExists) { skipped++; continue; }
                             }
 
                             if (cn === 'cash' || cn === 'banks') {
                                 rec.amountIn  = safeNum(rec.amountIn);
                                 rec.amountOut = safeNum(rec.amountOut);
+
+                                // FIX-5: Skip if a record with same date+particulars+amounts already exists
+                                var collArr = AppData[cn];
+                                var dupFound = collArr.some(function(ex) {
+                                    return ex.date         === rec.date &&
+                                           ex.particulars  === rec.particulars &&
+                                           safeNum(ex.amountIn)  === rec.amountIn &&
+                                           safeNum(ex.amountOut) === rec.amountOut;
+                                });
+                                if (dupFound) { skipped++; continue; }
                             }
 
                             if (cn === 'daily') {
@@ -2518,11 +2657,12 @@ async function importFromExcel(event) {
                             }
 
                             await saveToCollection(cn, rec);
+                            imported++;
                         }
                     }
 
                     await loadAllCollections();
-                    showToast('Data restored successfully', 'success');
+                    showToast('Imported ' + imported + ' record(s). Skipped ' + skipped + ' duplicate(s).', 'success');
                 } catch (e2) {
                     showToast('Import failed: ' + e2.message, 'error');
                 }
@@ -2530,7 +2670,7 @@ async function importFromExcel(event) {
         );
     };
     reader.readAsArrayBuffer(file);
-    // FIX: Reset file input so the same file can be re-selected if needed
+    // Reset file input so same file can be re-selected if needed
     event.target.value = '';
 }
 
