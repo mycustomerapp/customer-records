@@ -178,16 +178,7 @@
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
         @keyframes slideIn{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
         @keyframes fadeSlideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
-        .cust-history-search-bar{background:var(--bg-card);backdrop-filter:var(--glass-blur);padding:1.25rem 1.5rem;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border-highlight);margin-bottom:0.25rem;display:flex;align-items:center;gap:12px;transition:border-color 0.3s,box-shadow 0.3s}
-        .cust-history-search-bar:focus-within{border-color:var(--primary);box-shadow:0 0 0 4px rgba(59,130,246,0.15),var(--shadow)}
-        .cust-history-search-bar .ch-search-icon{color:var(--primary);flex-shrink:0;width:20px;height:20px}
-        .cust-history-search-bar input{flex:1;background:transparent;border:none;outline:none;font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:500;color:var(--text-main);padding:0}
-        .cust-history-search-bar input::placeholder{color:var(--text-muted);font-weight:400}
-        .btn-clear-search{background:rgba(239,68,68,0.1);color:var(--danger-text);border:1px solid rgba(239,68,68,0.25);padding:6px 14px;border-radius:8px;font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-        .btn-clear-search:hover{background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.5);transform:translateY(-1px)}
-        .btn-clear-search:active{transform:scale(0.95)}
-        .btn-clear-search.hidden{display:none !important}
-        .ch-search-hint{font-size:0.7rem;color:var(--text-muted);margin-top:-0.5rem;margin-bottom:1.5rem;padding-left:4px;opacity:0.7}
+        /* Removed .cust-history-search-bar, .btn-clear-search, .ch-search-hint to clean up deleted search bar */
         .customer-history-view{animation:fadeSlideIn 0.4s cubic-bezier(0.16,1,0.3,1)}
         .ch-header{display:flex;align-items:center;gap:16px;margin-bottom:1.5rem;flex-wrap:wrap}
         .ch-customer-badge{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(59,130,246,0.15),rgba(139,92,246,0.15));border:1px solid rgba(59,130,246,0.3);padding:10px 20px;border-radius:var(--radius-sm);box-shadow:0 4px 15px rgba(59,130,246,0.1)}
@@ -303,13 +294,8 @@
             <section id="tab-customers" class="tab-content">
                 <h2 class="page-title"><i data-lucide="users" style="width:28px;height:28px;color:var(--primary);"></i> Customers Management</h2>
                 <div class="summary-cards"><div class="card card-warning"><h3>Total Dues on Customers</h3><div class="value"><span id="cust-total-dues">0.00</span> AED</div><small>Outstanding balance from unpaid customers</small></div></div>
-                <div class="cust-history-search-bar">
-                    <i data-lucide="user-search" class="ch-search-icon"></i>
-                    <input type="text" id="cust-history-search-input" placeholder="Search Customer History... (e.g. ALI BALOCH)" oninput="handleCustomerHistorySearch(this.value)">
-                    <button class="btn-clear-search hidden" id="btn-clear-cust-history" onclick="clearCustomerHistorySearch()"><i data-lucide="x-circle" style="width:14px;height:14px;"></i> Clear</button>
-                </div>
-                <div class="ch-search-hint">Type a customer name to view their complete payment history across all records</div>
-                <div id="cust-default-view">
+                <!-- Customer history search bar removed to simplify interface -->
+                <div id="cust-default-view" style="margin-top: 6rem;">
                     <div class="form-card">
                         <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="cust-date"></div><div class="form-group" style="flex:2;"><label>Customer Name</label><input type="text" id="cust-name" placeholder="e.g. John Doe"></div><div class="form-group" style="flex:2;"><label>Contact / Reference</label><input type="text" id="cust-contact" placeholder="e.g. +971..."></div></div>
                         <div class="form-row">
@@ -379,7 +365,6 @@ var editingBanksRecordId = null;
 var revenueChart = null, allocationChart = null;
 var PAGE_SIZE = 15;
 var currentPage = {customers:1,cash:1,banks:1};
-var custHistoryDebounceTimer = null;
 
 /* ===== UTILS ===== */
 function safeNum(v){return parseFloat(v)||0}
@@ -514,7 +499,7 @@ function switchTab(tn,el){
 function renderActiveTab(){
     var at=document.querySelector('.tab-content.active');if(!at)return;
     if(at.id==='tab-overview')updateDashboard();
-    else if(at.id==='tab-customers'){var hv=document.getElementById('cust-history-view');if(hv.classList.contains('hidden'))filterCustomerRecords()}
+    else if(at.id==='tab-customers'){filterCustomerRecords()} /* history view check removed as search bar is gone */
     else if(at.id==='tab-cash')filterCashRecords();
     else if(at.id==='tab-banks')filterBanksRecords();
     else if(at.id==='tab-daily')renderDailyTable();
@@ -633,20 +618,17 @@ async function addCustomerRecord(){
     if(editingCustomerId && !isTempId(editingCustomerId)){
         var r=AppData.customers.find(function(x){return x.id===editingCustomerId});if(!r){showToast('Record not found.','error');cancelEditCustomerRecord();return}
         var old=Object.assign({},r);
-        // Preserve payment history – ignore the paid amount field, recalc from history
         var existingPh = (r.paymentHistory && r.paymentHistory.length > 0) ? r.paymentHistory.slice() : [];
         var totalPaidFromHistory = existingPh.reduce(function(s,p){return s+safeNum(p.amount)},0);
         var bal = total - totalPaidFromHistory;
         var st = bal <= 0 ? 'PAID' : 'NOTPAID';
         var pd = r.paidDate || (st === 'PAID' ? date : null);
         var ps = r.paidSyncedAt || (st === 'PAID' ? new Date().toISOString() : null);
-        // Update object
         Object.assign(r,{date:date,name:name,contact:contact,total:total,paid:totalPaidFromHistory,balance:bal,status:st,paymentHistory:existingPh,paidDate:pd,paidSyncedAt:ps});
         renderCustomerTable();recalculateAllFormulas();
         try{await updateInCollection('customers',editingCustomerId,{date:date,name:name,contact:contact,total:total,paid:totalPaidFromHistory,balance:bal,status:st,paymentHistory:existingPh,paidDate:pd,paidSyncedAt:ps,userid:currentUser.uid});showToast('Customer updated','success')}catch(e){Object.assign(r,old);renderCustomerTable();recalculateAllFormulas();showToast('Error: '+e.message,'error')}
         cancelEditCustomerRecord();
     }else{
-        // New customer
         var bal = total - paidAmtValue, st = bal <= 0 ? 'PAID' : 'NOTPAID', ph = [], pd = '', ps = '';
         if(paidAmtValue > 0){ph.push({date:date,amount:paidAmtValue});if(st==='PAID'){pd=date;ps=new Date().toISOString()}}
         var tid='temp_'+Date.now(),rd={date:date,name:name,contact:contact,total:total,paid:paidAmtValue,paymentHistory:ph,balance:bal,status:st,paidDate:pd,paidSyncedAt:ps,createdAt:new Date().toISOString()};
@@ -657,27 +639,6 @@ async function addCustomerRecord(){
 }
 
 function deleteCustomerRecord(did){showConfirm('Delete Record?','This action cannot be undone.',async function(){var bk=AppData.customers.slice();AppData.customers=AppData.customers.filter(function(x){return x.id!==did});renderCustomerTable();recalculateAllFormulas();try{await deleteFromCollection('customers',did);showToast('Record deleted','success')}catch(e){AppData.customers=bk;renderCustomerTable();recalculateAllFormulas();showToast('Delete failed: '+e.message,'error')}})}
-
-/* ===== CUSTOMER HISTORY SEARCH ===== */
-function handleCustomerHistorySearch(st){
-    var cb=document.getElementById('btn-clear-cust-history'),ht=document.getElementById('ch-search-hint'),dv=document.getElementById('cust-default-view'),hv=document.getElementById('cust-history-view');
-    if(st.trim().length>0){cb.classList.remove('hidden');ht.style.display='none'}else{cb.classList.add('hidden');ht.style.display='';dv.classList.remove('hidden');hv.classList.add('hidden');return}
-    clearTimeout(custHistoryDebounceTimer);custHistoryDebounceTimer=setTimeout(function(){execCustHistSearch(st.trim())},300);
-}
-
-function execCustHistSearch(st){
-    var dv=document.getElementById('cust-default-view'),hv=document.getElementById('cust-history-view');
-    dv.classList.add('hidden');hv.classList.remove('hidden');
-    var us=st.toUpperCase(),mr=AppData.customers.filter(function(r){return(r.name||'').trim().toUpperCase().indexOf(us)!==-1});
-    mr.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});
-    if(mr.length===0){hv.innerHTML='<div class="ch-no-results"><div class="empty-state-icon"><i data-lucide="search-x" style="width:48px;height:48px;"></i></div><div class="empty-state-text">No Results Found</div><p>No records found for "<strong>'+escH(st)+'</strong>". Check spelling or try a partial name.</p></div>';refreshIcons();return}
-    var sT=0,sP=0;mr.forEach(function(r){sT+=safeNum(r.total);sP+=getTotalPaid(r)});var sO=sT-sP,izb=sO<=0,cn=mr[0].name,tr='';
-    mr.forEach(function(r){var p=getTotalPaid(r),b=safeNum(r.total)-p,s=b<=0?'PAID':'NOT PAID',bc=b>0?'ch-balance-positive':'ch-balance-zero',sbc=b<=0?'status-paid':'status-notpaid',si=b<=0?'check-circle':'alert-circle';tr+='<tr><td data-label="Date" style="font-weight:600;white-space:nowrap;">'+(r.date||'-')+'</td><td data-label="Contact" style="color:var(--text-muted);">'+(r.contact||'-')+'</td><td data-label="Total Amount" style="font-weight:700;">'+fmt(r.total)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Paid Amount" style="color:var(--success-text);font-weight:700;">'+fmt(p)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Balance" class="'+bc+'">'+fmt(b)+'<span style="font-size:0.7rem;color:var(--text-muted);font-weight:400;margin-left:4px;">AED</span></td><td data-label="Status"><span class="status-badge '+sbc+'"><i data-lucide="'+si+'" style="width:12px;height:12px;"></i> '+s+'</span></td></tr>'});
-    hv.innerHTML='<div class="ch-header"><div class="ch-customer-badge"><i data-lucide="user-check"></i><span>'+escH(cn)+'</span></div><div class="ch-record-count">'+mr.length+' record'+(mr.length!==1?'s':'')+' found</div></div><div class="ch-summary-grid"><div class="ch-summary-card total-amounts"><div class="ch-label">Total Amounts</div><div class="ch-value">'+fmt(sT)+'<span class="ch-unit">AED</span></div></div><div class="ch-summary-card total-paid"><div class="ch-label">Total Paid</div><div class="ch-value">'+fmt(sP)+'<span class="ch-unit">AED</span></div></div><div class="ch-summary-card total-outstanding '+(izb?'zero-balance':'')+'"><div class="ch-label">Outstanding Balance</div><div class="ch-value">'+fmt(sO)+'<span class="ch-unit">AED</span></div></div></div><div class="ch-table-container"><div class="table-header"><span><i data-lucide="receipt" style="width:16px;height:16px;display:inline-block;vertical-align:-2px;margin-right:6px;"></i> Transaction History for '+escH(cn)+'</span></div><table><thead><tr><th>Date</th><th>Contact / Ref</th><th>Total Amount</th><th>Paid Amount</th><th>Balance</th><th>Status</th></tr></thead><tbody>'+tr+'</tbody></table></div>';
-    refreshIcons();
-}
-
-function clearCustomerHistorySearch(){var i=document.getElementById('cust-history-search-input');i.value='';handleCustomerHistorySearch('');i.focus()}
 
 /* ===== LEDGER TABLE (CASH & BANKS) ===== */
 function renderLedgerTable(tn,tid,efn,dfn,data){
@@ -758,7 +719,7 @@ function renderDailyTable(){
     var mr = [{n:'AIR ARABIA G9',a:g9},{n:'AKBAR PORTAL',a:ak},{n:'VIA',a:vi},{n:'SERENE AIR LINE',a:se},{n:'AL GHAZI TRAVEL',a:al},{n:'B2B',a:b2}];
     var ar = [{n:'ADIB NBD BANKS',a:bb,s:'Auto'},{n:'CUSTOMERS DUES',a:cd,s:'Auto'},{n:'CASH ON HAND',a:cb,s:'Auto'}];
     mr.forEach(function(r){gt+=r.a;tb.innerHTML+='<tr><td data-label="Particular">'+r.n+'</td><td data-label="Amount">'+fmt(r.a)+'</td></tr>'});
-    ar.forEach(function(r){gt+=r.a;tb.innerHTML+='<tr class="row-auto-calc"><td data-label="Particular"><strong>'+r.n+'</strong> <span class="auto-badge badge-success">'+r.s+'</span></td><td data-label="Amount">'+fmt(r.a)+'</td></tr>'});
+    ar.forEach(function(r){gt+=r.a;tb.innerHTML+='<tr class="row-auto-calc"><td data-label="Particular">'+r.n+' <span class="auto-badge badge-success">'+r.s+'</span></td><td data-label="Amount">'+fmt(r.a)+'</td></tr>'});
     var te=document.getElementById('daily-grand-total');if(te){te.innerText=fmt(gt)+' AED';te.style.color=gt<0?'#fca5a5':'#4ade80'}
 }
 
@@ -772,7 +733,6 @@ async function saveDailySnapshot(){
     var manualData = {g9:g9,akbar:ak,via:vi,serene:se,alghazi:al,b2b:b2,updatedAt:new Date().toISOString(),userid:currentUser.uid};
     try{
         await db.collection('daily').doc('manual_entry').set(manualData);
-        // Update local AppData to reflect changes
         var existing = AppData.daily.find(function(d){return d.id==='manual_entry'});
         if(existing){
             Object.assign(existing, manualData);
