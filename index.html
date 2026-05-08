@@ -27,10 +27,7 @@
         var auth = firebase.auth();
         var db = firebase.firestore();
         var provider = new firebase.auth.GoogleAuthProvider();
-        db.enablePersistence().catch(function(err) {
-            if (err.code === 'failed-precondition') console.warn('Persistence: multiple tabs open');
-            else if (err.code === 'unimplemented') console.warn('Persistence: browser not supported');
-        });
+        db.settings({ cache: { persisted: true } });
     </script>
     <style>
         :root {
@@ -381,6 +378,7 @@ function safeNum(v){return parseFloat(v)||0}
 function fmt(v){return safeNum(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function getTotalPaid(c){return(c.paymentHistory||[]).reduce(function(s,p){return s+safeNum(p.amount)},0)}
 function escH(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function isTempId(id){return id&&id.indexOf('temp_')===0}
 function refreshIcons(){try{if(typeof lucide!=='undefined'&&lucide.createIcons)lucide.createIcons()}catch(e){}}
 
 /* ===== TOAST ===== */
@@ -414,7 +412,6 @@ function handleLogin(){
 }
 function handleLogout(){auth.signOut();AppData={customers:[],cash:[],banks:[],daily:[]}}
 
-/* Bind login button safely after DOM ready */
 document.getElementById('btn-login').addEventListener('click',handleLogin);
 
 auth.onAuthStateChanged(function(user){
@@ -424,8 +421,7 @@ auth.onAuthStateChanged(function(user){
         document.getElementById('mainApp').style.display='flex';
         document.getElementById('loginPrompt').classList.add('hidden');
         document.getElementById('userName').innerText=user.displayName||user.email;
-        loadAllCollections();
-        initCharts();
+        loadAllCollections();initCharts();
     }else{
         currentUser=null;
         document.getElementById('mainApp').classList.add('hidden');
@@ -457,7 +453,16 @@ async function loadCollection(cn){
     }catch(e){console.error('Load error '+cn,e);showToast('Failed to load '+cn+': '+e.message,'error')}
 }
 
-async function saveToCollection(cn,rec){if(!currentUser)return;var dc=DB_MAP[cn];var r2=Object.assign({},rec,{userid:currentUser.uid,createdAt:new Date().toISOString()});var dr=await db.collection(dc).add(r2);return dr.id}
+async function saveToCollection(cn,rec){
+    if(!currentUser)return;
+    var dc=DB_MAP[cn];
+    var clean=Object.assign({},rec);
+    delete clean.id;
+    var r2=Object.assign({},clean,{userid:currentUser.uid,createdAt:new Date().toISOString()});
+    var dr=await db.collection(dc).add(r2);
+    return dr.id;
+}
+
 async function updateInCollection(cn,did,ud){await db.doc(DB_MAP[cn]+'/'+did).update(ud)}
 async function deleteFromCollection(cn,did){await db.doc(DB_MAP[cn]+'/'+did).delete()}
 
@@ -604,8 +609,9 @@ async function addCustomerRecord(){
     if(!date||!name||!total)return showToast('Fill Date, Name, and Total.','error');
     var bal=total-paidAmt,st=bal<=0?'PAID':'NOTPAID',ph=[],pd='',ps='';
     if(paidAmt>0){ph.push({date:date,amount:paidAmt});if(st==='PAID'){pd=date;ps=new Date().toISOString()}}
-    if(editingCustomerId){
-        var r=AppData.customers.find(function(x){return x.id===editingCustomerId});var old=Object.assign({},r);
+    if(editingCustomerId&&!isTempId(editingCustomerId)){
+        var r=AppData.customers.find(function(x){return x.id===editingCustomerId});if(!r){showToast('Record not found.','error');cancelEditCustomerRecord();return}
+        var old=Object.assign({},r);
         Object.assign(r,{date:date,name:name,contact:contact,total:total,paid:paidAmt,balance:bal,status:st,paymentHistory:ph,paidDate:pd,paidSyncedAt:ps});
         renderCustomerTable();recalculateAllFormulas();
         try{await updateInCollection('customers',editingCustomerId,{date:date,name:name,contact:contact,total:total,paid:paidAmt,balance:bal,status:st,paymentHistory:ph,paidDate:pd,paidSyncedAt:ps,userid:currentUser.uid});showToast('Customer updated','success')}catch(e){Object.assign(r,old);renderCustomerTable();recalculateAllFormulas();showToast('Error: '+e.message,'error')}
@@ -659,15 +665,16 @@ async function addCashRecord(){
     var date=document.getElementById('cash-date').value,part=document.getElementById('cash-particulars').value,portal=document.getElementById('cash-portal').value.trim().toUpperCase(),ai=safeNum(document.getElementById('cash-in').value),ao=safeNum(document.getElementById('cash-out').value);
     if(!date||!part||!portal)return showToast('Fill all fields.','error');
     var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao,createdAt:new Date().toISOString()};
-    if(editingCashRecordId){
-        var r=AppData.cash.find(function(x){return x.id===editingCashRecordId});var old=Object.assign({},r);Object.assign(r,rd);
+    if(editingCashRecordId&&!isTempId(editingCashRecordId)){
+        var r=AppData.cash.find(function(x){return x.id===editingCashRecordId});if(!r){showToast('Record not found.','error');cancelEditCashRecord();return}
+        var old=Object.assign({},r);Object.assign(r,rd);
         calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');renderCashTable();
         try{await updateInCollection('cash',editingCashRecordId,Object.assign({},rd,{userid:currentUser.uid}));await recalcSyncBalances('cash');showToast('Record updated','success')}catch(e){Object.assign(r,old);recalculateAllFormulas();renderCashTable();showToast('Update failed: '+e.message,'error')}
         cancelEditCashRecord();
     }else{
         var tid='temp_'+Date.now();rd.id=tid;rd.balance=0;AppData.cash.push(rd);AppData.cash.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});
         calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');renderCashTable();cancelEditCashRecord();
-        try{var did=await saveToCollection('cash',rd);rd.id=did;await recalcSyncBalances('cash');showToast('Transaction added','success')}catch(e){AppData.cash=AppData.cash.filter(function(x){return x.id!==tid});recalculateAllFormulas();renderCashTable();showToast('Add failed: '+e.message,'error')}
+        try{var did=await saveToCollection('cash',rd);var rec=AppData.cash.find(function(x){return x.id===tid});if(rec)rec.id=did;await recalcSyncBalances('cash');showToast('Transaction added','success')}catch(e){AppData.cash=AppData.cash.filter(function(x){return x.id!==tid});recalculateAllFormulas();renderCashTable();showToast('Add failed: '+e.message,'error')}
     }
 }
 
@@ -684,19 +691,20 @@ async function addBanksRecord(){
     var date=document.getElementById('banks-date').value,part=document.getElementById('banks-particulars').value,portal=document.getElementById('banks-portal').value.trim().toUpperCase(),ai=safeNum(document.getElementById('banks-in').value),ao=safeNum(document.getElementById('banks-out').value);
     if(!date||!part||!portal)return showToast('Fill all fields.','error');
     var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao,createdAt:new Date().toISOString()};
-    if(editingBanksRecordId){
-        var r=AppData.banks.find(function(x){return x.id===editingBanksRecordId});var old=Object.assign({},r);Object.assign(r,rd);
+    if(editingBanksRecordId&&!isTempId(editingBanksRecordId)){
+        var r=AppData.banks.find(function(x){return x.id===editingBanksRecordId});if(!r){showToast('Record not found.','error');cancelEditBanksRecord();return}
+        var old=Object.assign({},r);Object.assign(r,rd);
         calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');renderBanksTable();
         try{await updateInCollection('banks',editingBanksRecordId,Object.assign({},rd,{userid:currentUser.uid}));await recalcSyncBalances('banks');showToast('Record updated','success')}catch(e){Object.assign(r,old);recalculateAllFormulas();renderBanksTable();showToast('Update failed: '+e.message,'error')}
         cancelEditBanksRecord();
     }else{
         var tid='temp_'+Date.now();rd.id=tid;rd.balance=0;AppData.banks.push(rd);AppData.banks.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||'')});
         calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');renderBanksTable();cancelEditBanksRecord();
-        try{var did=await saveToCollection('banks',rd);rd.id=did;await recalcSyncBalances('banks');showToast('Transaction added','success')}catch(e){AppData.banks=AppData.banks.filter(function(x){return x.id!==tid});recalculateAllFormulas();renderBanksTable();showToast('Add failed: '+e.message,'error')}
+        try{var did=await saveToCollection('banks',rd);var rec=AppData.banks.find(function(x){return x.id===tid});if(rec)rec.id=did;await recalcSyncBalances('banks');showToast('Transaction added','success')}catch(e){AppData.banks=AppData.banks.filter(function(x){return x.id!==tid});recalculateAllFormulas();renderBanksTable();showToast('Add failed: '+e.message,'error')}
     }
 }
 
-function deleteBanksRecord(did){showConfirm('Delete Transaction?','This will alter subsequent balances.',async function(){var bk=AppData.banks.slice();AppData.banks=AppData.banks.filter(function(x){return x.id!==did});recalculateAllFormulas();renderBanksTable();try{await deleteFromCollection('banks',did);await recalcSyncBalances('banks');showToast('Deleted','success')}catch(e){AppData.banks=bk;recalculateAllFormulas();renderBanksTable();showToast('Delete failed: '+e.message,'error')}})}
+function deleteBanksRecord(did){showConfirm('Delete Transaction?','This will alter subsequent balances.',async function(){var bk=AppData.banks.slice();AppData.banks=AppData.banks.filter(function(x){return x.id!==did});recalculateAllFormulas();renderBanksTable();try{await deleteFromCollection('banks',did);await recalcSyncBalances('banks');showToast('Deleted','success')}catch(e){AppData.banks=bk;recalculateAllFormals();renderBanksTable();showToast('Delete failed: '+e.message,'error')}})}
 
 function renderBanksTable(){renderLedgerTable('banks','banks-table-body','editBanksRecord','deleteBanksRecord')}
 function filterBanksRecords(){filterLedgerRecs('banks','banks-search','banks-table-body','editBanksRecord','deleteBanksRecord')}
@@ -709,22 +717,38 @@ function getTodaysIn(tn,d){if(!d)return 0;return AppData[tn].filter(function(r){
 function loadDailySnapshot(){
     var sd=document.getElementById('daily-date').value;if(!sd)return;
     var ex=AppData.daily.find(function(r){return r.date===sd});
-    if(ex){document.getElementById('daily-g9').value=ex.g9||0;document.getElementById('daily-akbar').value=ex.akbar||0;document.getElementById('daily-via').value=ex.via||0;document.getElementById('daily-serene').value=ex.serene||0;document.getElementById('daily-alghazi').value=ex.alghazi||0;document.getElementById('daily-b2b').value=ex.b2b||0;editingDailyRecordId=ex.id;document.getElementById('daily-submit-btn').innerText='Update Daily Sheet';document.getElementById('daily-cancel-btn').classList.remove('hidden')}
-    else{document.getElementById('daily-g9').value=0;document.getElementById('daily-akbar').value=0;document.getElementById('daily-via').value=0;document.getElementById('daily-serene').value=0;document.getElementById('daily-alghazi').value=0;document.getElementById('daily-b2b').value=0;editingDailyRecordId=null;document.getElementById('daily-submit-btn').innerText='Save Daily Sheet';document.getElementById('daily-cancel-btn').classList.add('hidden')}
+    if(ex){
+        document.getElementById('daily-g9').value=ex.g9||0;document.getElementById('daily-akbar').value=ex.akbar||0;document.getElementById('daily-via').value=ex.via||0;document.getElementById('daily-serene').value=ex.serene||0;document.getElementById('daily-alghazi').value=ex.alghazi||0;document.getElementById('daily-b2b').value=ex.b2b||0;
+        editingDailyRecordId=ex.id;document.getElementById('daily-submit-btn').innerText='Update Daily Sheet';document.getElementById('daily-cancel-btn').classList.remove('hidden');
+    }else{
+        document.getElementById('daily-g9').value=0;document.getElementById('daily-akbar').value=0;document.getElementById('daily-via').value=0;document.getElementById('daily-serene').value=0;document.getElementById('daily-alghazi').value=0;document.getElementById('daily-b2b').value=0;
+        editingDailyRecordId=null;document.getElementById('daily-submit-btn').innerText='Save Daily Sheet';document.getElementById('daily-cancel-btn').classList.add('hidden');
+    }
     renderDailyTable();
 }
 function cancelEditDailyRecord(){editingDailyRecordId=null;document.getElementById('daily-date').value='';['daily-g9','daily-akbar','daily-via','daily-serene','daily-alghazi','daily-b2b'].forEach(function(id){document.getElementById(id).value=0});document.getElementById('daily-submit-btn').innerText='Save Daily Sheet';document.getElementById('daily-cancel-btn').classList.add('hidden');renderDailyTable()}
 
 async function saveDailySnapshot(){
-    var date=document.getElementById('daily-date').value;if(!date)return showToast('Select a date.','error');
+    var date=document.getElementById('daily-date').value;
+    if(!date)return showToast('Select a date.','error');
     var g9=safeNum(document.getElementById('daily-g9').value),ak=safeNum(document.getElementById('daily-akbar').value),vi=safeNum(document.getElementById('daily-via').value),se=safeNum(document.getElementById('daily-serene').value),al=safeNum(document.getElementById('daily-alghazi').value),b2=safeNum(document.getElementById('daily-b2b').value);
     var rd={date:date,g9:g9,akbar:ak,via:vi,serene:se,alghazi:al,b2b:b2,createdAt:new Date().toISOString()};
-    if(editingDailyRecordId){
-        var r=AppData.daily.find(function(x){return x.id===editingDailyRecordId});var old=Object.assign({},r);Object.assign(r,rd);renderDailyTable();
+
+    if(editingDailyRecordId&&!isTempId(editingDailyRecordId)){
+        var r=AppData.daily.find(function(x){return x.id===editingDailyRecordId});
+        if(!r){showToast('Record not found. Please reload.','error');cancelEditDailyRecord();return}
+        var old=Object.assign({},r);Object.assign(r,rd);renderDailyTable();
         try{await updateInCollection('daily',editingDailyRecordId,Object.assign({},rd,{userid:currentUser.uid}));showToast('Daily sheet updated','success')}catch(e){Object.assign(r,old);renderDailyTable();showToast('Update failed: '+e.message,'error')}
     }else{
         var tid='temp_'+Date.now();rd.id=tid;AppData.daily.push(rd);AppData.daily.sort(function(a,b){return(a.date||'').localeCompare(b.date||'')});renderDailyTable();
-        try{var did=await saveToCollection('daily',rd);rd.id=did;showToast('Daily sheet saved','success')}catch(e){AppData.daily=AppData.daily.filter(function(x){return x.id!==tid});renderDailyTable();showToast('Save failed: '+e.message,'error')}
+        try{
+            var did=await saveToCollection('daily',rd);
+            var rec=AppData.daily.find(function(x){return x.id===tid});if(rec)rec.id=did;
+            editingDailyRecordId=did;
+            document.getElementById('daily-submit-btn').innerText='Update Daily Sheet';
+            document.getElementById('daily-cancel-btn').classList.remove('hidden');
+            showToast('Daily sheet saved','success');
+        }catch(e){AppData.daily=AppData.daily.filter(function(x){return x.id!==tid});renderDailyTable();showToast('Save failed: '+e.message,'error')}
     }
 }
 
@@ -732,7 +756,7 @@ function renderDailyTable(){
     var tb=document.getElementById('daily-table-body');tb.innerHTML='';var sd=document.getElementById('daily-date').value;
     var g9=safeNum(document.getElementById('daily-g9').value),ak=safeNum(document.getElementById('daily-akbar').value),vi=safeNum(document.getElementById('daily-via').value),se=safeNum(document.getElementById('daily-serene').value),al=safeNum(document.getElementById('daily-alghazi').value),b2=safeNum(document.getElementById('daily-b2b').value);
     var mt=g9+ak+vi+se+al+b2,aci=getTodaysIn('cash',sd),abi=getTodaysIn('banks',sd),tai=aci+abi,disc=tai-mt;
-    var cd=getLiveCustDues(),bb=getLiveBalance('banks'),cb=getLiveBalance('cash'),gt=0;
+    var cd=getLiveCustDues(),bb=getLiveBal('banks'),cb=getLiveBal('cash'),gt=0;
     var mr=[{n:'AIR ARABIA G9',a:g9},{n:'AKBAR PORTAL',a:ak},{n:'VIA',a:vi},{n:'SERENE AIR LINE',a:se},{n:'AL GHAZI TRAVEL',a:al},{n:'B2B',a:b2}];
     var ar=[{n:'ADIB NBD BANKS',a:bb,s:'Auto'},{n:'CUSTOMERS DUES',a:cd,s:'Auto'},{n:'CASH ON HAND',a:cb,s:'Auto'}];
     mr.forEach(function(r){gt+=r.a;tb.innerHTML+='<tr><td data-label="Particular">'+r.n+'</td><td data-label="Amount">'+fmt(r.a)+'</td></tr>'});
@@ -740,8 +764,6 @@ function renderDailyTable(){
     if(sd){var rc=disc!==0?'row-discrepancy':'row-auto-calc',rb=disc!==0?'badge-danger':'badge-success',rt=disc!==0?'Discrepancy of '+fmt(disc)+' AED':'Reconciled';tb.innerHTML+='<tr class="'+rc+'"><td data-label="Particular"><strong>RECONCILIATION CHECK</strong> <span class="auto-badge '+rb+'">'+rt+'</span><br><small style="font-size:0.7rem;color:var(--text-muted);">Manual: '+fmt(mt)+' vs Actual In: '+fmt(tai)+'</small></td><td data-label="Amount">'+fmt(tai)+'</td></tr>';gt+=tai-mt}
     var te=document.getElementById('daily-grand-total');te.innerText=fmt(gt)+' AED';te.style.color=gt<0?'#fca5a5':'#4ade80';
 }
-
-function getLiveBalance(tn){return AppData[tn].length>0?safeNum(AppData[tn][AppData[tn].length-1].balance):0}
 
 /* ===== PAID ===== */
 function renderPaidTable(){
@@ -761,7 +783,7 @@ function initCharts(){
 
 function updateDashboard(){
     var tr=AppData.customers.reduce(function(s,c){return c.status==='NOTPAID'?s+safeNum(c.balance):s},0);
-    var cb=getLiveBalance('cash'),bb=getLiveBalance('banks'),nl=cb+bb;
+    var cb=getLiveBal('cash'),bb=getLiveBal('banks'),nl=cb+bb;
     var cm=new Date().toISOString().slice(0,7);
     var mr=AppData.customers.reduce(function(s,c){if(c.status==='PAID'&&c.paidDate&&c.paidDate.startsWith(cm))return s+safeNum(c.paid);return s},0);
     document.getElementById('kpi-receivables').innerText=fmt(tr)+' AED';document.getElementById('kpi-liquidity').innerText=fmt(nl)+' AED';document.getElementById('kpi-revenue').innerText=fmt(mr)+' AED';
@@ -809,7 +831,7 @@ async function importFromExcel(event){
     reader.readAsArrayBuffer(file);event.target.value='';
 }
 
-/* ===== INIT ICONS ON PAGE LOAD ===== */
+/* ===== INIT ===== */
 refreshIcons();
 </script>
 </body>
