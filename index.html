@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="app-version" content="v2.1-edit-fix-2026-05-09">
     <title>FinTracker Pro</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -305,7 +309,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo-placeholder">F</div>
-            <h2>FinTracker</h2>
+            <h2>FinTracker <span style="font-size:0.55rem;color:var(--success-text);font-weight:600;display:block;margin-top:2px;">v2.1 ✓</span></h2>
         </div>
         <nav class="nav-menu">
             <div class="nav-item active" onclick="switchTab('overview',this)"><i data-lucide="layout-dashboard"></i> Overview</div>
@@ -494,8 +498,9 @@
 
 <script>
 /* ════════════════════════════════════════════════════════════════════════════
-   FINTRACKER PRO — COMPLETE JAVASCRIPT  (Edit-bug fixed)
+   FINTRACKER PRO — COMPLETE JAVASCRIPT  (Edit-bug fixed v2.1)
 ════════════════════════════════════════════════════════════════════════════ */
+console.log('%c[FinTracker] v2.1 loaded — edit-fix active', 'color:#10b981;font-weight:bold;font-size:14px');
 
 var AppData = { customers: [], cash: [], banks: [], daily: [] };
 var DB_MAP  = { customers: 'records', cash: 'cash', banks: 'banks', daily: 'daily' };
@@ -1008,20 +1013,24 @@ async function addCashRecord(){
     if(isSavingCash){ showToast('A save is already in progress.','error'); return; }
 
     /* ── Use module-level variable as single source of truth ── */
-    var isEditing = (editingCashId !== null && !isTempId(editingCashId));
+    var isEditing = (editingCashId !== null && editingCashId !== '' && !isTempId(editingCashId));
+
+    /* DIAGNOSTIC LOG — open browser console (F12) to verify */
+    console.log('[CASH SAVE] editingCashId =', JSON.stringify(editingCashId), '| isEditing =', isEditing);
 
     var date=document.getElementById('cash-date').value;
     var part=(document.getElementById('cash-particulars').value||'').trim();
     var portal=(document.getElementById('cash-portal').value||'').trim().toUpperCase();
     var ai=safeNum(document.getElementById('cash-in').value);
     var ao=safeNum(document.getElementById('cash-out').value);
-    if(!date||!part||!portal) return showToast('Fill all fields.','error');
+    if(!date||!part||!portal){ isSavingCash=false; setSubmitLoading('cash-submit-btn',false,isEditing?'Update Transaction':'+ Add Transaction'); return showToast('Fill all fields.','error'); }
 
     isSavingCash=true; setSubmitLoading('cash-submit-btn',true);
 
-    var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao,createdAt:new Date().toISOString()};
+    var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao};
 
     if(isEditing){
+        console.log('[CASH SAVE] >>> UPDATE branch — updating doc id:', editingCashId);
         /* ═══ UPDATE existing record ═══ */
         var capturedId=editingCashId;
         var r=AppData.cash.find(function(x){ return x.id===capturedId; });
@@ -1055,15 +1064,17 @@ async function addCashRecord(){
     }
 
     /* ═══ ADD new record ═══ */
+    console.log('[CASH SAVE] >>> ADD branch — creating new doc');
     var tid='temp_'+Date.now();
-    var recObj=Object.assign({id:tid,balance:0},rd);
+    var newRec=Object.assign({},rd,{createdAt:new Date().toISOString()});
+    var recObj=Object.assign({id:tid,balance:0},newRec);
     AppData.cash.push(recObj);
     AppData.cash.sort(function(a,b){ return (a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||''); });
     calcLedger('cash','cash-total-in','cash-total-out','cash-current-balance');
     renderCashTable();
     _resetCashForm();
     try{
-        var did=await saveToCollection('cash',rd);
+        var did=await saveToCollection('cash',newRec);
         var rec=AppData.cash.find(function(x){ return x.id===tid; }); if(rec) rec.id=did;
         await recalcSyncBalances('cash');
         showToast('Transaction added','success');
@@ -1125,21 +1136,25 @@ async function addBanksRecord(){
     if(isSavingBanks){ showToast('A save is already in progress.','error'); return; }
 
     /* ── Use module-level variable as single source of truth ── */
-    var isEditing = (editingBanksId !== null && !isTempId(editingBanksId));
+    var isEditing = (editingBanksId !== null && editingBanksId !== '' && !isTempId(editingBanksId));
+
+    /* DIAGNOSTIC LOG — open browser console (F12) to verify */
+    console.log('[BANKS SAVE] editingBanksId =', JSON.stringify(editingBanksId), '| isEditing =', isEditing);
 
     var date=document.getElementById('banks-date').value;
     var part=(document.getElementById('banks-particulars').value||'').trim();
     var portal=(document.getElementById('banks-portal').value||'').trim().toUpperCase();
     var ai=safeNum(document.getElementById('banks-in').value);
     var ao=safeNum(document.getElementById('banks-out').value);
-    if(!date||!part||!portal) return showToast('Fill all fields.','error');
+    if(!date||!part||!portal){ isSavingBanks=false; setSubmitLoading('banks-submit-btn',false,isEditing?'Update Transaction':'+ Add Transaction'); return showToast('Fill all fields.','error'); }
 
     isSavingBanks=true; setSubmitLoading('banks-submit-btn',true);
 
-    var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao,createdAt:new Date().toISOString()};
+    var rd={date:date,particulars:part,portal:portal,amountIn:ai,amountOut:ao};
 
     if(isEditing){
         /* ═══ UPDATE existing record ═══ */
+        console.log('[BANKS SAVE] >>> UPDATE branch — updating doc id:', editingBanksId);
         var capturedId=editingBanksId;
         var r=AppData.banks.find(function(x){ return x.id===capturedId; });
         if(!r){
@@ -1171,15 +1186,17 @@ async function addBanksRecord(){
     }
 
     /* ═══ ADD new record ═══ */
+    console.log('[BANKS SAVE] >>> ADD branch — creating new doc');
     var tid='temp_'+Date.now();
-    var recObj=Object.assign({id:tid,balance:0},rd);
+    var newRec=Object.assign({},rd,{createdAt:new Date().toISOString()});
+    var recObj=Object.assign({id:tid,balance:0},newRec);
     AppData.banks.push(recObj);
     AppData.banks.sort(function(a,b){ return (a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||''); });
     calcLedger('banks','banks-total-in','banks-total-out','banks-current-balance');
     renderBanksTable();
     _resetBanksForm();
     try{
-        var did=await saveToCollection('banks',rd);
+        var did=await saveToCollection('banks',newRec);
         var rec=AppData.banks.find(function(x){ return x.id===tid; }); if(rec) rec.id=did;
         await recalcSyncBalances('banks');
         showToast('Transaction added','success');
