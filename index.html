@@ -1647,9 +1647,7 @@
                 <div id="global-search-results" class="global-search-dropdown"></div>
             </div>
             <div class="topbar-actions">
-                <button class="btn btn-outline" onclick="exportToExcel()"><i data-lucide="download" style="width:14px;height:14px;"></i> Backup</button>
-                <button class="btn btn-outline" onclick="document.getElementById('importExcelFile').click()"><i data-lucide="upload" style="width:14px;height:14px;"></i> Restore</button>
-                <input type="file" id="importExcelFile" accept=".xlsx,.xls" style="display:none" onchange="importFromExcel(event)">
+                <button class="btn btn-outline" onclick="exportToExcel()"><i data-lucide="download" style="width:14px;height:14px;"></i> Export</button>
             </div>
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar">U</div>
@@ -2816,43 +2814,88 @@ function renderPaidTable(){
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
-   EXCEL BACKUP / RESTORE
+   EXCEL EXPORT — Receivables, Cash Ledger, Bank Accounts, Daily Reconciliation, Paid Ledger
 ════════════════════════════════════════════════════════════════════════════ */
 function exportToExcel(){
     try{
+        if(typeof XLSX==='undefined'){ showToast('Excel library not loaded.','error'); return; }
         var wb=XLSX.utils.book_new();
-        var custData=[['Date','Name','Contact','Total','Paid','Balance','Status','PaidDate']].concat(AppData.customers.map(function(c){ var p=getTotalPaid(c); return [c.date||'',c.name||'',c.contact||'',safeNum(c.total),p,safeNum(c.total)-p,c.status||'',c.paidDate||'']; }));
-        XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(custData),'Customers');
-        var cashData=[['Date','Particulars','Portal','Amount In','Amount Out','Balance']].concat(AppData.cash.map(function(r){ return [r.date||'',r.particulars||'',r.portal||'',safeNum(r.amountIn),safeNum(r.amountOut),safeNum(r.balance)]; }));
-        XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(cashData),'Cash');
-        var banksData=[['Date','Depositer','Bank','Ticket Amt','Withdraw','Balance']].concat(AppData.banks.map(function(r){ return [r.date||'',r.particulars||'',r.portal||'',safeNum(r.amountIn),safeNum(r.amountOut),safeNum(r.balance)]; }));
-        XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(banksData),'Banks');
-        var ts=new Date().toISOString().split('T')[0];
-        XLSX.writeFile(wb,'Meridian_Backup_'+ts+'.xlsx');
-        showToast('Backup downloaded','success');
-    }catch(e){ showToast('Export failed: '+e.message,'error'); }
-}
 
-async function importFromExcel(event){
-    var file=event.target.files[0]; if(!file) return;
-    showConfirm('Restore from Backup?','This will ADD the imported records to your existing data. Duplicates may occur. Continue?',async function(){
-        try{
-            var reader=new FileReader();
-            reader.onload=async function(e){
-                var wb=XLSX.read(e.target.result,{type:'array'}); var imported=0;
-                var custSheet=wb.Sheets['Customers'];
-                if(custSheet){ var rows=XLSX.utils.sheet_to_json(custSheet); for(var i=0;i<rows.length;i++){ var row=rows[i]; var rec={date:String(row['Date']||''),name:String(row['Name']||''),contact:String(row['Contact']||''),total:safeNum(row['Total']),paid:safeNum(row['Paid']),balance:safeNum(row['Balance']),status:String(row['Status']||'NOTPAID'),paidDate:String(row['PaidDate']||''),paymentHistory:[],userid:currentUser.uid,createdAt:new Date().toISOString()}; if(rec.paid>0) rec.paymentHistory=[{date:rec.paidDate||rec.date,amount:rec.paid}]; try{ await db.collection('records').add(rec); imported++; }catch(err){ console.error(err); } } }
-                var cashSheet=wb.Sheets['Cash'];
-                if(cashSheet){ var cashRows=XLSX.utils.sheet_to_json(cashSheet); for(var j=0;j<cashRows.length;j++){ var cr=cashRows[j]; try{ await db.collection('cash').add({date:String(cr['Date']||''),particulars:String(cr['Particulars']||''),portal:String(cr['Portal']||''),amountIn:safeNum(cr['Amount In']),amountOut:safeNum(cr['Amount Out']),balance:safeNum(cr['Balance']),userid:currentUser.uid,createdAt:new Date().toISOString()}); imported++; }catch(err){ console.error(err); } } }
-                var banksSheet=wb.Sheets['Banks'];
-                if(banksSheet){ var bankRows=XLSX.utils.sheet_to_json(banksSheet); for(var k=0;k<bankRows.length;k++){ var br=bankRows[k]; try{ await db.collection('banks').add({date:String(br['Date']||''),particulars:String(br['Depositer']||''),portal:String(br['Bank']||''),amountIn:safeNum(br['Ticket Amt']),amountOut:safeNum(br['Withdraw']),balance:safeNum(br['Balance']),userid:currentUser.uid,createdAt:new Date().toISOString()}); imported++; }catch(err){ console.error(err); } } }
-                showToast(imported+' records imported. Reloading…','success');
-                setTimeout(function(){ loadAllCollections(); },1500);
-            };
-            reader.readAsArrayBuffer(file);
-        }catch(e){ showToast('Import failed: '+e.message,'error'); }
-        event.target.value='';
-    });
+        /* 1) RECEIVABLES (all customers with current dues) */
+        var recvData=[['Date','Name','Contact','Total','Paid','Balance','Status','Paid Date']];
+        AppData.customers.forEach(function(c){
+            var p=getTotalPaid(c);
+            var bal=safeNum(c.total)-p;
+            var st=bal<=0?'PAID':'NOTPAID';
+            recvData.push([c.date||'',c.name||'',c.contact||'',safeNum(c.total),p,bal,st,c.paidDate||'']);
+        });
+        XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(recvData),'Receivables');
+
+        /* 2) CASH LEDGER */
+        var cashData=[['Date','Particulars','Portal','Amount In','Amount Out','Balance']];
+        AppData.cash.forEach(function(r){
+            cashData.push([r.date||'',r.particulars||'',r.portal||'',safeNum(r.amountIn),safeNum(r.amountOut),safeNum(r.balance)]);
+        });
+        XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(cashData),'Cash Ledger');
+
+        /* 3) BANK ACCOUNTS */
+        var banksData=[['Date','Depositer','Bank','Ticket Amt','Withdraw','Balance']];
+        AppData.banks.forEach(function(r){
+            banksData.push([r.date||'',r.particulars||'',r.portal||'',safeNum(r.amountIn),safeNum(r.amountOut),safeNum(r.balance)]);
+        });
+        XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(banksData),'Bank Accounts');
+
+        /* 4) DAILY RECONCILIATION (current snapshot from inputs + auto-pulled balances) */
+        var g9=safeNum((document.getElementById('daily-g9')||{}).value);
+        var akbar=safeNum((document.getElementById('daily-akbar')||{}).value);
+        var via=safeNum((document.getElementById('daily-via')||{}).value);
+        var serene=safeNum((document.getElementById('daily-serene')||{}).value);
+        var alghazi=safeNum((document.getElementById('daily-alghazi')||{}).value);
+        var b2b=safeNum((document.getElementById('daily-b2b')||{}).value);
+        var cashBal=AppData.cash.length>0?safeNum(AppData.cash[AppData.cash.length-1].balance):0;
+        var bankBal=AppData.banks.length>0?safeNum(AppData.banks[AppData.banks.length-1].balance):0;
+        var portalSubtotal=g9+akbar+via+serene+alghazi+b2b;
+        var grandTotal=portalSubtotal+cashBal+bankBal;
+        var dailyData=[
+            ['Item','Amount (AED)'],
+            ['Air Arabia G9',g9],
+            ['Akbar Portal',akbar],
+            ['VIA',via],
+            ['Serene Air Line',serene],
+            ['Al Ghazi Travel',alghazi],
+            ['B2B',b2b],
+            ['Portal Subtotal',portalSubtotal],
+            ['Cash on Hand (Auto)',cashBal],
+            ['Bank Balance (Auto)',bankBal],
+            ['GRAND TOTAL',grandTotal],
+            [],
+            ['Snapshot Date',new Date().toISOString().split('T')[0]]
+        ];
+        XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(dailyData),'Daily Reconciliation');
+
+        /* 5) PAID LEDGER (customers with any payments, sorted by paid date desc) */
+        var paidData=[['Paid Date','Name','Contact','Total','Paid','Status']];
+        var paidList=AppData.customers.filter(function(c){ return c.status==='PAID'||getTotalPaid(c)>0; });
+        paidList.sort(function(a,b){
+            var ad=a.paidDate||a.date||'';
+            var bd=b.paidDate||b.date||'';
+            return bd.localeCompare(ad);
+        });
+        var paidGrandTotal=0;
+        paidList.forEach(function(c){
+            var tp=getTotalPaid(c);
+            paidGrandTotal+=tp;
+            var isFull=safeNum(c.total)-tp<=0;
+            paidData.push([c.paidDate||c.date||'',c.name||'',c.contact||'',safeNum(c.total),tp,isFull?'CLEARED':'PARTIAL']);
+        });
+        paidData.push([]);
+        paidData.push(['','','TOTAL COLLECTED','',paidGrandTotal,'']);
+        XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(paidData),'Paid Ledger');
+
+        var ts=new Date().toISOString().split('T')[0];
+        XLSX.writeFile(wb,'Meridian_Export_'+ts+'.xlsx');
+        showToast('Export downloaded','success');
+    }catch(e){ showToast('Export failed: '+e.message,'error'); }
 }
 
 /* spin animation for loading */
