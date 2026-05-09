@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="app-version" content="v2.2-edit-and-delete-fix">
+    <meta name="app-version" content="v2.3-daily-fix">
     <title>FinTracker Pro</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -309,7 +309,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo-placeholder">F</div>
-            <h2>FinTracker <span style="font-size:0.55rem;color:var(--success-text);font-weight:600;display:block;margin-top:2px;">v2.2 ✓</span></h2>
+            <h2>FinTracker <span style="font-size:0.55rem;color:var(--success-text);font-weight:600;display:block;margin-top:2px;">v2.3 ✓</span></h2>
         </div>
         <nav class="nav-menu">
             <div class="nav-item active" onclick="switchTab('overview',this)"><i data-lucide="layout-dashboard"></i> Overview</div>
@@ -500,7 +500,7 @@
 /* ════════════════════════════════════════════════════════════════════════════
    FINTRACKER PRO — COMPLETE JAVASCRIPT  (Edit-bug fixed v2.1)
 ════════════════════════════════════════════════════════════════════════════ */
-console.log('%c[FinTracker] v2.2 loaded — edit + delete diagnostics active', 'color:#10b981;font-weight:bold;font-size:14px');
+console.log('%c[FinTracker] v2.3 loaded — daily-tab fix active', 'color:#10b981;font-weight:bold;font-size:14px');
 
 var AppData = { customers: [], cash: [], banks: [], daily: [] };
 var DB_MAP  = { customers: 'records', cash: 'cash', banks: 'banks', daily: 'daily' };
@@ -645,8 +645,22 @@ async function loadCollection(cn){
         });
         AppData[cn].sort(function(a,b){ var dc2=(a.date||'').localeCompare(b.date||''); return dc2!==0?dc2:(a.createdAt||'').localeCompare(b.createdAt||''); });
         if(cn==='daily'){
-            var ddId=getDailyDocId(); var manual=AppData.daily.find(function(d){ return d.id===ddId; });
-            if(manual){ document.getElementById('daily-g9').value=safeNum(manual.g9); document.getElementById('daily-akbar').value=safeNum(manual.akbar); document.getElementById('daily-via').value=safeNum(manual.via); document.getElementById('daily-serene').value=safeNum(manual.serene); document.getElementById('daily-alghazi').value=safeNum(manual.alghazi); document.getElementById('daily-b2b').value=safeNum(manual.b2b); }
+            /* Look for user-specific doc first, then fall back to legacy 'manual_entry' doc.
+               The legacy doc must belong to the current user (userid match) to be loaded. */
+            var ddId=getDailyDocId();
+            var manual=AppData.daily.find(function(d){ return d.id===ddId; });
+            if(!manual){
+                manual=AppData.daily.find(function(d){ return d.id==='manual_entry' && d.userid===currentUser.uid; });
+                if(manual) console.log('[DAILY] Loaded legacy manual_entry doc for current user');
+            }
+            if(manual){
+                document.getElementById('daily-g9').value=safeNum(manual.g9);
+                document.getElementById('daily-akbar').value=safeNum(manual.akbar);
+                document.getElementById('daily-via').value=safeNum(manual.via);
+                document.getElementById('daily-serene').value=safeNum(manual.serene);
+                document.getElementById('daily-alghazi').value=safeNum(manual.alghazi);
+                document.getElementById('daily-b2b').value=safeNum(manual.b2b);
+            }
             renderDailyTable();
         }
         if(cn==='cash')  updateDatalist('cash-portal-list', ['CASH','G9','AP','VIA','B2B','DEPOSIT'],AppData.cash);
@@ -1266,7 +1280,18 @@ async function saveDailySnapshot(){
     var g9=safeNum(document.getElementById('daily-g9').value); var akbar=safeNum(document.getElementById('daily-akbar').value); var via=safeNum(document.getElementById('daily-via').value); var serene=safeNum(document.getElementById('daily-serene').value); var alghazi=safeNum(document.getElementById('daily-alghazi').value); var b2b=safeNum(document.getElementById('daily-b2b').value);
     setSubmitLoading('daily-submit-btn',true,'Update Daily Sheet');
     var payload={g9:g9,akbar:akbar,via:via,serene:serene,alghazi:alghazi,b2b:b2b,userid:currentUser.uid,updatedAt:new Date().toISOString()};
-    try{ var docId=getDailyDocId(); await db.doc('daily/'+docId).set(payload,{merge:true}); renderDailyTable(); showToast('Daily sheet saved','success'); }
+    try{
+        /* Prefer existing legacy 'manual_entry' doc if it belongs to this user; otherwise use user-specific id. */
+        var legacyExists=AppData.daily.some(function(d){ return d.id==='manual_entry' && d.userid===currentUser.uid; });
+        var docId=legacyExists?'manual_entry':getDailyDocId();
+        console.log('[DAILY SAVE] target doc:', 'daily/'+docId);
+        await db.doc('daily/'+docId).set(payload,{merge:true});
+        /* Update local cache so next save targets the same doc */
+        var existing=AppData.daily.find(function(d){ return d.id===docId; });
+        if(existing) Object.assign(existing,payload);
+        else AppData.daily.push(Object.assign({id:docId},payload));
+        renderDailyTable(); showToast('Daily sheet saved','success');
+    }
     catch(e){ showToast('Save failed: '+e.message,'error'); }
     finally{ setSubmitLoading('daily-submit-btn',false,'Update Daily Sheet'); }
 }
