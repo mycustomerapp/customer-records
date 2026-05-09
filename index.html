@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="app-version" content="v2.1-edit-fix-2026-05-09">
+    <meta name="app-version" content="v2.2-edit-and-delete-fix">
     <title>FinTracker Pro</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -309,7 +309,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo-placeholder">F</div>
-            <h2>FinTracker <span style="font-size:0.55rem;color:var(--success-text);font-weight:600;display:block;margin-top:2px;">v2.1 ✓</span></h2>
+            <h2>FinTracker <span style="font-size:0.55rem;color:var(--success-text);font-weight:600;display:block;margin-top:2px;">v2.2 ✓</span></h2>
         </div>
         <nav class="nav-menu">
             <div class="nav-item active" onclick="switchTab('overview',this)"><i data-lucide="layout-dashboard"></i> Overview</div>
@@ -500,7 +500,7 @@
 /* ════════════════════════════════════════════════════════════════════════════
    FINTRACKER PRO — COMPLETE JAVASCRIPT  (Edit-bug fixed v2.1)
 ════════════════════════════════════════════════════════════════════════════ */
-console.log('%c[FinTracker] v2.1 loaded — edit-fix active', 'color:#10b981;font-weight:bold;font-size:14px');
+console.log('%c[FinTracker] v2.2 loaded — edit + delete diagnostics active', 'color:#10b981;font-weight:bold;font-size:14px');
 
 var AppData = { customers: [], cash: [], banks: [], daily: [] };
 var DB_MAP  = { customers: 'records', cash: 'cash', banks: 'banks', daily: 'daily' };
@@ -639,7 +639,9 @@ async function loadCollection(cn){
         qs.forEach(function(doc){
             var d=doc.data();
             if(cn==='customers'){ if(!Array.isArray(d.paymentHistory)) d.paymentHistory=[]; var lp=safeNum(d.paid); if(lp>0&&d.paymentHistory.length===0) d.paymentHistory=[{date:d.paidDate||d.date||'',amount:lp}]; }
-            AppData[cn].push(Object.assign({id:doc.id},d));
+            /* CRITICAL: doc.id MUST win over any stale `id` field in d. Order matters in Object.assign — last source wins. */
+            var record=Object.assign({},d,{id:doc.id});
+            AppData[cn].push(record);
         });
         AppData[cn].sort(function(a,b){ var dc2=(a.date||'').localeCompare(b.date||''); return dc2!==0?dc2:(a.createdAt||'').localeCompare(b.createdAt||''); });
         if(cn==='daily'){
@@ -657,15 +659,26 @@ async function saveToCollection(cn,rec){
     if(!currentUser) throw new Error('Not authenticated');
     var dc=DB_MAP[cn]; var clean=Object.assign({},rec); delete clean.id;
     var payload=Object.assign({},clean,{userid:currentUser.uid,createdAt:new Date().toISOString()});
-    var dr=await db.collection(dc).add(payload); return dr.id;
+    console.log('[FIRESTORE ADD] collection:', dc, '| payload keys:', Object.keys(payload));
+    var dr=await db.collection(dc).add(payload);
+    console.log('[FIRESTORE ADD] ✓ created doc id:', dr.id);
+    return dr.id;
 }
 async function updateInCollection(cn,did,ud){
-    if(!did||isTempId(did)) throw new Error('Cannot update a temporary record.');
-    await db.doc(DB_MAP[cn]+'/'+did).update(ud);
+    if(!did||isTempId(did)){ console.error('[FIRESTORE UPDATE] BLOCKED — invalid id:', did); throw new Error('Cannot update a temporary record.'); }
+    var path=DB_MAP[cn]+'/'+did;
+    console.log('[FIRESTORE UPDATE] path:', path, '| keys:', Object.keys(ud));
+    /* Strip 'id' from update data — never send it to Firestore */
+    var safeUd=Object.assign({},ud); delete safeUd.id;
+    await db.doc(path).update(safeUd);
+    console.log('[FIRESTORE UPDATE] ✓ success on', path);
 }
 async function deleteFromCollection(cn,did){
-    if(!did||isTempId(did)) throw new Error('Cannot delete invalid ID.');
-    await db.doc(DB_MAP[cn]+'/'+did).delete();
+    if(!did||isTempId(did)){ console.error('[FIRESTORE DELETE] BLOCKED — invalid id:', did); throw new Error('Cannot delete invalid ID.'); }
+    var path=DB_MAP[cn]+'/'+did;
+    console.log('[FIRESTORE DELETE] path:', path);
+    await db.doc(path).delete();
+    console.log('[FIRESTORE DELETE] ✓ deleted', path);
 }
 
 async function recalcSyncBalances(tn){
