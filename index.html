@@ -916,7 +916,7 @@ async function addCustomerRecord(){
     var tid='temp_'+Date.now();
     var rd={date:date,name:name,contact:contact,total:total,paid:paidAmtValue,paymentHistory:ph,balance:bal2,status:st2,paidDate:pd2,paidSyncedAt:ps2,createdAt:new Date().toISOString()};
     AppData.customers.push(Object.assign({id:tid},rd));
-    AppData.customers.sort(function(a,b){ return (a.date||'').localeCompare(b.date||')||(a.createdAt||'').localeCompare(b.createdAt||''); });
+    AppData.customers.sort(function(a,b){ return (a.date||'').localeCompare(b.date||'')||(a.createdAt||'').localeCompare(b.createdAt||''); });
     renderCustomerTable(); recalculateAllFormulas();
     _resetCustomerForm();
     try{
