@@ -69,7 +69,6 @@
             --glass-blur: blur(24px);
         }
 
-        /* ─── Reset & Base ───────────────────────────────────────────────────── */
         *,
         *::before,
         *::after {
@@ -97,7 +96,6 @@
             border-radius: 10px;
         }
 
-        /* ─── Background Mesh ────────────────────────────────────────────────── */
         .bg-mesh {
             position: fixed;
             top: 0;
@@ -119,7 +117,6 @@
             }
         }
 
-        /* ─── Sidebar ────────────────────────────────────────────────────────── */
         .sidebar {
             width: 260px;
             background: rgba(15, 23, 42, 0.6);
@@ -193,7 +190,6 @@
             height: 20px;
         }
 
-        /* ─── Mobile Bottom Nav ──────────────────────────────────────────────── */
         .mobile-bottom-nav {
             display: none;
             position: fixed;
@@ -229,7 +225,6 @@
             color: var(--primary);
         }
 
-        /* ─── Main Wrapper ───────────────────────────────────────────────────── */
         .main-wrapper {
             flex: 1;
             display: flex;
@@ -238,7 +233,6 @@
             min-width: 0;
         }
 
-        /* ─── Top Bar ────────────────────────────────────────────────────────── */
         .topbar {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: var(--glass-blur);
@@ -284,7 +278,6 @@
             background: var(--danger-bg);
         }
 
-        /* ─── Global Search ──────────────────────────────────────────────────── */
         .global-search-container {
             flex: 1;
             max-width: 500px;
@@ -361,7 +354,6 @@
             color: var(--text-main);
         }
 
-        /* ─── Main Content ───────────────────────────────────────────────────── */
         .main-content {
             flex: 1;
             padding: 2rem;
@@ -385,7 +377,6 @@
             gap: 12px;
         }
 
-        /* ─── Summary Cards ──────────────────────────────────────────────────── */
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -449,7 +440,6 @@
             border-left: 4px solid var(--primary);
         }
 
-        /* ─── Dashboard Grid ─────────────────────────────────────────────────── */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -461,7 +451,6 @@
             height: 300px;
         }
 
-        /* ─── Activity Feed ──────────────────────────────────────────────────── */
         .activity-list {
             display: flex;
             flex-direction: column;
@@ -505,7 +494,6 @@
             font-size: 0.9rem;
         }
 
-        /* ─── Form Card ──────────────────────────────────────────────────────── */
         .form-card {
             background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
@@ -554,7 +542,6 @@
             background: rgba(0, 0, 0, 0.5);
         }
 
-        /* ─── Buttons ────────────────────────────────────────────────────────── */
         .btn {
             padding: 0.7rem 1.4rem;
             border: none;
@@ -614,7 +601,6 @@
             background: #dc2626;
         }
 
-        /* ─── Table ──────────────────────────────────────────────────────────── */
         .table-container {
             background: rgba(15, 23, 42, 0.4);
             backdrop-filter: var(--glass-blur);
@@ -686,7 +672,6 @@
             background: rgba(59, 130, 246, 0.05);
         }
 
-        /* ─── Status Badges ──────────────────────────────────────────────────── */
         .status-badge {
             padding: 6px 14px;
             border-radius: 999px;
@@ -710,7 +695,6 @@
             box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
         }
 
-        /* ─── Action Buttons ─────────────────────────────────────────────────── */
         .action-btns {
             display: flex;
             gap: 8px;
@@ -749,7 +733,6 @@
             transform: scale(0.95);
         }
 
-        /* ─── Pagination ─────────────────────────────────────────────────────── */
         .pagination-controls {
             display: flex;
             align-items: center;
@@ -794,7 +777,6 @@
             }
         }
 
-        /* ─── Auth Screen ────────────────────────────────────────────────────── */
         .auth-screen {
             display: flex;
             justify-content: center;
@@ -845,12 +827,10 @@
             transform: scale(0.98);
         }
 
-        /* ─── Utility ────────────────────────────────────────────────────────── */
         .hidden {
             display: none !important;
         }
 
-        /* ─── Fintech Table ──────────────────────────────────────────────────── */
         .fintech-table th {
             background: rgba(15, 23, 42, 0.95);
             border-bottom: 3px solid var(--primary);
@@ -935,7 +915,6 @@
             border-top: 3px solid var(--success);
         }
 
-        /* ─── Badges ─────────────────────────────────────────────────────────── */
         .badge-cleared {
             background: var(--success-bg);
             color: var(--success-text);
@@ -952,14 +931,12 @@
             box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
         }
 
-        /* ─── Daily Grid ─────────────────────────────────────────────────────── */
         .daily-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 24px;
         }
 
-        /* ─── Currency Input Group ───────────────────────────────────────────── */
         .input-currency-group {
             position: relative;
         }
@@ -978,7 +955,6 @@
             font-weight: 600;
         }
 
-        /* ─── Modal ──────────────────────────────────────────────────────────── */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1021,7 +997,6 @@
             justify-content: center;
         }
 
-        /* ─── Toast ──────────────────────────────────────────────────────────── */
         #toast-container {
             position: fixed;
             top: 1.5rem;
@@ -1055,7 +1030,6 @@
             background: rgba(59, 130, 246, 0.9);
         }
 
-        /* ─── Animations ─────────────────────────────────────────────────────── */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -1085,7 +1059,6 @@
             }
         }
 
-        /* ─── Customer History Drill-Down ────────────────────────────────────── */
         .customer-history-view {
             animation: fadeSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -1219,7 +1192,6 @@
             filter: brightness(1.2);
         }
 
-        /* ─── Responsive ─────────────────────────────────────────────────────── */
         @media (max-width: 768px) {
             .sidebar {
                 display: none;
@@ -1269,7 +1241,6 @@
                 align-items: flex-start;
             }
 
-            /* Mobile table card layout */
             table,
             thead,
             tbody,
@@ -1316,7 +1287,6 @@
                 flex-wrap: wrap;
             }
 
-            /* Prevent fintech-table from being "card-ified" on mobile */
             .fintech-table tr {
                 background: transparent;
                 border: none;
@@ -1341,12 +1311,10 @@
 </head>
 <body>
 
-    <!-- ── Background & Global UI ───────────────────────────────────────────── -->
     <div class="bg-mesh"></div>
     <div id="toast-container"></div>
     <div id="modal-root"></div>
 
-    <!-- ── Login Screen ──────────────────────────────────────────────────────── -->
     <div id="loginPrompt" class="auth-screen">
         <div class="auth-card">
             <div class="logo-placeholder" style="margin:0 auto 1.5rem;width:56px;height:56px;font-size:1.6rem;">F</div>
@@ -1356,10 +1324,8 @@
         </div>
     </div>
 
-    <!-- ── Main App Shell ─────────────────────────────────────────────────────── -->
     <div id="mainApp" class="hidden" style="display:flex;width:100%;height:100vh;">
 
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-placeholder">F</div>
@@ -1375,7 +1341,6 @@
             </nav>
         </aside>
 
-        <!-- Mobile Bottom Nav -->
         <nav class="mobile-bottom-nav">
             <button class="mob-nav-item active" onclick="switchTab('overview',this)"><i data-lucide="layout-dashboard"></i><span>Overview</span></button>
             <button class="mob-nav-item" onclick="switchTab('customers',this)"><i data-lucide="users"></i><span>Customers</span></button>
@@ -1385,10 +1350,8 @@
             <button class="mob-nav-item" onclick="switchTab('paid',this)"><i data-lucide="check-circle"></i><span>Paid</span></button>
         </nav>
 
-        <!-- Main Wrapper -->
         <div class="main-wrapper">
 
-            <!-- Top Bar -->
             <header class="topbar">
                 <div class="global-search-container">
                     <i data-lucide="search" class="search-icon"></i>
@@ -1406,65 +1369,25 @@
                 </div>
             </header>
 
-            <!-- Tab Content Area -->
             <main class="main-content">
 
-                <!-- ── Overview Tab ──────────────────────────────────────────────── -->
                 <section id="tab-overview" class="tab-content active">
-                    <h2 class="page-title">
-                        <i data-lucide="layout-dashboard" style="width:28px;height:28px;color:var(--primary);"></i>
-                        Dashboard Overview
-                    </h2>
+                    <h2 class="page-title"><i data-lucide="layout-dashboard" style="width:28px;height:28px;color:var(--primary);"></i> Dashboard Overview</h2>
                     <div class="summary-cards">
-                        <div class="card card-warning">
-                            <h3>Total Receivables</h3>
-                            <div class="value" id="kpi-receivables">0.00 AED</div>
-                            <small>Outstanding balance from customers</small>
-                        </div>
-                        <div class="card card-primary">
-                            <h3>Net Liquidity</h3>
-                            <div class="value" id="kpi-liquidity">0.00 AED</div>
-                            <small>Cash on Hand + Bank Balances</small>
-                        </div>
-                        <div class="card card-success">
-                            <h3>Monthly Revenue</h3>
-                            <div class="value" id="kpi-revenue">0.00 AED</div>
-                            <small>Collected from Paid Ledger this month</small>
-                        </div>
+                        <div class="card card-warning"><h3>Total Receivables</h3><div class="value" id="kpi-receivables">0.00 AED</div><small>Outstanding balance from customers</small></div>
+                        <div class="card card-primary"><h3>Net Liquidity</h3><div class="value" id="kpi-liquidity">0.00 AED</div><small>Cash on Hand + Bank Balances</small></div>
+                        <div class="card card-success"><h3>Monthly Revenue</h3><div class="value" id="kpi-revenue">0.00 AED</div><small>Collected from Paid Ledger this month</small></div>
                     </div>
                     <div class="dashboard-grid">
-                        <div class="card" style="padding:1.5rem;">
-                            <h3 style="margin-bottom:1rem;">Revenue vs Expenses</h3>
-                            <div class="chart-container"><canvas id="revenueChart"></canvas></div>
-                        </div>
-                        <div class="card" style="padding:1.5rem;">
-                            <h3 style="margin-bottom:1rem;">Fund Allocation</h3>
-                            <div class="chart-container"><canvas id="allocationChart"></canvas></div>
-                        </div>
+                        <div class="card" style="padding:1.5rem;"><h3 style="margin-bottom:1rem;">Revenue vs Expenses</h3><div class="chart-container"><canvas id="revenueChart"></canvas></div></div>
+                        <div class="card" style="padding:1.5rem;"><h3 style="margin-bottom:1rem;">Fund Allocation</h3><div class="chart-container"><canvas id="allocationChart"></canvas></div></div>
                     </div>
-                    <div class="card" style="padding:1.5rem;">
-                        <h3 style="margin-bottom:1rem;">Recent Activity</h3>
-                        <div class="activity-list" id="activity-feed">
-                            <div class="empty-state">No recent activity.</div>
-                        </div>
-                    </div>
+                    <div class="card" style="padding:1.5rem;"><h3 style="margin-bottom:1rem;">Recent Activity</h3><div class="activity-list" id="activity-feed"><div class="empty-state">No recent activity.</div></div></div>
                 </section>
 
-                <!-- ── Customers Tab ─────────────────────────────────────────────── -->
                 <section id="tab-customers" class="tab-content">
-                    <h2 class="page-title">
-                        <i data-lucide="users" style="width:28px;height:28px;color:var(--primary);"></i>
-                        Customers Management
-                    </h2>
-                    <div class="summary-cards">
-                        <div class="card card-warning">
-                            <h3>Total Dues on Customers</h3>
-                            <div class="value"><span id="cust-total-dues">0.00</span> AED</div>
-                            <small>Outstanding balance from unpaid customers</small>
-                        </div>
-                    </div>
-
-                    <!-- Default list view -->
+                    <h2 class="page-title"><i data-lucide="users" style="width:28px;height:28px;color:var(--primary);"></i> Customers Management</h2>
+                    <div class="summary-cards"><div class="card card-warning"><h3>Total Dues on Customers</h3><div class="value"><span id="cust-total-dues">0.00</span> AED</div><small>Outstanding balance from unpaid customers</small></div></div>
                     <div id="cust-default-view" style="margin-top:2rem;">
                         <div class="form-card">
                             <div class="form-row">
@@ -1482,36 +1405,16 @@
                             </div>
                         </div>
                         <div class="table-container">
-                            <div class="table-header">
-                                <div class="local-search-wrapper">
-                                    <i data-lucide="search" class="search-icon"></i>
-                                    <input type="text" id="cust-search" class="local-search-input" placeholder="Search by name, contact..." oninput="debouncedFilterCustomers()">
-                                </div>
-                            </div>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Date</th><th>Name</th><th>Contact</th>
-                                        <th>Total</th><th>Paid</th><th>Balance</th>
-                                        <th>Status</th><th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cust-table-body"></tbody>
-                            </table>
+                            <div class="table-header"><div class="local-search-wrapper"><i data-lucide="search" class="search-icon"></i><input type="text" id="cust-search" class="local-search-input" placeholder="Search by name, contact..." oninput="debouncedFilterCustomers()"></div></div>
+                            <table><thead><tr><th>Date</th><th>Name</th><th>Contact</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead><tbody id="cust-table-body"></tbody></table>
                             <div class="pagination-controls" id="cust-pagination"></div>
                         </div>
                     </div>
-
-                    <!-- Drill-down history view (hidden by default) -->
                     <div id="cust-history-view" class="hidden customer-history-view"></div>
                 </section>
 
-                <!-- ── Cash Tab ──────────────────────────────────────────────────── -->
                 <section id="tab-cash" class="tab-content">
-                    <h2 class="page-title">
-                        <i data-lucide="banknote" style="width:28px;height:28px;color:var(--primary);"></i>
-                        Cash On Hand
-                    </h2>
+                    <h2 class="page-title"><i data-lucide="banknote" style="width:28px;height:28px;color:var(--primary);"></i> Cash On Hand</h2>
                     <div class="summary-cards">
                         <div class="card card-success"><h3>Total Cash In (+)</h3><div class="value" id="cash-total-in" style="color:var(--success-text);">0.00 AED</div></div>
                         <div class="card" style="border-left:4px solid var(--danger);"><h3>Total Cash Out (-)</h3><div class="value" id="cash-total-out" style="color:#fca5a5;">0.00 AED</div></div>
@@ -1521,11 +1424,7 @@
                         <div class="form-row">
                             <div class="form-group"><label>Date</label><input type="date" id="cash-date"></div>
                             <div class="form-group" style="flex:3;"><label>Particulars</label><input type="text" id="cash-particulars" placeholder="e.g. Cash on hand"></div>
-                            <div class="form-group" style="flex:1;">
-                                <label>Portal</label>
-                                <input type="text" id="cash-portal" list="cash-portal-list" placeholder="Select or type">
-                                <datalist id="cash-portal-list"></datalist>
-                            </div>
+                            <div class="form-group" style="flex:1;"><label>Portal</label><input type="text" id="cash-portal" list="cash-portal-list" placeholder="Select or type"><datalist id="cash-portal-list"></datalist></div>
                         </div>
                         <div class="form-row">
                             <div class="form-group"><label>Amount In (+)</label><input type="number" id="cash-in" placeholder="0.00" step="0.01" value="0"></div>
@@ -1537,26 +1436,14 @@
                         </div>
                     </div>
                     <div class="table-container">
-                        <div class="table-header">
-                            <div class="local-search-wrapper">
-                                <i data-lucide="search" class="search-icon"></i>
-                                <input type="text" id="cash-search" class="local-search-input" placeholder="Search particular, portal..." oninput="debouncedFilterCash()">
-                            </div>
-                        </div>
-                        <table>
-                            <thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead>
-                            <tbody id="cash-table-body"></tbody>
-                        </table>
+                        <div class="table-header"><div class="local-search-wrapper"><i data-lucide="search" class="search-icon"></i><input type="text" id="cash-search" class="local-search-input" placeholder="Search particular, portal..." oninput="debouncedFilterCash()"></div></div>
+                        <table><thead><tr><th>Date</th><th>Particulars</th><th>Portal</th><th>In (+)</th><th>Out (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="cash-table-body"></tbody></table>
                         <div class="pagination-controls" id="cash-pagination"></div>
                     </div>
                 </section>
 
-                <!-- ── Banks Tab ─────────────────────────────────────────────────── -->
                 <section id="tab-banks" class="tab-content">
-                    <h2 class="page-title">
-                        <i data-lucide="landmark" style="width:28px;height:28px;color:var(--primary);"></i>
-                        ADIB NBD Banks Account
-                    </h2>
+                    <h2 class="page-title"><i data-lucide="landmark" style="width:28px;height:28px;color:var(--primary);"></i> ADIB NBD Banks Account</h2>
                     <div class="summary-cards">
                         <div class="card card-success"><h3>Total Deposits (+)</h3><div class="value" id="banks-total-in" style="color:var(--success-text);">0.00 AED</div></div>
                         <div class="card" style="border-left:4px solid var(--danger);"><h3>Total Withdrawals (-)</h3><div class="value" id="banks-total-out" style="color:#fca5a5;">0.00 AED</div></div>
@@ -1566,11 +1453,7 @@
                         <div class="form-row">
                             <div class="form-group"><label>Date</label><input type="date" id="banks-date"></div>
                             <div class="form-group" style="flex:3;"><label>Name of Depositer</label><input type="text" id="banks-particulars" placeholder="e.g. Haji Aslam Ticket"></div>
-                            <div class="form-group" style="flex:1;">
-                                <label>Bank</label>
-                                <input type="text" id="banks-portal" list="banks-portal-list" placeholder="Select or type">
-                                <datalist id="banks-portal-list"></datalist>
-                            </div>
+                            <div class="form-group" style="flex:1;"><label>Bank</label><input type="text" id="banks-portal" list="banks-portal-list" placeholder="Select or type"><datalist id="banks-portal-list"></datalist></div>
                         </div>
                         <div class="form-row">
                             <div class="form-group"><label>Ticket Amt / Deposit (+)</label><input type="number" id="banks-in" placeholder="0.00" step="0.01" value="0"></div>
@@ -1582,26 +1465,14 @@
                         </div>
                     </div>
                     <div class="table-container">
-                        <div class="table-header">
-                            <div class="local-search-wrapper">
-                                <i data-lucide="search" class="search-icon"></i>
-                                <input type="text" id="banks-search" class="local-search-input" placeholder="Search depositer, bank..." oninput="debouncedFilterBanks()">
-                            </div>
-                        </div>
-                        <table>
-                            <thead><tr><th>Date</th><th>Depositer</th><th>Bank</th><th>Ticket Amt (+)</th><th>Withdraw (-)</th><th>Balance</th><th>Actions</th></tr></thead>
-                            <tbody id="banks-table-body"></tbody>
-                        </table>
+                        <div class="table-header"><div class="local-search-wrapper"><i data-lucide="search" class="search-icon"></i><input type="text" id="banks-search" class="local-search-input" placeholder="Search depositer, bank..." oninput="debouncedFilterBanks()"></div></div>
+                        <table><thead><tr><th>Date</th><th>Depositer</th><th>Bank</th><th>Ticket Amt (+)</th><th>Withdraw (-)</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="banks-table-body"></tbody></table>
                         <div class="pagination-controls" id="banks-pagination"></div>
                     </div>
                 </section>
 
-                <!-- ── Daily Sheet Tab ───────────────────────────────────────────── -->
                 <section id="tab-daily" class="tab-content">
-                    <h2 class="page-title">
-                        <i data-lucide="calendar-check" style="width:28px;height:28px;color:var(--primary);"></i>
-                        Daily Sheet &amp; Reconciliation
-                    </h2>
+                    <h2 class="page-title"><i data-lucide="calendar-check" style="width:28px;height:28px;color:var(--primary);"></i> Daily Sheet &amp; Reconciliation</h2>
                     <div class="form-card">
                         <div class="daily-grid">
                             <div class="form-group"><label>AIR ARABIA G9</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-g9" placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
@@ -1612,9 +1483,7 @@
                             <div class="form-group"><label>B2B</label><div class="input-currency-group"><span class="currency-prefix">AED</span><input type="number" id="daily-b2b" placeholder="0.00" step="0.01" value="0" oninput="renderDailyTable()"></div></div>
                         </div>
                         <div style="margin-top:32px;display:flex;gap:12px;align-items:center;">
-                            <button class="btn btn-primary" id="daily-submit-btn" onclick="saveDailySnapshot()" style="max-width:400px;padding:14px 32px;background:linear-gradient(135deg,var(--primary),#8b5cf6);box-shadow:0 4px 15px var(--primary-glow);">
-                                Update Daily Sheet
-                            </button>
+                            <button class="btn btn-primary" id="daily-submit-btn" onclick="saveDailySnapshot()" style="max-width:400px;padding:14px 32px;background:linear-gradient(135deg,var(--primary),#8b5cf6);box-shadow:0 4px 15px var(--primary-glow);">Update Daily Sheet</button>
                         </div>
                     </div>
                     <div class="table-container" style="overflow:hidden;">
@@ -1626,62 +1495,36 @@
                     </div>
                 </section>
 
-                <!-- ── Paid Ledger Tab ───────────────────────────────────────────── -->
                 <section id="tab-paid" class="tab-content">
-                    <h2 class="page-title">
-                        <i data-lucide="check-circle" style="width:28px;height:28px;color:var(--primary);"></i>
-                        Paid Customers Ledger
-                    </h2>
-                    <div class="summary-cards">
-                        <div class="card card-success">
-                            <h3>Total Collected Revenue</h3>
-                            <div class="value" id="paid-total-collected" style="color:var(--success-text);">0.00 AED</div>
-                            <small>Auto-synced from Customers tab</small>
-                        </div>
-                    </div>
+                    <h2 class="page-title"><i data-lucide="check-circle" style="width:28px;height:28px;color:var(--primary);"></i> Paid Customers Ledger</h2>
+                    <div class="summary-cards"><div class="card card-success"><h3>Total Collected Revenue</h3><div class="value" id="paid-total-collected" style="color:var(--success-text);">0.00 AED</div><small>Auto-synced from Customers tab</small></div></div>
                     <div class="table-container" style="overflow:hidden;">
                         <table class="fintech-table paid-table">
-                            <thead>
-                                <tr>
-                                    <th>Paid Date</th><th>Customer Name</th><th>Contact / Ref</th>
-                                    <th style="text-align:right;">Original Total</th>
-                                    <th style="text-align:right;">Amount Paid</th>
-                                    <th style="text-align:right;width:140px;">Status</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Paid Date</th><th>Customer Name</th><th>Contact / Ref</th><th style="text-align:right;">Original Total</th><th style="text-align:right;">Amount Paid</th><th style="text-align:right;width:140px;">Status</th></tr></thead>
                             <tbody id="paid-table-body"></tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4" style="text-align:right;font-size:1rem;">TOTAL PAID AMOUNT</td>
-                                    <td id="paid-grand-total" style="text-align:right;">0.00 AED</td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
+                            <tfoot><tr><td colspan="4" style="text-align:right;font-size:1rem;">TOTAL PAID AMOUNT</td><td id="paid-grand-total" style="text-align:right;">0.00 AED</td><td></td></tr></tfoot>
                         </table>
                     </div>
                 </section>
 
-            </main><!-- /main-content -->
-        </div><!-- /main-wrapper -->
-    </div><!-- /mainApp -->
+            </main>
+        </div>
+    </div>
 
     <script>
         /* ════════════════════════════════════════════════════════════════════════════
            FINTRACKER PRO — JAVASCRIPT
-           Version: 2.3 — Full Production Build with Concurrency Locks
+           Version: 2.4 — Complete Production Build with All Fixes
         ════════════════════════════════════════════════════════════════════════════ */
 
-        /* ─── Global State ─────────────────────────────────────────────────────── */
         var AppData = { customers: [], cash: [], banks: [], daily: [] };
         var DB_MAP = { customers: 'records', cash: 'cash', banks: 'banks', daily: 'daily' };
         var currentUser = null;
 
-        // Editing IDs
         var editingCustomerId = null;
         var editingCashRecordId = null;
         var editingBanksRecordId = null;
 
-        // Concurrency locks – prevent re‑entry during async save
         var isSavingCustomers = false;
         var isSavingCash = false;
         var isSavingBanks = false;
@@ -1691,39 +1534,22 @@
 
         var PAGE_SIZE = 15;
         var currentPage = { customers: 1, cash: 1, banks: 1 };
-
         var _searchTimers = {};
 
         /* ─── Utility Functions ────────────────────────────────────────────────── */
         function safeNum(v) { var n = parseFloat(v); return isFinite(n) ? n : 0; }
-
         function fmt(v) { return safeNum(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-
         function getTotalPaid(c) { if (!c || !Array.isArray(c.paymentHistory)) return 0; return c.paymentHistory.reduce(function(s, p) { return s + safeNum(p.amount); }, 0); }
-
         function escH(s) { var d = document.createElement('div'); d.textContent = String(s || ''); return d.innerHTML; }
-
         function isTempId(id) { return typeof id === 'string' && id.indexOf('temp_') === 0; }
-
         function refreshIcons() { try { if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons(); } catch (e) {} }
-
         function getDailyDocId() { return currentUser ? 'manual_entry_' + currentUser.uid : 'manual_entry'; }
-
         function setSubmitLoading(btnId, loading, restoreText) {
-            var btn = document.getElementById(btnId);
-            if (!btn) return;
-            if (loading) {
-                btn.disabled = true;
-                btn.dataset.originalText = btn.innerText;
-                btn.innerText = 'Saving…';
-            } else {
-                btn.disabled = false;
-                btn.innerText = restoreText || btn.dataset.originalText || 'Save';
-            }
+            var btn = document.getElementById(btnId); if (!btn) return;
+            if (loading) { btn.disabled = true; btn.dataset.originalText = btn.innerText; btn.innerText = 'Saving…'; }
+            else { btn.disabled = false; btn.innerText = restoreText || btn.dataset.originalText || 'Save'; }
         }
-
         function debounce(key, fn, delay) { delay = delay || 300; clearTimeout(_searchTimers[key]); _searchTimers[key] = setTimeout(fn, delay); }
-
         function debouncedFilterCustomers() { debounce('cust', filterCustomerRecords); }
         function debouncedFilterCash() { debounce('cash', filterCashRecords); }
         function debouncedFilterBanks() { debounce('banks', filterBanksRecords); }
@@ -1738,10 +1564,7 @@
 
         function showConfirm(title, msg, onConfirm) {
             var r = document.getElementById('modal-root');
-            r.innerHTML = '<div class="modal-overlay" onclick="if(event.target===this)closeModal()">' +
-                '<div class="modal-card">' + '<h3>' + escH(title) + '</h3>' + '<p>' + escH(msg) + '</p>' +
-                '<div class="modal-actions">' + '<button class="btn btn-outline" onclick="closeModal()">Cancel</button>' +
-                '<button class="btn btn-danger" id="modal-confirm-btn">Confirm</button>' + '</div>' + '</div>' + '</div>';
+            r.innerHTML = '<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card"><h3>' + escH(title) + '</h3><p>' + escH(msg) + '</p><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-danger" id="modal-confirm-btn">Confirm</button></div></div></div>';
             refreshIcons(); document.getElementById('modal-confirm-btn').addEventListener('click', function() { onConfirm(); closeModal(); });
         }
 
@@ -1753,7 +1576,8 @@
         document.getElementById('btn-login').addEventListener('click', handleLogin);
 
         auth.onAuthStateChanged(function(user) {
-            if (user) { currentUser = user; document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('mainApp').style.display = 'flex'; document.getElementById('loginPrompt').classList.add('hidden'); document.getElementById('userName').innerText = user.displayName || user.email; loadAllCollections(); initCharts(); } else { currentUser = null; document.getElementById('mainApp').classList.add('hidden'); document.getElementById('loginPrompt').classList.remove('hidden'); }
+            if (user) { currentUser = user; document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('mainApp').style.display = 'flex'; document.getElementById('loginPrompt').classList.add('hidden'); document.getElementById('userName').innerText = user.displayName || user.email; loadAllCollections(); initCharts(); }
+            else { currentUser = null; document.getElementById('mainApp').classList.add('hidden'); document.getElementById('loginPrompt').classList.remove('hidden'); }
         });
 
         /* ─── Firestore CRUD ────────────────────────────────────────────────────── */
@@ -1773,9 +1597,7 @@
         }
 
         async function saveToCollection(cn, rec) { if (!currentUser) throw new Error('Not authenticated'); var dc = DB_MAP[cn]; var clean = Object.assign({}, rec); delete clean.id; var payload = Object.assign({}, clean, { userid: currentUser.uid, createdAt: new Date().toISOString() }); var dr = await db.collection(dc).add(payload); return dr.id; }
-
         async function updateInCollection(cn, did, ud) { if (!did || isTempId(did)) throw new Error('Cannot update a temporary record.'); await db.doc(DB_MAP[cn] + '/' + did).update(ud); }
-
         async function deleteFromCollection(cn, did) { if (!did || isTempId(did)) throw new Error('Cannot delete invalid ID.'); await db.doc(DB_MAP[cn] + '/' + did).delete(); }
 
         async function recalcSyncBalances(tn) {
@@ -1788,42 +1610,182 @@
 
         /* ─── Navigation ────────────────────────────────────────────────────────── */
         function switchTab(tn, el) { document.querySelectorAll('.nav-item, .mob-nav-item').forEach(function(i) { i.classList.remove('active'); }); if (el) el.classList.add('active'); document.querySelectorAll('.tab-content').forEach(function(i) { i.classList.remove('active'); }); var te = document.getElementById('tab-' + tn); if (te) te.classList.add('active'); renderActiveTab(); }
-
         function renderActiveTab() { var at = document.querySelector('.tab-content.active'); if (!at) return; switch (at.id) { case 'tab-overview': updateDashboard(); break; case 'tab-customers': document.getElementById('cust-default-view').classList.remove('hidden'); document.getElementById('cust-history-view').classList.add('hidden'); filterCustomerRecords(); break; case 'tab-cash': filterCashRecords(); break; case 'tab-banks': filterBanksRecords(); break; case 'tab-daily': renderDailyTable(); break; case 'tab-paid': renderPaidTable(); break; } }
-
         function updateDatalist(eid, defaults, arr) { var dl = document.getElementById(eid); if (!dl) return; var used = []; arr.forEach(function(r) { if (r.portal && used.indexOf(r.portal) === -1) used.push(r.portal); }); var all = defaults.concat(used).filter(function(v, i, a) { return a.indexOf(v) === i; }).sort(); dl.innerHTML = ''; all.forEach(function(p) { var o = document.createElement('option'); o.value = p; dl.appendChild(o); }); }
-
         function calcLedger(tn, inId, outId, balId) { var rb = 0, ti = 0, to2 = 0; AppData[tn].forEach(function(r) { var ai = safeNum(r.amountIn); var ao = safeNum(r.amountOut); rb += ai - ao; ti += ai; to2 += ao; r.balance = rb; }); var inEl = document.getElementById(inId); var outEl = document.getElementById(outId); var balEl = document.getElementById(balId); if (inEl) inEl.innerText = fmt(ti) + ' AED'; if (outEl) outEl.innerText = fmt(to2) + ' AED'; if (balEl) { var fb = AppData[tn].length > 0 ? safeNum(AppData[tn][AppData[tn].length - 1].balance) : 0; balEl.innerText = fmt(fb) + ' AED'; balEl.style.color = fb < 0 ? 'var(--danger-text)' : 'var(--success-text)'; } }
 
         /* ─── Global Search ─────────────────────────────────────────────────────── */
         function handleGlobalSearch(term) { debounce('globalSearch', function() { _performGlobalSearch(term); }, 200); }
-        function _performGlobalSearch(term) { /* ... unchanged ... */ }
+        function _performGlobalSearch(term) {
+            var dd = document.getElementById('global-search-results'); if (!term || term.length < 2) { dd.classList.remove('active'); return; } var lt = term.toLowerCase(); var html = ''; var found = false;
+            var cfg = [{ key: 'customers', name: 'Customers', fields: ['name','contact','status','date'], sid: 'cust-search' },{ key: 'cash', name: 'Cash', fields: ['particulars','portal','date'], sid: 'cash-search' },{ key: 'banks', name: 'Banks', fields: ['particulars','portal','date'], sid: 'banks-search' }];
+            cfg.forEach(function(c) {
+                var m = AppData[c.key].filter(function(item) { var sm = c.fields.some(function(f) { return item[f] && String(item[f]).toLowerCase().indexOf(lt) !== -1; }); var pm = Array.isArray(item.paymentHistory) && item.paymentHistory.some(function(p) { return (p.date || '').indexOf(lt) !== -1 || String(p.amount).indexOf(lt) !== -1; }); return sm || pm; });
+                if (m.length > 0) { found = true; html += '<div class="gs-category">' + c.name + ' (' + m.length + ')</div>'; m.slice(0, 3).forEach(function(r) { var t2 = escH(r.name || r.particulars || '?'); var st = escH(r.portal || r.contact || r.date || ''); html += '<div class="gs-item" data-tabkey="' + c.key + '" data-sid="' + c.sid + '"><div><div class="gs-title">' + t2 + '</div><div style="font-size:0.8rem;color:var(--text-muted);">' + st + '</div></div><span style="font-size:0.7rem;color:var(--primary);">Go</span></div>'; }); }
+            });
+            if (!found) html = '<div style="padding:1rem;color:var(--text-muted);text-align:center;">No results found.</div>';
+            dd.innerHTML = html; dd.querySelectorAll('.gs-item').forEach(function(item) { item.addEventListener('mousedown', function() { jumpToTabSearch(item.dataset.tabkey, item.dataset.sid, term); }); }); dd.classList.add('active');
+        }
         function closeGlobalSearch() { var dd = document.getElementById('global-search-results'); if (dd) dd.classList.remove('active'); }
-        function jumpToTabSearch(tk, sid, term) { /* ... unchanged ... */ }
+        function jumpToTabSearch(tk, sid, term) { var ni = document.querySelector('.nav-item[onclick*="\'' + tk + '\'"]'); if (ni) switchTab(tk, ni); setTimeout(function() { var si = document.getElementById(sid); if (si) { si.value = term; si.dispatchEvent(new Event('input')); si.focus(); } var gs = document.getElementById('global-search'); if (gs) gs.value = ''; closeGlobalSearch(); }, 100); }
 
         /* ─── Pagination ────────────────────────────────────────────────────────── */
         function genEmpty(isSearch) { var ic = isSearch ? 'search-x' : 'inbox'; var tx = isSearch ? 'No matching records found' : 'No records added yet'; var sb = isSearch ? 'Try adjusting your search terms.' : 'Add a new record using the form above.'; return '<tr><td colspan="9" class="empty-state"><div class="empty-state-icon"><i data-lucide="' + ic + '" style="width:48px;height:48px;"></i></div><div class="empty-state-text">' + tx + '</div><div class="empty-state-sub">' + sb + '</div></td></tr>'; }
         function renderPag(tn, total) { var pe = document.getElementById(tn + '-pagination'); if (!pe) return; var tp = Math.ceil(total / PAGE_SIZE) || 1; if (currentPage[tn] > tp) currentPage[tn] = tp; pe.innerHTML = '<span style="font-size:0.85rem;color:var(--text-muted);font-weight:600;">' + total + ' records (Page ' + currentPage[tn] + ' of ' + tp + ')</span><div style="display:flex;gap:8px;"><button class="btn btn-outline" onclick="changePage(\'' + tn + '\',' + (currentPage[tn]-1) + ')" ' + (currentPage[tn] <= 1 ? 'disabled' : '') + '><i data-lucide="chevron-left" style="width:14px;height:14px;"></i> Prev</button><button class="btn btn-outline" onclick="changePage(\'' + tn + '\',' + (currentPage[tn]+1) + ')" ' + (currentPage[tn] >= tp ? 'disabled' : '') + '>Next <i data-lucide="chevron-right" style="width:14px;height:14px;"></i></button></div>'; refreshIcons(); }
         function changePage(tn, p) { currentPage[tn] = p; if (tn === 'customers') filterCustomerRecords(); else if (tn === 'cash') filterCashRecords(); else if (tn === 'banks') filterBanksRecords(); }
 
-        /* ─── CUSTOMERS, CASH, BANKS modules with full concurrency locks (as before) ─── */
-        // ... (All customer/cash/banks functions from the previous complete version, 
-        //      including the isSaving* locks, edit, cancel, add, delete, render, filter)
+        /* ════════════════════════════════════════════════════════════════════════════
+           CUSTOMERS MODULE (with concurrency lock)
+        ════════════════════════════════════════════════════════════════════════════ */
+        function calculateCustomerDues() { var totalDues = 0; AppData.customers.forEach(function(r) { r.paid = getTotalPaid(r); r.balance = safeNum(r.total) - r.paid; r.status = r.balance <= 0 ? 'PAID' : 'NOTPAID'; if (r.status === 'NOTPAID') totalDues += safeNum(r.balance); }); var el = document.getElementById('cust-total-dues'); if (el) el.innerText = fmt(totalDues); }
+
+        function renderCustomerTable(data) {
+            var tb = document.getElementById('cust-table-body'); var isSearch = Array.isArray(data); var rd = isSearch ? data : AppData.customers; tb.innerHTML = ''; if (rd.length === 0) { tb.innerHTML = genEmpty(isSearch); calculateCustomerDues(); refreshIcons(); renderPag('customers', 0); return; } var rev = rd.slice().reverse(); var si = (currentPage.customers - 1) * PAGE_SIZE; var page = rev.slice(si, si + PAGE_SIZE);
+            page.forEach(function(r) { var paid = getTotalPaid(r); var bal = safeNum(r.total) - paid; var st = bal <= 0 ? 'PAID' : 'NOTPAID'; var sc = st === 'PAID' ? 'status-paid' : 'status-notpaid'; var si2 = st === 'PAID' ? 'check-circle' : 'alert-circle'; var bc = bal > 0 ? 'var(--danger-text)' : 'var(--success-text)'; var payBtn = st !== 'PAID' ? '<button class="action-btn" onclick="openAddPaymentModal(\'' + r.id + '\')" style="border-color:var(--success);color:var(--success);"><i data-lucide="plus-circle" style="width:12px;height:12px;"></i> Pay</button>' : '';
+                tb.innerHTML += '<tr><td data-label="Date">' + escH(r.date || '-') + '</td><td data-label="Name"><strong class="customer-clickable" onclick="showCustomerHistory(\'' + r.id + '\')">' + escH(r.name || '') + '</strong></td><td data-label="Contact">' + escH(r.contact || '-') + '</td><td data-label="Total">' + fmt(r.total) + '</td><td data-label="Paid" style="color:var(--success-text);font-weight:600;">' + fmt(paid) + '</td><td data-label="Balance" style="font-weight:700;color:' + bc + ';">' + fmt(bal) + '</td><td data-label="Status"><span class="status-badge ' + sc + '"><i data-lucide="' + si2 + '" style="width:12px;height:12px;"></i> ' + st + '</span></td><td data-label="Actions" class="action-btns"><button class="action-btn edit" onclick="editCustomerRecord(\'' + r.id + '\')"><i data-lucide="pen-line" style="width:12px;height:12px;"></i></button>' + payBtn + '<button class="action-btn" onclick="openHistoryModal(\'' + r.id + '\')" style="border-color:var(--primary);color:var(--primary);"><i data-lucide="history" style="width:12px;height:12px;"></i></button><button class="action-btn del" onclick="deleteCustomerRecord(\'' + r.id + '\')"><i data-lucide="trash-2" style="width:12px;height:12px;"></i></button></td></tr>'; });
+            calculateCustomerDues(); refreshIcons(); renderPag('customers', rev.length);
+        }
+
+        function filterCustomerRecords() { var t = (document.getElementById('cust-search').value || '').toLowerCase(); if (!t) return renderCustomerTable(AppData.customers); renderCustomerTable(AppData.customers.filter(function(r) { var sm = (r.name && r.name.toLowerCase().indexOf(t) !== -1) || (r.contact && r.contact.toLowerCase().indexOf(t) !== -1) || (r.date && r.date.indexOf(t) !== -1) || (r.status && r.status.toLowerCase().indexOf(t) !== -1); var pm = Array.isArray(r.paymentHistory) && r.paymentHistory.some(function(p) { return (p.date || '').indexOf(t) !== -1 || String(p.amount).indexOf(t) !== -1; }); return sm || pm; })); }
+
+        function editCustomerRecord(did) { var r = AppData.customers.find(function(x) { return x.id === did; }); if (!r) return; document.getElementById('cust-date').value = r.date || ''; document.getElementById('cust-name').value = r.name || ''; document.getElementById('cust-contact').value = r.contact || ''; document.getElementById('cust-total').value = safeNum(r.total); document.getElementById('cust-paid').value = getTotalPaid(r); editingCustomerId = did; var sb = document.getElementById('cust-submit-btn'); sb.innerText = 'Update Customer'; sb.style.background = 'linear-gradient(135deg,#8b5cf6,#6d28d9)'; sb.disabled = false; document.getElementById('cust-cancel-btn').classList.remove('hidden'); document.getElementById('tab-customers').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        function cancelEditCustomerRecord() { if (isSavingCustomers) { showToast('A save is in progress. Please wait.', 'error'); return; } editingCustomerId = null; document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0'; var sb = document.getElementById('cust-submit-btn'); sb.innerText = '+ Add Customer'; sb.style.background = ''; document.getElementById('cust-cancel-btn').classList.add('hidden'); }
+
+        function openAddPaymentModal(id) {
+            var r = AppData.customers.find(function(x) { return x.id === id; }); if (!r) return; var rem = safeNum(r.total) - getTotalPaid(r); var root = document.getElementById('modal-root');
+            root.innerHTML = '<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card" style="max-width:450px;text-align:left;"><h3 style="text-align:center;margin-bottom:1rem;">Record Payment</h3><p style="color:var(--text-muted);text-align:center;margin-bottom:1.5rem;">Recording payment for <strong style="color:white;">' + escH(r.name) + '</strong><br>Remaining balance: <strong style="color:var(--primary);">' + fmt(rem) + ' AED</strong></p><div class="form-group" style="margin-bottom:1rem;"><label>Payment Date</label><input type="date" id="pay-date" value="' + new Date().toISOString().split('T')[0] + '"></div><div class="form-group" style="margin-bottom:1.5rem;"><label>Amount</label><input type="number" id="pay-amount" placeholder="0.00" step="0.01" max="' + rem + '"></div><div class="modal-actions" style="justify-content:center;"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" id="pay-submit-btn" onclick="submitPayment(\'' + id + '\')">Record Payment</button></div></div></div>';
+            refreshIcons();
+        }
+
+        async function submitPayment(id) {
+            var date = document.getElementById('pay-date').value; var amt = safeNum(document.getElementById('pay-amount').value); if (!date || amt <= 0) return showToast('Enter valid date and amount.', 'error');
+            var r = AppData.customers.find(function(x) { return x.id === id; }); if (!r) return showToast('Customer not found.', 'error'); if (!Array.isArray(r.paymentHistory)) r.paymentHistory = [];
+            setSubmitLoading('pay-submit-btn', true);
+            var newEntry = { date: date, amount: amt }; r.paymentHistory.push(newEntry); r.paid = getTotalPaid(r); r.balance = safeNum(r.total) - r.paid; r.status = r.balance <= 0 ? 'PAID' : 'NOTPAID'; if (r.status === 'PAID' && !r.paidDate) { r.paidDate = date; r.paidSyncedAt = new Date().toISOString(); }
+            renderCustomerTable(); recalculateAllFormulas(); closeModal();
+            try {
+                await updateInCollection('customers', id, { paymentHistory: r.paymentHistory, paid: r.paid, balance: r.balance, status: r.status, paidDate: r.paidDate || null, paidSyncedAt: r.paidSyncedAt || null, userid: currentUser.uid });
+                showToast('Payment recorded', 'success');
+            } catch (e) { r.paymentHistory.pop(); r.paid = getTotalPaid(r); r.balance = safeNum(r.total) - r.paid; r.status = r.balance <= 0 ? 'PAID' : 'NOTPAID'; renderCustomerTable(); recalculateAllFormulas(); showToast('Error: ' + e.message, 'error'); }
+        }
+
+        function openHistoryModal(id) {
+            var r = AppData.customers.find(function(x) { return x.id === id; }); if (!r) return; var rows = '';
+            if (Array.isArray(r.paymentHistory) && r.paymentHistory.length > 0) { r.paymentHistory.slice().sort(function(a, b) { return b.date.localeCompare(a.date); }).forEach(function(p) { rows += '<tr><td style="padding:0.75rem 0.5rem;border-bottom:1px solid var(--border);">' + escH(p.date) + '</td><td style="padding:0.75rem 0.5rem;border-bottom:1px solid var(--border);text-align:right;color:var(--success-text);font-weight:600;">' + fmt(p.amount) + ' AED</td></tr>'; }); }
+            else rows = '<tr><td colspan="2" style="text-align:center;padding:2rem 0;color:var(--text-muted);">No payment history.</td></tr>';
+            var tp = getTotalPaid(r); var bal = safeNum(r.total) - tp;
+            document.getElementById('modal-root').innerHTML = '<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-card" style="max-width:500px;text-align:left;"><h3 style="text-align:center;margin-bottom:1.5rem;">Payment History: ' + escH(r.name) + '</h3><div style="background:rgba(0,0,0,0.2);border-radius:var(--radius-sm);padding:0 1rem;margin-bottom:1.5rem;max-height:250px;overflow-y:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="padding:0.75rem 0.5rem;text-align:left;border-bottom:1px solid var(--border);">Date</th><th style="padding:0.75rem 0.5rem;text-align:right;border-bottom:1px solid var(--border);">Amount</th></tr></thead><tbody>' + rows + '</tbody></table></div><div style="background:rgba(59,130,246,0.1);padding:1.25rem;border-radius:var(--radius-sm);display:flex;justify-content:space-between;margin-bottom:1.5rem;border:1px solid rgba(59,130,246,0.2);"><div><span style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Paid</span><br><strong style="font-size:1.3rem;color:var(--success-text);">' + fmt(tp) + ' AED</strong></div><div style="text-align:right;"><span style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Remaining</span><br><strong style="font-size:1.3rem;color:' + (bal > 0 ? 'var(--danger-text)' : 'var(--success-text)') + ';">' + fmt(bal) + ' AED</strong></div></div><div class="modal-actions" style="justify-content:center;"><button class="btn btn-primary" onclick="closeModal()">Close</button></div></div></div>';
+        }
+
+        function showCustomerHistory(cid) { /* ... */ }
+        function goBackToCustomerList() { document.getElementById('cust-default-view').classList.remove('hidden'); document.getElementById('cust-history-view').classList.add('hidden'); filterCustomerRecords(); }
+
+        async function addCustomerRecord() {
+            if (isSavingCustomers) { showToast('Saving already in progress.', 'error'); return; }
+            var date = document.getElementById('cust-date').value; var name = (document.getElementById('cust-name').value || '').trim(); var contact = (document.getElementById('cust-contact').value || '').trim(); var total = safeNum(document.getElementById('cust-total').value); var paidAmtValue = safeNum(document.getElementById('cust-paid').value);
+            if (!date || !name || !total) return showToast('Fill Date, Name, and Total.', 'error');
+            isSavingCustomers = true; setSubmitLoading('cust-submit-btn', true);
+            if (editingCustomerId && !isTempId(editingCustomerId)) {
+                var capturedEditId = editingCustomerId; var r = AppData.customers.find(function(x) { return x.id === capturedEditId; }); if (!r) { showToast('Record not found.', 'error'); cancelEditCustomerRecord(); isSavingCustomers = false; setSubmitLoading('cust-submit-btn', false, '+ Add Customer'); return; }
+                var old = Object.assign({}, r); var existingPh = Array.isArray(r.paymentHistory) ? r.paymentHistory.slice() : []; var totalPaidHistory = existingPh.reduce(function(s, p) { return s + safeNum(p.amount); }, 0); var bal = total - totalPaidHistory; var st = bal <= 0 ? 'PAID' : 'NOTPAID'; var pd = r.paidDate || (st === 'PAID' ? date : null); var ps = r.paidSyncedAt || (st === 'PAID' ? new Date().toISOString() : null);
+                Object.assign(r, { date, name, contact, total, paid: totalPaidHistory, balance: bal, status: st, paymentHistory: existingPh, paidDate: pd, paidSyncedAt: ps });
+                renderCustomerTable(); recalculateAllFormulas();
+                document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0'; document.getElementById('cust-cancel-btn').classList.add('hidden');
+                try { await updateInCollection('customers', capturedEditId, { date, name, contact, total, paid: totalPaidHistory, balance: bal, status: st, paymentHistory: existingPh, paidDate: pd, paidSyncedAt: ps, userid: currentUser.uid }); editingCustomerId = null; setSubmitLoading('cust-submit-btn', false, '+ Add Customer'); document.getElementById('cust-submit-btn').style.background = ''; showToast('Customer updated', 'success'); }
+                catch (e) { Object.assign(r, old); renderCustomerTable(); recalculateAllFormulas(); editCustomerRecord(capturedEditId); setSubmitLoading('cust-submit-btn', false, 'Update Customer'); showToast('Update failed: ' + e.message, 'error'); }
+                finally { isSavingCustomers = false; }
+                return;
+            }
+            var bal2 = total - paidAmtValue; var st2 = bal2 <= 0 ? 'PAID' : 'NOTPAID'; var ph = paidAmtValue > 0 ? [{ date, amount: paidAmtValue }] : []; var pd2 = (st2 === 'PAID' && paidAmtValue > 0) ? date : ''; var ps2 = (st2 === 'PAID' && paidAmtValue > 0) ? new Date().toISOString() : '';
+            var tid = 'temp_' + Date.now(); var rd = { date, name, contact, total, paid: paidAmtValue, paymentHistory: ph, balance: bal2, status: st2, paidDate: pd2, paidSyncedAt: ps2, createdAt: new Date().toISOString() };
+            AppData.customers.push(Object.assign({ id: tid }, rd)); AppData.customers.sort(function(a, b) { return (a.date || '').localeCompare(b.date || '') || (a.createdAt || '').localeCompare(b.createdAt || ''); });
+            renderCustomerTable(); recalculateAllFormulas();
+            document.getElementById('cust-date').value = ''; document.getElementById('cust-name').value = ''; document.getElementById('cust-contact').value = ''; document.getElementById('cust-total').value = ''; document.getElementById('cust-paid').value = '0';
+            try { var did = await saveToCollection('customers', rd); var rec = AppData.customers.find(function(x) { return x.id === tid; }); if (rec) rec.id = did; editingCustomerId = null; setSubmitLoading('cust-submit-btn', false, '+ Add Customer'); document.getElementById('cust-submit-btn').style.background = ''; showToast('Customer added', 'success'); }
+            catch (e) { AppData.customers = AppData.customers.filter(function(x) { return x.id !== tid; }); renderCustomerTable(); recalculateAllFormulas(); editingCustomerId = null; setSubmitLoading('cust-submit-btn', false, '+ Add Customer'); document.getElementById('cust-submit-btn').style.background = ''; showToast('Add failed: ' + e.message, 'error'); }
+            finally { isSavingCustomers = false; }
+        }
+
+        function deleteCustomerRecord(did) { showConfirm('Delete Record?', 'This action cannot be undone.', async function() { if (isTempId(did)) { AppData.customers = AppData.customers.filter(function(x) { return x.id !== did; }); renderCustomerTable(); recalculateAllFormulas(); return; } var bk = AppData.customers.slice(); AppData.customers = AppData.customers.filter(function(x) { return x.id !== did; }); renderCustomerTable(); recalculateAllFormulas(); try { await deleteFromCollection('customers', did); showToast('Record deleted', 'success'); } catch (e) { AppData.customers = bk; renderCustomerTable(); recalculateAllFormulas(); showToast('Delete failed: ' + e.message, 'error'); } }); }
+
+        /* ════════════════════════════════════════════════════════════════════════════
+           LEDGER MODULE (shared for Cash & Banks)
+        ════════════════════════════════════════════════════════════════════════════ */
+        function renderLedgerTable(tn, tid, editFn, delFn, data) {
+            var tb = document.getElementById(tid); var isSearch = Array.isArray(data); var rd = isSearch ? data : AppData[tn]; tb.innerHTML = ''; if (rd.length === 0) { tb.innerHTML = genEmpty(isSearch); refreshIcons(); renderPag(tn, 0); return; } var rev = rd.slice().reverse(); var si = (currentPage[tn] - 1) * PAGE_SIZE; var page = rev.slice(si, si + PAGE_SIZE);
+            page.forEach(function(r) { var bc = safeNum(r.balance) < 0 ? 'var(--danger-text)' : 'var(--success-text)'; tb.innerHTML += '<tr><td data-label="Date">' + escH(r.date || '-') + '</td><td data-label="Particulars"><strong>' + escH(r.particulars || '') + '</strong></td><td data-label="Portal"><span class="status-badge" style="background:rgba(59,130,246,0.1);color:var(--primary);border:1px solid rgba(59,130,246,0.3);">' + escH(r.portal || '') + '</span></td><td data-label="In (+)"  style="color:var(--success-text);font-weight:600;text-align:right;">' + (r.amountIn ? fmt(r.amountIn) : '-') + '</td><td data-label="Out (-)" style="color:var(--danger-text);font-weight:600;text-align:right;">' + (r.amountOut ? fmt(r.amountOut) : '-') + '</td><td data-label="Balance" style="text-align:right;font-weight:700;color:' + bc + ';">' + fmt(r.balance) + '</td><td data-label="Actions" class="action-btns"><button class="action-btn edit" onclick="' + editFn + '(\'' + r.id + '\')"><i data-lucide="edit" style="width:12px;height:12px;"></i></button><button class="action-btn del"  onclick="' + delFn + '(\'' + r.id + '\')"><i data-lucide="trash-2" style="width:12px;height:12px;"></i></button></td></tr>'; });
+            refreshIcons(); renderPag(tn, rev.length);
+        }
+        function filterLedgerRecs(tn, sid, tid, ef, df) { var t = (document.getElementById(sid).value || '').toLowerCase(); if (!t) return renderLedgerTable(tn, tid, ef, df, AppData[tn]); renderLedgerTable(tn, tid, ef, df, AppData[tn].filter(function(r) { return (r.particulars && r.particulars.toLowerCase().indexOf(t) !== -1) || (r.portal && r.portal.toLowerCase().indexOf(t) !== -1) || (r.date && r.date.indexOf(t) !== -1); })); }
+
+        /* ════════════════════════════════════════════════════════════════════════════
+           CASH MODULE (with isSavingCash lock)
+        ════════════════════════════════════════════════════════════════════════════ */
+        function editCashRecord(did) { var r = AppData.cash.find(function(x) { return x.id === did; }); if (!r) return; document.getElementById('cash-date').value = r.date || ''; document.getElementById('cash-particulars').value = r.particulars || ''; document.getElementById('cash-portal').value = r.portal || ''; document.getElementById('cash-in').value = safeNum(r.amountIn); document.getElementById('cash-out').value = safeNum(r.amountOut); editingCashRecordId = did; var sb = document.getElementById('cash-submit-btn'); sb.innerText = 'Update'; sb.disabled = false; document.getElementById('cash-cancel-btn').classList.remove('hidden'); document.getElementById('tab-cash').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        function cancelEditCashRecord() { if (isSavingCash) { showToast('Save in progress. Please wait.', 'error'); return; } editingCashRecordId = null; document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; var sb = document.getElementById('cash-submit-btn'); sb.innerText = '+ Add Transaction'; document.getElementById('cash-cancel-btn').classList.add('hidden'); }
+        async function addCashRecord() {
+            if (isSavingCash) { showToast('A save is already in progress.', 'error'); return; }
+            var date = document.getElementById('cash-date').value; var part = (document.getElementById('cash-particulars').value || '').trim(); var portal = (document.getElementById('cash-portal').value || '').trim().toUpperCase(); var ai = safeNum(document.getElementById('cash-in').value); var ao = safeNum(document.getElementById('cash-out').value);
+            if (!date || !part || !portal) return showToast('Fill all fields.', 'error');
+            isSavingCash = true; setSubmitLoading('cash-submit-btn', true);
+            var rd = { date, particulars: part, portal, amountIn: ai, amountOut: ao, createdAt: new Date().toISOString() };
+            if (editingCashRecordId && !isTempId(editingCashRecordId)) {
+                var capturedId = editingCashRecordId; var r = AppData.cash.find(function(x) { return x.id === capturedId; }); if (!r) { showToast('Record not found.', 'error'); cancelEditCashRecord(); isSavingCash = false; setSubmitLoading('cash-submit-btn', false, '+ Add Transaction'); return; }
+                var old = Object.assign({}, r); Object.assign(r, rd); calcLedger('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); renderCashTable();
+                document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0'; document.getElementById('cash-cancel-btn').classList.add('hidden');
+                try { await updateInCollection('cash', capturedId, Object.assign({}, rd, { userid: currentUser.uid })); await recalcSyncBalances('cash'); editingCashRecordId = null; setSubmitLoading('cash-submit-btn', false, '+ Add Transaction'); showToast('Transaction updated', 'success'); }
+                catch (e) { Object.assign(r, old); recalculateAllFormulas(); renderCashTable(); editCashRecord(capturedId); setSubmitLoading('cash-submit-btn', false, 'Update'); showToast('Update failed: ' + e.message, 'error'); }
+                finally { isSavingCash = false; }
+                return;
+            }
+            var tid = 'temp_' + Date.now(); var recObj = Object.assign({ id: tid, balance: 0 }, rd); AppData.cash.push(recObj); AppData.cash.sort(function(a, b) { return (a.date || '').localeCompare(b.date || '') || (a.createdAt || '').localeCompare(b.createdAt || ''); }); calcLedger('cash', 'cash-total-in', 'cash-total-out', 'cash-current-balance'); renderCashTable();
+            document.getElementById('cash-date').value = ''; document.getElementById('cash-particulars').value = ''; document.getElementById('cash-portal').value = ''; document.getElementById('cash-in').value = '0'; document.getElementById('cash-out').value = '0';
+            try { var did = await saveToCollection('cash', rd); var rec = AppData.cash.find(function(x) { return x.id === tid; }); if (rec) rec.id = did; await recalcSyncBalances('cash'); editingCashRecordId = null; setSubmitLoading('cash-submit-btn', false, '+ Add Transaction'); showToast('Transaction added', 'success'); }
+            catch (e) { AppData.cash = AppData.cash.filter(function(x) { return x.id !== tid; }); recalculateAllFormulas(); renderCashTable(); editingCashRecordId = null; setSubmitLoading('cash-submit-btn', false, '+ Add Transaction'); showToast('Add failed: ' + e.message, 'error'); }
+            finally { isSavingCash = false; }
+        }
+        function deleteCashRecord(did) { showConfirm('Delete Transaction?', 'This will alter subsequent balances.', async function() { if (isTempId(did)) { AppData.cash = AppData.cash.filter(function(x) { return x.id !== did; }); recalculateAllFormulas(); renderCashTable(); return; } var bk = AppData.cash.slice(); AppData.cash = AppData.cash.filter(function(x) { return x.id !== did; }); recalculateAllFormulas(); renderCashTable(); try { await deleteFromCollection('cash', did); await recalcSyncBalances('cash'); showToast('Deleted', 'success'); } catch (e) { AppData.cash = bk; recalculateAllFormulas(); renderCashTable(); showToast('Delete failed: ' + e.message, 'error'); } }); }
+        function renderCashTable() { renderLedgerTable('cash', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
+        function filterCashRecords() { filterLedgerRecs('cash', 'cash-search', 'cash-table-body', 'editCashRecord', 'deleteCashRecord'); }
+
+        /* ════════════════════════════════════════════════════════════════════════════
+           BANKS MODULE (with isSavingBanks lock)
+        ════════════════════════════════════════════════════════════════════════════ */
+        function editBanksRecord(did) { var r = AppData.banks.find(function(x) { return x.id === did; }); if (!r) return; document.getElementById('banks-date').value = r.date || ''; document.getElementById('banks-particulars').value = r.particulars || ''; document.getElementById('banks-portal').value = r.portal || ''; document.getElementById('banks-in').value = safeNum(r.amountIn); document.getElementById('banks-out').value = safeNum(r.amountOut); editingBanksRecordId = did; var sb = document.getElementById('banks-submit-btn'); sb.innerText = 'Update'; sb.disabled = false; document.getElementById('banks-cancel-btn').classList.remove('hidden'); document.getElementById('tab-banks').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        function cancelEditBanksRecord() { if (isSavingBanks) { showToast('Save in progress.', 'error'); return; } editingBanksRecordId = null; document.getElementById('banks-date').value = ''; document.getElementById('banks-particulars').value = ''; document.getElementById('banks-portal').value = ''; document.getElementById('banks-in').value = '0'; document.getElementById('banks-out').value = '0'; var sb = document.getElementById('banks-submit-btn'); sb.innerText = '+ Add Transaction'; document.getElementById('banks-cancel-btn').classList.add('hidden'); }
+        async function addBanksRecord() {
+            if (isSavingBanks) { showToast('A save is already in progress.', 'error'); return; }
+            var date = document.getElementById('banks-date').value; var part = (document.getElementById('banks-particulars').value || '').trim(); var portal = (document.getElementById('banks-portal').value || '').trim().toUpperCase(); var ai = safeNum(document.getElementById('banks-in').value); var ao = safeNum(document.getElementById('banks-out').value);
+            if (!date || !part || !portal) return showToast('Fill all fields.', 'error');
+            isSavingBanks = true; setSubmitLoading('banks-submit-btn', true);
+            var rd = { date, particulars: part, portal, amountIn: ai, amountOut: ao, createdAt: new Date().toISOString() };
+            if (editingBanksRecordId && !isTempId(editingBanksRecordId)) {
+                var capturedId = editingBanksRecordId; var r = AppData.banks.find(function(x) { return x.id === capturedId; }); if (!r) { showToast('Record not found.', 'error'); cancelEditBanksRecord(); isSavingBanks = false; setSubmitLoading('banks-submit-btn', false, '+ Add Transaction'); return; }
+                var old = Object.assign({}, r); Object.assign(r, rd); calcLedger('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance'); renderBanksTable();
+                document.getElementById('banks-date').value = ''; document.getElementById('banks-particulars').value = ''; document.getElementById('banks-portal').value = ''; document.getElementById('banks-in').value = '0'; document.getElementById('banks-out').value = '0'; document.getElementById('banks-cancel-btn').classList.add('hidden');
+                try { await updateInCollection('banks', capturedId, Object.assign({}, rd, { userid: currentUser.uid })); await recalcSyncBalances('banks'); editingBanksRecordId = null; setSubmitLoading('banks-submit-btn', false, '+ Add Transaction'); showToast('Transaction updated', 'success'); }
+                catch (e) { Object.assign(r, old); recalculateAllFormulas(); renderBanksTable(); editBanksRecord(capturedId); setSubmitLoading('banks-submit-btn', false, 'Update'); showToast('Update failed: ' + e.message, 'error'); }
+                finally { isSavingBanks = false; }
+                return;
+            }
+            var tid = 'temp_' + Date.now(); var recObj = Object.assign({ id: tid, balance: 0 }, rd); AppData.banks.push(recObj); AppData.banks.sort(function(a, b) { return (a.date || '').localeCompare(b.date || '') || (a.createdAt || '').localeCompare(b.createdAt || ''); }); calcLedger('banks', 'banks-total-in', 'banks-total-out', 'banks-current-balance'); renderBanksTable();
+            document.getElementById('banks-date').value = ''; document.getElementById('banks-particulars').value = ''; document.getElementById('banks-portal').value = ''; document.getElementById('banks-in').value = '0'; document.getElementById('banks-out').value = '0';
+            try { var did = await saveToCollection('banks', rd); var rec = AppData.banks.find(function(x) { return x.id === tid; }); if (rec) rec.id = did; await recalcSyncBalances('banks'); editingBanksRecordId = null; setSubmitLoading('banks-submit-btn', false, '+ Add Transaction'); showToast('Transaction added', 'success'); }
+            catch (e) { AppData.banks = AppData.banks.filter(function(x) { return x.id !== tid; }); recalculateAllFormulas(); renderBanksTable(); editingBanksRecordId = null; setSubmitLoading('banks-submit-btn', false, '+ Add Transaction'); showToast('Add failed: ' + e.message, 'error'); }
+            finally { isSavingBanks = false; }
+        }
+        function deleteBanksRecord(did) { showConfirm('Delete Transaction?', 'This will alter subsequent balances.', async function() { if (isTempId(did)) { AppData.banks = AppData.banks.filter(function(x) { return x.id !== did; }); recalculateAllFormulas(); renderBanksTable(); return; } var bk = AppData.banks.slice(); AppData.banks = AppData.banks.filter(function(x) { return x.id !== did; }); recalculateAllFormulas(); renderBanksTable(); try { await deleteFromCollection('banks', did); await recalcSyncBalances('banks'); showToast('Deleted', 'success'); } catch (e) { AppData.banks = bk; recalculateAllFormulas(); renderBanksTable(); showToast('Delete failed: ' + e.message, 'error'); } }); }
+        function renderBanksTable() { renderLedgerTable('banks', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
+        function filterBanksRecords() { filterLedgerRecs('banks', 'banks-search', 'banks-table-body', 'editBanksRecord', 'deleteBanksRecord'); }
 
         /* ════════════════════════════════════════════════════════════════════════════
            DAILY SHEET MODULE
         ════════════════════════════════════════════════════════════════════════════ */
         function getLiveBal(tn) { var arr = AppData[tn]; return arr.length > 0 ? safeNum(arr[arr.length - 1].balance) : 0; }
         function getLiveCustDues() { var t = 0; AppData.customers.forEach(function(r) { if (r.status === 'NOTPAID') t += safeNum(r.balance); }); return t; }
-
         function renderDailyTable() {
             var tb = document.getElementById('daily-table-body'); if (!tb) return; tb.innerHTML = '';
-            var g9 = safeNum(document.getElementById('daily-g9').value);
-            var ak = safeNum(document.getElementById('daily-akbar').value);
-            var vi = safeNum(document.getElementById('daily-via').value);
-            var se = safeNum(document.getElementById('daily-serene').value);
-            var al = safeNum(document.getElementById('daily-alghazi').value);
-            var b2 = safeNum(document.getElementById('daily-b2b').value);
+            var g9 = safeNum(document.getElementById('daily-g9').value); var ak = safeNum(document.getElementById('daily-akbar').value); var vi = safeNum(document.getElementById('daily-via').value); var se = safeNum(document.getElementById('daily-serene').value); var al = safeNum(document.getElementById('daily-alghazi').value); var b2 = safeNum(document.getElementById('daily-b2b').value);
             var cd = getLiveCustDues(); var bb = getLiveBal('banks'); var cb = getLiveBal('cash'); var gt = 0;
             var manualRows = [{ n: 'AIR ARABIA G9', a: g9 },{ n: 'AKBAR PORTAL', a: ak },{ n: 'VIA', a: vi },{ n: 'SERENE AIR LINE', a: se },{ n: 'AL GHAZI TRAVEL', a: al },{ n: 'B2B', a: b2 }];
             var autoRows = [{ n: 'ADIB NBD BANKS', a: bb },{ n: 'CUSTOMERS DUES', a: cd },{ n: 'CASH ON HAND', a: cb }];
@@ -1831,17 +1793,12 @@
             autoRows.forEach(function(r) { gt += r.a; tb.innerHTML += '<tr class="row-auto-calc"><td data-label="Particular">' + escH(r.n) + ' <span class="auto-badge badge-success">Auto</span></td><td data-label="Amount">' + fmt(r.a) + '</td></tr>'; });
             var te = document.getElementById('daily-grand-total'); if (te) { te.innerText = fmt(gt) + ' AED'; te.style.color = gt < 0 ? 'var(--danger-text)' : '#4ade80'; }
         }
-
         async function saveDailySnapshot() {
             var g9 = safeNum(document.getElementById('daily-g9').value); var ak = safeNum(document.getElementById('daily-akbar').value); var vi = safeNum(document.getElementById('daily-via').value); var se = safeNum(document.getElementById('daily-serene').value); var al = safeNum(document.getElementById('daily-alghazi').value); var b2 = safeNum(document.getElementById('daily-b2b').value);
             var docId = getDailyDocId(); var manualData = { g9, akbar: ak, via: vi, serene: se, alghazi: al, b2b: b2, updatedAt: new Date().toISOString(), userid: currentUser.uid };
             setSubmitLoading('daily-submit-btn', true, 'Update Daily Sheet');
-            try {
-                await db.collection('daily').doc(docId).set(manualData, { merge: true });
-                var existing = AppData.daily.find(function(d) { return d.id === docId; });
-                if (existing) Object.assign(existing, manualData); else AppData.daily.push(Object.assign({ id: docId }, manualData));
-                renderDailyTable(); showToast('Daily sheet updated', 'success');
-            } catch (e) { showToast('Update failed: ' + e.message, 'error'); }
+            try { await db.collection('daily').doc(docId).set(manualData, { merge: true }); var existing = AppData.daily.find(function(d) { return d.id === docId; }); if (existing) Object.assign(existing, manualData); else AppData.daily.push(Object.assign({ id: docId }, manualData)); renderDailyTable(); showToast('Daily sheet updated', 'success'); }
+            catch (e) { showToast('Update failed: ' + e.message, 'error'); }
             finally { setSubmitLoading('daily-submit-btn', false, 'Update Daily Sheet'); }
         }
 
@@ -1849,31 +1806,57 @@
            PAID LEDGER MODULE
         ════════════════════════════════════════════════════════════════════════════ */
         function renderPaidTable() {
-            var tb = document.getElementById('paid-table-body'); if (!tb) return; tb.innerHTML = '';
-            var pr = AppData.customers.filter(function(r) { return r.status === 'PAID'; }); var tc = 0;
+            var tb = document.getElementById('paid-table-body'); if (!tb) return; tb.innerHTML = ''; var pr = AppData.customers.filter(function(r) { return r.status === 'PAID'; }); var tc = 0;
             if (pr.length === 0) { tb.innerHTML = genEmpty(false); refreshIcons(); }
-            else {
-                pr.sort(function(a, b) { return (b.paidSyncedAt || '').localeCompare(a.paidSyncedAt || ''); });
-                pr.forEach(function(r) { tc += safeNum(r.paid);
-                    tb.innerHTML += '<tr><td data-label="Paid Date">' + escH(r.paidDate || 'N/A') + '</td><td data-label="Name">' + escH(r.name || '') + '</td><td data-label="Contact" style="color:var(--text-muted);">' + escH(r.contact || '-') + '</td><td data-label="Total" style="text-align:right;color:var(--text-muted);">' + fmt(r.total) + '</td><td data-label="Paid"  style="text-align:right;font-weight:700;color:var(--success-text);">' + fmt(r.paid) + '</td><td data-label="Status" style="text-align:right;"><span class="badge-cleared"><i data-lucide="refresh-cw" style="width:10px;height:10px;"></i> Synced</span><br><small style="font-size:0.65rem;color:var(--text-muted);">' + (r.paidSyncedAt ? new Date(r.paidSyncedAt).toLocaleTimeString() : '') + '</small></td></tr>'; });
-                refreshIcons();
-            }
-            var ptc = document.getElementById('paid-total-collected'); var pgt = document.getElementById('paid-grand-total');
-            if (ptc) ptc.innerText = fmt(tc) + ' AED'; if (pgt) pgt.innerText = fmt(tc) + ' AED';
+            else { pr.sort(function(a, b) { return (b.paidSyncedAt || '').localeCompare(a.paidSyncedAt || ''); }); pr.forEach(function(r) { tc += safeNum(r.paid); tb.innerHTML += '<tr><td data-label="Paid Date">' + escH(r.paidDate || 'N/A') + '</td><td data-label="Name">' + escH(r.name || '') + '</td><td data-label="Contact" style="color:var(--text-muted);">' + escH(r.contact || '-') + '</td><td data-label="Total" style="text-align:right;color:var(--text-muted);">' + fmt(r.total) + '</td><td data-label="Paid"  style="text-align:right;font-weight:700;color:var(--success-text);">' + fmt(r.paid) + '</td><td data-label="Status" style="text-align:right;"><span class="badge-cleared"><i data-lucide="refresh-cw" style="width:10px;height:10px;"></i> Synced</span><br><small style="font-size:0.65rem;color:var(--text-muted);">' + (r.paidSyncedAt ? new Date(r.paidSyncedAt).toLocaleTimeString() : '') + '</small></td></tr>'; }); refreshIcons(); }
+            var ptc = document.getElementById('paid-total-collected'); var pgt = document.getElementById('paid-grand-total'); if (ptc) ptc.innerText = fmt(tc) + ' AED'; if (pgt) pgt.innerText = fmt(tc) + ' AED';
         }
 
         /* ════════════════════════════════════════════════════════════════════════════
            DASHBOARD & CHARTS MODULE
         ════════════════════════════════════════════════════════════════════════════ */
-        function initCharts() { /* ... create charts ... */ }
-        function updateDashboard() { /* ... update KPIs & charts ... */ }
-        function renderActivityFeed() { /* ... activity list ... */ }
+        function initCharts() {
+            var rc = document.getElementById('revenueChart'); var ac = document.getElementById('allocationChart'); if (!rc || !ac) return;
+            if (revenueChart) { revenueChart.destroy(); revenueChart = null; } if (allocationChart) { allocationChart.destroy(); allocationChart = null; }
+            Chart.defaults.color = '#94a3b8'; Chart.defaults.borderColor = 'rgba(148,163,184,0.1)';
+            revenueChart = new Chart(rc.getContext('2d'), { type: 'line', data: { labels: [], datasets: [{ label: 'Revenue (In)', data: [], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4 },{ label: 'Expenses (Out)', data: [], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } } });
+            allocationChart = new Chart(ac.getContext('2d'), { type: 'doughnut', data: { labels: ['Banks', 'Cash'], datasets: [{ data: [0, 0], backgroundColor: ['#3b82f6', '#8b5cf6'], hoverBackgroundColor: ['#2563eb', '#7c3aed'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'bottom' } } } });
+        }
+
+        function updateDashboard() {
+            var tr = AppData.customers.reduce(function(s, c) { return c.status === 'NOTPAID' ? s + safeNum(c.balance) : s; }, 0); var cb = getLiveBal('cash'); var bb = getLiveBal('banks'); var nl = cb + bb; var cm = new Date().toISOString().slice(0, 7); var mr = AppData.customers.reduce(function(s, c) { if (c.status === 'PAID' && c.paidDate && c.paidDate.startsWith(cm)) return s + safeNum(c.paid); return s; }, 0);
+            document.getElementById('kpi-receivables').innerText = fmt(tr) + ' AED'; document.getElementById('kpi-liquidity').innerText = fmt(nl) + ' AED'; document.getElementById('kpi-revenue').innerText = fmt(mr) + ' AED';
+            if (allocationChart) { allocationChart.data.datasets[0].data = [Math.max(0, bb), Math.max(0, cb)]; allocationChart.update(); }
+            if (revenueChart) { var dm = {}; ['cash', 'banks'].forEach(function(tn) { AppData[tn].forEach(function(r) { if (!r.date) return; if (!dm[r.date]) dm[r.date] = { i: 0, o: 0 }; dm[r.date].i += safeNum(r.amountIn); dm[r.date].o += safeNum(r.amountOut); }); }); var sd = Object.keys(dm).sort().slice(-10); revenueChart.data.labels = sd; revenueChart.data.datasets[0].data = sd.map(function(d) { return dm[d].i; }); revenueChart.data.datasets[1].data = sd.map(function(d) { return dm[d].o; }); revenueChart.update(); }
+            renderActivityFeed();
+        }
+
+        function renderActivityFeed() {
+            var fc = document.getElementById('activity-feed'); if (!fc) return; var aa = []; ['cash', 'banks'].forEach(function(tn) { var nm = { cash: 'Cash', banks: 'Banks' }; AppData[tn].forEach(function(r) { aa.push({ date: r.date, module: nm[tn], desc: r.particulars, amountIn: r.amountIn, amountOut: r.amountOut, createdAt: r.createdAt || r.date }); }); }); aa.sort(function(a, b) { return (b.createdAt || '').localeCompare(a.createdAt || ''); }); var r5 = aa.slice(0, 5);
+            if (r5.length === 0) { fc.innerHTML = '<div class="empty-state">No recent activity.</div>'; return; }
+            fc.innerHTML = r5.map(function(a) { var isOut = safeNum(a.amountOut) > 0; var amt = isOut ? '- ' + fmt(a.amountOut) + ' AED' : '+ ' + fmt(a.amountIn) + ' AED'; var ac = isOut ? 'var(--danger-text)' : 'var(--success-text)'; var ic = isOut ? 'arrow-up-right' : 'arrow-down-left'; return '<div class="activity-item ' + (isOut ? 'out' : 'in') + '"><div style="flex-shrink:0;"><i data-lucide="' + ic + '" style="width:16px;height:16px;"></i></div><div class="activity-details"><div class="activity-title">' + escH(a.desc || '') + '</div><div class="activity-meta">' + escH(a.module) + ' - ' + escH(a.date || '') + '</div></div><div class="activity-amount" style="color:' + ac + ';">' + amt + '</div></div>'; }).join(''); refreshIcons();
+        }
 
         /* ════════════════════════════════════════════════════════════════════════════
            EXCEL BACKUP / RESTORE MODULE
         ════════════════════════════════════════════════════════════════════════════ */
-        function exportToExcel() { /* ... export logic ... */ }
-        async function importFromExcel(event) { /* ... import with duplicate guard ... */ }
+        function exportToExcel() {
+            try { var wb = XLSX.utils.book_new(); [{ key: 'customers', name: 'Customers' },{ key: 'cash', name: 'Cash' },{ key: 'banks', name: 'Banks' },{ key: 'daily', name: 'Daily' }].forEach(function(cfg) { var cleaned = AppData[cfg.key].map(function(item) { var ci = Object.assign({}, item); delete ci.id; delete ci.userid; delete ci.createdAt; if (Array.isArray(ci.paymentHistory)) ci.paymentHistory = JSON.stringify(ci.paymentHistory); return ci; }); var ws = XLSX.utils.json_to_sheet(cleaned); XLSX.utils.book_append_sheet(wb, ws, cfg.name); }); XLSX.writeFile(wb, 'FinTracker_Pro_Backup_' + new Date().toISOString().split('T')[0] + '.xlsx'); }
+            catch (e) { showToast('Export failed: ' + e.message, 'error'); }
+        }
+
+        async function importFromExcel(event) {
+            var file = event.target.files[0]; if (!file) return; var reader = new FileReader();
+            reader.onload = async function(e) { showConfirm('Restore Data?', 'This will ADD new records from the uploaded file. Duplicates will be skipped.', async function() { try { var data = new Uint8Array(e.target.result); var wb = XLSX.read(data, { type: 'array' }); var imported = 0, skipped = 0; var sheetMap = { 'Customers': 'customers', 'Cash': 'cash', 'Banks': 'banks', 'Daily': 'daily' };
+                for (var i = 0; i < wb.SheetNames.length; i++) { var sn = wb.SheetNames[i]; var cn = sheetMap[sn]; if (!cn) continue; var ws = wb.Sheets[sn]; var recs = XLSX.utils.sheet_to_json(ws);
+                for (var j = 0; j < recs.length; j++) { var rec = Object.assign({}, recs[j]); if (cn === 'customers') { rec.total = safeNum(rec.total); rec.paid = safeNum(rec.paid); rec.balance = safeNum(rec.balance); if (typeof rec.paymentHistory === 'string') try { rec.paymentHistory = JSON.parse(rec.paymentHistory); } catch (ex) { rec.paymentHistory = []; } if (!Array.isArray(rec.paymentHistory)) rec.paymentHistory = []; if (rec.paid > 0 && rec.paymentHistory.length === 0) rec.paymentHistory = [{ date: rec.paidDate || rec.date || '', amount: rec.paid }]; rec.paid = rec.paymentHistory.reduce(function(s, p) { return s + safeNum(p.amount); }, 0); rec.balance = rec.total - rec.paid; rec.status = rec.balance <= 0 ? 'PAID' : 'NOTPAID'; var alreadyExists = AppData.customers.some(function(ex) { return ex.date === rec.date && ex.name === rec.name && safeNum(ex.total) === rec.total; }); if (alreadyExists) { skipped++; continue; } }
+                    if (cn === 'cash' || cn === 'banks') { rec.amountIn = safeNum(rec.amountIn); rec.amountOut = safeNum(rec.amountOut); var collArr = AppData[cn]; var dupFound = collArr.some(function(ex) { return ex.date === rec.date && ex.particulars === rec.particulars && safeNum(ex.amountIn) === rec.amountIn && safeNum(ex.amountOut) === rec.amountOut; }); if (dupFound) { skipped++; continue; } }
+                    if (cn === 'daily') { rec.g9 = safeNum(rec.g9); rec.akbar = safeNum(rec.akbar); rec.via = safeNum(rec.via); rec.serene = safeNum(rec.serene); rec.alghazi = safeNum(rec.alghazi); rec.b2b = safeNum(rec.b2b); }
+                    await saveToCollection(cn, rec); imported++; } }
+                await loadAllCollections(); showToast('Imported ' + imported + ' record(s). Skipped ' + skipped + ' duplicate(s).', 'success');
+            } catch (e2) { showToast('Import failed: ' + e2.message, 'error'); } }); };
+            reader.readAsArrayBuffer(file); event.target.value = '';
+        }
 
         /* ─── Initial Icon Pass ─────────────────────────────────────────────────── */
         refreshIcons();
